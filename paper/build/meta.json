@@ -17,13 +17,13 @@
    "email": "Hudamueen2407@gmail.com"
   }
  ],
- "abstract": "Draft: results pending human reference labels.",
+ "abstract": "",
  "version": "0.9.0",
  "date": "2026-10-21",
  "status": "Pilot study in progress: human reference labels pending",
  "citation_bibtex": "@misc{ahmed2026cipher,\n  author = {Ahmed, Awaiz and Umar, Mohammad and Mueen, Huda},\n  title = {{CIPHER: Contextual Instruction Precedence and Hierarchy Evaluation for Repositories}},\n  year = {2026},\n  note = {Manuscript submitted to TEXTUAL 2027 (SANER 2027 workshop); under review},\n  url = {https://github.com/4waiz/cipher}\n}",
- "pdf_sha256": "83bba32811c6c68828cda5cdd172eeac8ef39fdb432684f1daba77886eda5eff",
- "anonymous_pdf_sha256": "49b6ae80fd74e5febab5cc08677f6367941727bdd1995078ec7f0094161474e5",
+ "pdf_sha256": "475cf7ee5d6971fbd4ce0d488d392d561c924a816e45710434749e4edf59f1f3",
+ "anonymous_pdf_sha256": "88e2c908e3a038ac9856ac376c6fefdb52e28d4147a9640e8cb77b0ea14f363d",
  "pages": {
   "named": 3,
   "anonymous": 3

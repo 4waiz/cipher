@@ -25,22 +25,23 @@ incompatible obligations, or it can report a legitimate local exception
 as a defect and suggest deleting useful guidance. Existing detectors
 flag contradictions from text alone. In a study of 100 repositories, a
 model-based smell detector reported 28 conflicting-instruction cases, of
-which the first author confirmed 16 <span class="citation"
-data-cites="santos2026smells"><a href="#ref-santos2026smells"
-role="doc-biblioref">[2]</a></span>; the keyword heuristics of
-Ruleherd <span class="citation" data-cites="ruleherd"><a
-href="#ref-ruleherd" role="doc-biblioref">[3]</a></span> compare files
-without regard to scope. Whether scope or precedence explains such false
-alarms has not been tested.</p>
+which manual analysis by that study’s first author confirmed 16 <span
+class="citation" data-cites="santos2026smells"><a
+href="#ref-santos2026smells" role="doc-biblioref">[2]</a></span>; the
+keyword heuristics of Ruleherd <span class="citation"
+data-cites="ruleherd"><a href="#ref-ruleherd"
+role="doc-biblioref">[3]</a></span> compare files without regard to
+scope. Whether scope or precedence explains such false alarms has not
+been tested.</p>
 <p>CIPHER asks whether making applicability and precedence explicit
 improves the classification of apparent conflicts. We contribute (1) a
 task-conditioned, five-label definition of the problem under a declared
 AGENTS.md loading profile; (2) a pilot of 27 real instruction pairs from
-eight repositories at pinned commits, each with a context-changing
-variant and an order control, labeled independently by two authors and
-adjudicated by a third; and (3) a comparison of a keyword heuristic, a
-direct model given the full evidence, and a structured pipeline using
-the same local model. Section <a href="#sec:results"
+eight repositories at pinned commits, plus one context-changing variant
+per pair, labeled independently by two authors and adjudicated by a
+third, and one order control per pair; and (3) a comparison of a keyword
+heuristic, a direct model given the full evidence, and a structured
+pipeline using the same local model. Section <a href="#sec:results"
 data-reference-type="ref" data-reference="sec:results">6</a> reports
 results once the human reference labels are final. The protocol, data,
 prompts, raw outputs, and analysis code are released at <a
@@ -109,8 +110,8 @@ about other decisions stay in force. Equal authority (same file or same
 depth) is not ranked by order of appearance; only an explicit statement
 can create priority. User prompts, other file formats, imports, symbolic
 links, multiple working roots, and multi-target tasks are excluded.</p>
-<p><strong>Labels and decision sequence.</strong> Annotators and methods
-follow the same order: (1) if meaning or applicability cannot be
+<p><strong>Labels and decision sequence.</strong> The handbook orders
+the judgment as follows: (1) if meaning or applicability cannot be
 established, <em>Insufficient evidence</em>; (2) if, before priority,
 either instruction is inactive (not loaded, or excluded by its own
 condition), <em>Disjoint applicability</em>; (3) if the active
@@ -160,18 +161,26 @@ variant</em> that keeps both instructions’ wording and changes one
 documented property: the target path (16 cases, moving the target
 outside the nested file’s directory) or the placement of one instruction
 (11 cases, relocating it to the root or to a nested file on the target’s
-chain). Each original also has an <em>order control</em> that only swaps
-the presentation order of the two instructions. Variants are constructed
+chain). A relocated instruction is appended under a copy of its nearest
+heading, so outer headings of its original file are lost; the human
+transformation check judges whether this changes meaning. Each original
+also has an <em>order control</em> that only swaps the presentation
+order of the two instructions. Variants and controls are constructed
 material and are reported separately from originals.</p>
 <p><strong>Annotation.</strong> Two authors labeled every original and
-variant independently in a standalone tool, with separately randomized
-orders, opaque IDs, and no access to predictions, strata, or each
-other’s answers; the tool showed the task, target, profile, the
-AGENTS.md paths with the target’s chain marked, both spans with their
-sections and full files, and keyword-scanned scope statements. After a
-20-item calibration round (six authored practice items), the handbook
-was frozen. The third author adjudicated disagreements. Order controls
-inherit their parent’s final label after a human check that only the
+variant independently in a standalone offline tool, with separately
+randomized orders and opaque item IDs; predictions, strata,
+transformation notes, and the other annotator’s answers were not shown.
+The tool showed the task, target, profile, the AGENTS.md paths with the
+target’s directory chain marked, both spans with their sections and full
+files, and keyword-scanned scope statements. Blinding was procedural
+rather than technical: ID keys and sealed model outputs were stored on
+the first author’s machine, and annotators were asked not to open them
+before submitting. Handbook v1.0 was frozen before annotation; a 20-item
+calibration round (six authored practice items with feedback) preceded
+the evaluation packet. The third author adjudicated disagreements,
+seeing both judgments without names. Order controls were not annotated;
+each inherits its parent’s final label after a human check that only the
 order changed.</p>
 </section>
 <section id="sec:methods" class="level1">
@@ -183,33 +192,43 @@ case; it yields a binary flag and is scored only on conflict detection.
 <strong>B1</strong> is a direct contextual model: one call receives the
 evidence packet (task, target, commit, all AGENTS.md paths, both spans
 with line-numbered sections, and the scope statements), the full
-profile, the label definitions, and the decision sequence.
+profile, the label definitions, and the decision sequence. Unlike the
+annotators, the models saw neither the full files nor the chain marking.
 <strong>B2</strong>, the CIPHER pipeline, uses the same model and
 packet. One call extracts, for each instruction, its requirement,
 regulated decision, modality, explicit condition, and whether that
 condition covers the task, plus any explicit priority statement. Code
-then computes the loaded set and depth precedence deterministically. A
-second call, made only when both instructions remain active and binding,
-judges whether they constrain the same decision incompatibly; fixed
-rules map the results to a label. Because B2 may use two calls,
-<strong>B1R</strong> adds an equal-call control: B1 followed by one
-self-review call over the same evidence.</p>
-<p>All model arms used Qwen3.6-35B-A3B <span class="citation"
-data-cites="qwen36"><a href="#ref-qwen36"
-role="doc-biblioref">[14]</a></span> (Q4_K_M, Ollama digest a7eb95c5)
-locally with thinking enabled, temperature 0.6,
+then computes the loaded set and depth precedence deterministically; an
+unclear condition is treated as covering the task, and B2 cannot
+abstain. A second call, made only when both instructions remain active
+and binding, judges whether they constrain the same decision
+incompatibly; fixed rules map the results to a label. Because B2 may use
+two calls, <strong>B1R</strong> adds an equal-call control: B1 followed
+by one self-review call over the same evidence.</p>
+<p>All model arms used the open-weight Qwen3.6-35B-A3B <span
+class="citation" data-cites="qwen36"><a href="#ref-qwen36"
+role="doc-biblioref">[14]</a></span> (35B parameters, 3B active; Q4_K_M
+quantization, Ollama digest a7eb95c5) on one local GPU with thinking
+enabled and the model card’s recommended settings for precise coding
+tasks (temperature 0.6,
 top-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 0.95,
 top-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
-20, a fixed seed, JSON-schema-constrained output, and at most two
+20), a fixed seed, JSON-schema-constrained output, and at most two
 retries with a changed seed. Each request contained only the method
-prompt and the evidence; no case identifier, stratum, or label. The
-profile, handbook, case manifest, prompts, schemas, retry policy, and
-analysis plan were frozen by hash before held-out runs, and held-out
-predictions stayed sealed until the reference labels were final. The
-primary outcome is five-class macro-F1 on originals (B2 versus B1) over
-classes present in the reference; abstentions and failures count as
-incorrect.</p>
+prompt and the evidence, with no case identifier, stratum, or label.
+Calibration runs led to one change before any held-out run: B2’s
+evidence-sufficiency field became an explicit two-value enum (B1’s
+prompt was unchanged). Before any held-out output was inspected, an
+independent code review found that the header of the scope-statement
+block implied all listed files were loaded; it was corrected for every
+arm, all held-out runs were repeated, and the superseded runs were never
+opened. The profile, handbook, case manifest, prompts, schemas, retry
+policy, analysis code, and analysis plan were frozen by hash before the
+held-out runs whose predictions are reported, and those predictions
+stayed sealed until the reference labels were final. The primary outcome
+is five-class macro-F1 on originals (B2 versus B1) over classes present
+in the reference; abstentions and failures count as incorrect.</p>
 </section>
 <section id="sec:results" class="level1">
 <h1>Results</h1>
@@ -223,11 +242,14 @@ challenge-oriented, so class supports are uneven and some labels are
 rare; interval estimates over eight repository clusters are descriptive.
 Tasks were authored from templates, and variants are constructed, so
 neither represents observed agent sessions. The annotators are authors,
-which risks shared assumptions; independence, blinding, and adjudication
-reduce but do not remove this. One profile and one quantized open-weight
-model limit generalization, and public repositories may appear in its
-training data. Results concern classification under P1, not whether
-agents follow instructions or produce better code.</p>
+which risks shared assumptions, and blinding was procedural;
+independence and adjudication reduce but do not remove this. Annotators
+saw more context than the models (full files and the chain marking),
+which favors the reference over every model arm equally. One profile and
+one quantized open-weight model limit generalization, and public
+repositories may appear in its training data. Results concern
+classification under P1, not whether agents follow instructions or
+produce better code.</p>
 </section>
 <section id="sec:conclusion" class="level1">
 <h1>Conclusion</h1>
@@ -235,7 +257,18 @@ agents follow instructions or produce better code.</p>
 </section>
 <section id="acknowledgment" class="level1 unnumbered">
 <h1 class="unnumbered">Acknowledgment</h1>
-<p>Pending.</p>
+<p>Following IEEE policy <span class="citation" data-cites="ieeeai"><a
+href="#ref-ieeeai" role="doc-biblioref">[15]</a></span>, we disclose AI
+assistance. OpenAI ChatGPT assisted with concept exploration, literature
+synthesis, and drafting of the earlier proposal on which Sections I–III
+build. Anthropic Claude (Opus 5.5, via Claude Code) audited the related
+work against primary sources, wrote the software for sampling, case
+construction, the annotation tool, the model arms, and the analysis, ran
+all experiments, and drafted the text of every section, the tables, and
+the figure of this version under the authors’ direction. Neither system
+produced any reference label: the annotations and the adjudication are
+the authors’ own. Qwen3.6-35B-A3B is the system under evaluation. The
+authors reviewed the manuscript and are responsible for its content.</p>
 </section>
 <section id="references" class="level1 unnumbered">
 <h1 class="unnumbered">References</h1>
@@ -337,8 +370,16 @@ href="https://arxiv.org/abs/2603.08993v2">https://arxiv.org/abs/2603.08993v2</a>
 <div id="ref-qwen36" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[14] </div><div
 class="csl-right-inline">Qwen Team,
-<span>“<span>Qwen3.6-35B-A3B</span>.”</span> Open-weight model, run
-locally as Ollama tag qwen3.6:35b-a3b (Q4_K_M, digest a7eb95c5),
+<span>“<span>Qwen3.6-35B-A3B</span>.”</span> Model card, Hugging Face,
+Apache-2.0, 2026. Available: <a
+href="https://huggingface.co/Qwen/Qwen3.6-35B-A3B">https://huggingface.co/Qwen/Qwen3.6-35B-A3B</a></div>
+</div>
+<div id="ref-ieeeai" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[15] </div><div
+class="csl-right-inline">IEEE, <span>“Submission policies.”</span> IEEE
+Author Center Conferences, <a
+href="https://conferences.ieeeauthorcenter.ieee.org/author-ethics/guidelines-and-policies/submission-policies/"
+class="uri">https://conferences.ieeeauthorcenter.ieee.org/author-ethics/guidelines-and-policies/submission-policies/</a>,
 2026.</div>
 </div>
 </div>

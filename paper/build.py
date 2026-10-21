@@ -49,11 +49,12 @@ def html_fragment() -> str:
     import pypandoc
     body = (HERE / "body.tex").read_text(encoding="utf-8")
     have_results = "\\resultstrue" in (HERE / "generated" / "results.tex").read_text(encoding="utf-8")
+    body = body.replace("\\newif\\ifresults", "")  # before branch selection, or the pattern below would match it
     body = re.sub(r"\\ifresults(.*?)\\else(.*?)\\fi", lambda m: m.group(1 if have_results else 2), body, flags=re.S)
-    body = body.replace("\\newif\\ifresults", "")
     for inc in re.findall(r"\\input\{([^}]+)\}", body):
         f = HERE / (inc if inc.endswith(".tex") else inc + ".tex")
         body = body.replace(f"\\input{{{inc}}}", f.read_text(encoding="utf-8"))
+    body = body.replace("\\resultstrue", "").replace("\\resultsfalse", "")
     body = re.sub(r"\\ifanon.*?\\else(.*?)\\fi", r"\1", body, flags=re.S)
     body = re.sub(r"\\title\{.*?\}\n", "", body)
     body = re.sub(r"\\author\{.*?\n\}?\n\n", "", body, flags=re.S)
