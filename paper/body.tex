@@ -143,7 +143,8 @@ results to a label. Because B2 may use two calls, \textbf{B1R} adds an equal-cal
 self-review call over the same evidence.
 
 All model arms used the open-weight Qwen3.6-35B-A3B~\cite{qwen36} (35B parameters, 3B active; Q4\_K\_M quantization,
-Ollama digest a7eb95c5) on one local GPU with thinking enabled and the model card's recommended settings for precise
+Ollama digest a7eb95c5; served by Ollama 0.40.6, auto-updated to 0.40.7 before the last four B2 cases and the B1R run)
+on one laptop GPU with thinking enabled and the model card's recommended settings for precise
 coding tasks (temperature 0.6, top-$p$ 0.95, top-$k$ 20), a fixed seed, JSON-schema-constrained output, and at most two
 retries with a changed seed. Each request contained only the method prompt and the evidence, with no case identifier,
 stratum, or label. Calibration runs led to one change before any held-out run: B2's evidence-sufficiency field became
