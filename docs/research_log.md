@@ -27,3 +27,11 @@ Chronological record of what was done and observed. Times are Asia/Dubai.
   (K102, K201, K201v, K203v). Diagnosed as a schema-design defect, not a labelling disagreement (no human calibration
   labels existed). Fix: enum `evidence_status` (sufficient/insufficient) with the handbook's step-1 wording, which B1 and
   the annotators already receive. dev1 outputs are preserved; dev2 re-runs B2 on calibration.
+- 15:13 Freeze 3; v2 held-out runs started. 15:19-~16:20 the author's own `rabt-ai serve` process shared the GPU and
+  slowed inference about sixfold (latency in this window is not comparable; calls and tokens are unaffected).
+- 16:22 v2 B0 and B1 complete (81/81 each, 0 errors).
+- 17:29 The laptop went to sleep (Windows Kernel-Power event 42) while this session was idle; v2 B2 stopped at 77/81.
+  19:19 resume. 19:20-19:22 Ollama auto-updated itself from 0.40.6 to 0.40.7; model digest unchanged (a7eb95c5).
+  19:23 runs resumed with `runs/run_resume_v2.sh`, which logs the runtime version before each segment
+  (`runs/sealed/runtime_versions.jsonl`). B0, B1 and 77 B2 cases ran on 0.40.6; the remaining 4 B2 cases, B1R and the
+  secondary runs on 0.40.7.

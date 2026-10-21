@@ -72,3 +72,8 @@ machine), handbook frozen before calibration, heading loss in placement variants
 and inability to abstain, and the two pre-inspection method changes. Analysis code fixed and frozen (Freeze 3b,
 analysis-plan addendum A1). The transformation-review sheet now shows headings and asks whether a lost outer heading
 changes meaning.
+
+**D17 19:23. Resume after sleep on Ollama 0.40.7 rather than reinstalling 0.40.6.** The update is a patch release, the
+model weights are pinned by digest and unchanged, and reinstalling an older runtime would itself be an uncontrolled
+change to the author's machine. The split (B2: 77 cases on 0.40.6, 4 on 0.40.7; B1R and secondary runs on 0.40.7) is
+recorded and disclosed. This session now stays active during runs so the machine does not idle-sleep.
