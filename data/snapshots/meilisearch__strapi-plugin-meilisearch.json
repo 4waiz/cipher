@@ -1,0 +1,33 @@
+{
+ "repo": "meilisearch/strapi-plugin-meilisearch",
+ "commit": "3b2322808a465fb497ee37cfe1a22e25157d063f",
+ "default_branch": "main",
+ "retrieved_at": "2026-10-21T09:16:01+00:00",
+ "license": "MIT",
+ "fork": false,
+ "archived": false,
+ "tree_truncated": false,
+ "symlinked_agents_md": [],
+ "agents_files": [
+  {
+   "path": "AGENTS.md",
+   "blob_sha": "6b0e9cfef89bd7664a059bdfef6981d6dc4844ac",
+   "sha256": "7a6881f05e3cc4416876d6f4b8b8039d9c356b9437065959ded36fe314d2ca8d",
+   "content": "# AGENTS.md\n\n## Plan mode\n\n- Make the plan extremely concise. Sacrifice grammar for the sake of concision.\n- Include conceptual code samples to make intent clearer and prevent drift during implementation.\n- Make the plan optimized for leveraging subagents (in sequence or in parallel).\n- At the end of each plan, give me a list of unresolved questions to answer, if any.\n- Enforce subagents usage in the plan.\n\n## Agent mode\n\nUse your tools to spawn subagents:\n- The main agent is only an orchestrator; leverage subagents to minimize context pollution.\n- Scoped tasks like editing a file, testing, linting, running a command, or exploration should be handled by subagents.\n\n### Local development\n\n- Use `yarn`, not `npm`\n- Use `nvm use` to use the correct Node version\n- Meilisearch JS client is `0.48.2`; use `client.getTasks({ indexUids: [...] })` for tasks, not `waitTask` from >= 0.50.\n\nServices:\n- Run Meilisearch locally with `docker run --rm -p 7700:7700 -e MEILI_MASTER_KEY=masterKey getmeili/meilisearch-enterprise:latest`\n\n### Coding conventions\n\n- Use comments when the logic cannot be inferred from the code.\n- Always write function documentation.\n\n### Development workflow\n\n- Format code with `yarn style:fix`\n"
+  },
+  {
+   "path": "integration-tests/AGENTS.md",
+   "blob_sha": "474e42827291c2f19d71bd5a84c90b3ed9ac9ad5",
+   "sha256": "f43ac5af6e2f15c3905bce5ac92af17a620c53db77440f8af5abd87b4beacca4",
+   "content": "## Integration tests\n\n**Important**: this architecture setup is deprecated, we are migrating toward the fixtures-based integration tests in `/tests/integrations`.\n\nThese tests require a Meilisearch server and the Strapi playground to be running.\n\nTypical local flow (from repo root):\n- Start Meilisearch\n- Seed DB: `yarn playground:setup`.\n- Start playground with relations mode with `MEILI_RELATIONS_TEST=1`.\n- Run the test.\n"
+  },
+  {
+   "path": "playground/AGENTS.md",
+   "blob_sha": "4e1e0044e042a40dc0cc2d8ebcf781b254597e1a",
+   "sha256": "63b2554eaf782fa89596ef9ad4d88537118a0199b4a331accc74d844c407f405",
+   "content": "# Playground\n\nThe playground is a Strapi app that uses the Meilisearch Plugin implemented in this repository.\n\n## Database seeding\n\n- Source of truth is `pre-seeded-database.db`. Do not modify it.\n- To reset `.tmp/data.db`, run from repo root: `yarn playground:setup`.\n- You can use `sqlite3` to inspect the database.\n\n## Running the playground\n\n- From repo root: `yarn playground:dev`.\n- Strapi runs at `http://localhost:1337` using `playground/.tmp/data.db`.\n\n## Integration test mode\n\n- When `MEILI_RELATIONS_TEST=1` is set, bootstrap auto-indexes `api::restaurant.restaurant` into Meilisearch (used by meili-relations integration tests).\n"
+  }
+ ],
+ "tree_paths_file": "meilisearch__strapi-plugin-meilisearch.tree.json.gz",
+ "tree_paths_count": 223
+}

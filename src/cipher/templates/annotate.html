@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CIPHER annotation</title>
+<style>
+:root{--bg:#f7f7f5;--panel:#fff;--ink:#1d2329;--muted:#5d6670;--line:#dfe2e6;--accent:#0f6b6b;--accent-soft:#e3f1f0;
+--code:#141a20;--code-ink:#e8edf2;--warn:#8a4b00;--warn-soft:#fff3e0;--ok:#1f6f3a;--hl:#ffe9a8}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);
+font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line);
+padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+header h1{font-size:16px;margin:0 12px 0 0}header .who{color:var(--muted)}
+.prog{flex:1;min-width:160px;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.prog>i{display:block;height:100%;background:var(--accent);width:0}
+button,.btn{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;
+padding:6px 12px;cursor:pointer}button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{
+outline:3px solid #f0a500;outline-offset:2px}
+.wrap{display:grid;grid-template-columns:220px 1fr;gap:0;min-height:calc(100vh - 54px)}
+nav{border-right:1px solid var(--line);background:var(--panel);padding:8px;overflow:auto;max-height:calc(100vh - 54px);
+position:sticky;top:54px}
+nav button{display:flex;width:100%;justify-content:space-between;margin:2px 0;border:0;text-align:left;
+font-family:ui-monospace,Consolas,monospace;font-size:13px}nav button[aria-current="true"]{background:var(--accent-soft)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--line);margin-top:5px}.dot.done{background:var(--ok)}
+.dot.partial{background:#e0a100}
+main{padding:16px 22px 80px;max-width:1100px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 14px}
+.card h2{font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 8px}
+.task{font-size:17px}code,.mono{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:13px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px}.kv dt{color:var(--muted)}.kv dd{margin:0}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.rule{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+.rule .hd{padding:8px 12px;background:#eef1f3;font-weight:600}.rule .meta{padding:6px 12px;color:var(--muted);font-size:13px}
+pre{margin:0;padding:10px 12px;background:var(--code);color:var(--code-ink);overflow:auto;white-space:pre-wrap;
+word-break:break-word;font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:13px;line-height:1.45}
+pre .ln{color:#7d8a96;user-select:none;display:inline-block;width:3.2em}pre .hit{background:#3d3410;display:block}
+.quote{font-size:14px;background:#fffdf3;border-left:4px solid #d9b300;padding:8px 12px;margin:8px 12px;white-space:pre-wrap;
+font-family:ui-monospace,Consolas,monospace}
+details{margin:6px 12px 10px}summary{cursor:pointer;color:var(--accent)}
+.tree li{font-family:ui-monospace,Consolas,monospace;font-size:13px;list-style:none}
+.tree li.chain::before{content:"\25B8 ";color:var(--accent)}.tree li:not(.chain)::before{content:"\00B7 ";color:var(--muted)}
+.tree .tag{font-family:system-ui;font-size:12px;color:var(--accent);margin-left:6px}
+.tree .rtag{font-family:system-ui;font-size:12px;background:#eef1f3;border-radius:4px;padding:0 5px;margin-left:6px}
+fieldset{border:1px solid var(--line);border-radius:8px;margin:0 0 12px;padding:8px 12px}legend{font-weight:600;padding:0 4px}
+.opts{display:flex;flex-wrap:wrap;gap:6px 18px}.opts label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.labels label{border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.labels input:checked+span{font-weight:700;color:var(--accent)}
+textarea,input[type=text]{width:100%;font:inherit;border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.muted{color:var(--muted)}
+.fb{background:var(--accent-soft);border:1px solid var(--accent);border-radius:8px;padding:10px 12px;margin-top:10px}
+.warn{background:var(--warn-soft);border:1px solid #f0c27a;color:var(--warn);border-radius:8px;padding:8px 12px}
+.hb{position:fixed;inset:54px 0 0 auto;width:min(680px,100%);background:var(--panel);border-left:1px solid var(--line);
+overflow:auto;padding:16px 22px;z-index:6;box-shadow:-8px 0 24px rgba(0,0,0,.08)}.hb[hidden]{display:none}
+.hb table{border-collapse:collapse}.hb td,.hb th{border:1px solid var(--line);padding:4px 6px;vertical-align:top}
+@media (max-width:900px){.wrap{grid-template-columns:1fr}nav{position:static;max-height:none;display:flex;flex-wrap:wrap}
+nav button{width:auto}.rules{grid-template-columns:1fr}.kv{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>CIPHER annotation</h1><span class="who" id="who"></span>
+  <div class="prog" aria-hidden="true"><i id="bar"></i></div><span id="count" aria-live="polite"></span>
+  <button id="hbBtn" aria-expanded="false" aria-controls="hb">Handbook</button>
+  <button id="exportJson" class="primary">Export JSON</button><button id="exportCsv">Export CSV</button>
+  <label class="btn" for="importFile">Import JSON</label><input type="file" id="importFile" accept=".json" hidden>
+</header>
+<div class="wrap">
+  <nav aria-label="Cases" id="nav"></nav>
+  <main id="main" tabindex="-1"></main>
+</div>
+<aside class="hb" id="hb" hidden aria-label="Annotation handbook"></aside>
+<script id="packet" type="application/json">/*__PACKET__*/</script>
+<script id="handbook" type="text/plain">/*__HANDBOOK__*/</script>
+<script>
+"use strict";
+const P = JSON.parse(document.getElementById("packet").textContent);
+const LABELS = ["Unresolved conflict","Valid override","Disjoint applicability","Compatible","Insufficient evidence"];
+const KEY = "cipher-annotation-" + P.packet_id;
+let state = {responses:{}}, storageOk = true;
+try { const s = localStorage.getItem(KEY); if (s) state = JSON.parse(s); localStorage.setItem(KEY + "-probe", "1"); }
+catch (e) { storageOk = false; }
+let cur = 0, t0 = performance.now();
+const $ = (s, el=document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+function resp(id){ return state.responses[id] ||= {item_id:id, active_ms:0}; }
+function complete(r){ return !!(r && r.label && r.reason && r.reason.trim()); }
+function tick(){ const it = P.items[cur]; if (it) { resp(it.item_id).active_ms += Math.round(performance.now()-t0); } t0 = performance.now(); }
+function dirOf(p){ const i = p.lastIndexOf("/"); return i < 0 ? "" : p.slice(0,i); }
+function onChain(agentsPath, target){ const d = dirOf(agentsPath), t = dirOf(target); return d === "" || t === d || t.startsWith(d + "/"); }
+
+function codeBlock(text, first, hiStart, hiEnd){
+  return "<pre>" + text.split("\n").map((ln,i) => { const n = first + i; const hit = n>=hiStart && n<=hiEnd;
+    return `<span class="${hit?"hit":""}"><span class="ln">${n}</span>${esc(ln)}</span>`; }).join("\n") + "</pre>";
+}
+function ruleHtml(r, n, pk){
+  const full = pk.full_files[r.path];
+  return `<section class="rule" aria-label="Instruction ${n}"><div class="hd">Instruction ${n}</div>
+  <div class="meta mono">${esc(r.path)}:${r.start_line}${r.end_line>r.start_line?"-"+r.end_line:""}${r.heading?" &middot; "+esc(r.heading):""}</div>
+  <div class="quote">${esc(r.text)}</div>
+  <details><summary>Surrounding section (lines ${r.section_first_line}-${r.section_last_line})</summary>${codeBlock(r.section_text, r.section_first_line, r.start_line, r.end_line)}</details>
+  ${full!==undefined?`<details><summary>Full file ${esc(r.path)}</summary>${codeBlock(full.replace(/\n$/,""), 1, r.start_line, r.end_line)}</details>`:""}
+  </section>`;
+}
+function radios(name, opts, val){
+  return `<div class="opts">` + opts.map(([v,l]) => `<label><input type="radio" name="${name}" value="${esc(v)}" ${val===v?"checked":""}><span>${esc(l)}</span></label>`).join("") + `</div>`;
+}
+function render(){
+  const it = P.items[cur], pk = it.packet, r = resp(it.item_id);
+  const tree = pk.agents_paths.map(p => { const c = onChain(p, it.target_path);
+    const tags = [p===pk.rule_1.path?"Instruction 1":"", p===pk.rule_2.path?"Instruction 2":""].filter(Boolean);
+    return `<li class="${c?"chain":""}">${esc(p)}${c?'<span class="tag">on target\'s directory chain</span>':""}${tags.map(t=>`<span class="rtag">${t}</span>`).join("")}</li>`; }).join("");
+  const scope = pk.scope_statements.length ? "<ul>" + pk.scope_statements.map(s => `<li><code>${esc(s.path)}:${s.line}</code> ${esc(s.text)}</li>`).join("") + "</ul>" : '<p class="muted">None found by the keyword scan.</p>';
+  $("#main").innerHTML = `
+  <p class="muted">Case ${cur+1} of ${P.items.length} &middot; <span class="mono">${esc(it.item_id)}</span>${it.practice?' &middot; <strong>Authored practice item</strong>':""}</p>
+  <div class="card"><h2>Task</h2><div class="task">${esc(it.task)}</div>
+    <dl class="kv" style="margin-top:8px"><dt>Target file</dt><dd class="mono">${esc(it.target_path)}</dd>
+    <dt>Repository</dt><dd class="mono">${esc(it.repo)} @ ${esc(String(it.commit).slice(0,12))}</dd></dl></div>
+  <div class="card"><h2>AGENTS.md files in the repository</h2><ul class="tree" style="padding-left:4px;margin:0">${tree}</ul>
+    <details style="margin-left:0"><summary>Instruction-loading profile P1</summary><pre>${esc(P.profile_text)}</pre></details></div>
+  <div class="rules">${ruleHtml(pk.rule_1,1,pk)}${ruleHtml(pk.rule_2,2,pk)}</div>
+  <div class="card" style="margin-top:14px"><h2>Scope and precedence statements found in the loaded files</h2>${scope}</div>
+  <form class="card" id="f" aria-label="Judgment"><h2>Your judgment</h2>
+    <fieldset><legend>Label (required)</legend><div class="labels">${radios("label", LABELS.map(l=>[l,l]), r.label)}</div>
+      <p class="muted" style="margin:6px 0 0">Keys 1-5 choose a label when you are not typing.</p></fieldset>
+    <fieldset><legend>Before priority: is Instruction 1 active for this target and task?</legend>${radios("applies_1",[["active","Active"],["inactive","Inactive"],["unclear","Unclear"]], r.applies_1)}</fieldset>
+    <fieldset><legend>Before priority: is Instruction 2 active for this target and task?</legend>${radios("applies_2",[["active","Active"],["inactive","Inactive"],["unclear","Unclear"]], r.applies_2)}</fieldset>
+    <fieldset><legend>Do they regulate the same decision incompatibly?</legend>${radios("incompatible",[["yes","Yes"],["no","No"],["unclear","Unclear"],["na","Not applicable"]], r.incompatible)}</fieldset>
+    <fieldset><legend>Winner if incompatible</legend>${radios("winner",[["1","Instruction 1"],["2","Instruction 2"],["none","No valid winner"],["na","Not applicable"]], r.winner)}</fieldset>
+    <fieldset><legend>Evidence you relied on (path:line, one per line)</legend><textarea name="evidence" rows="2">${esc(r.evidence||"")}</textarea></fieldset>
+    <fieldset><legend>Reason (required, one or two sentences)</legend><textarea name="reason" rows="3">${esc(r.reason||"")}</textarea></fieldset>
+    <fieldset><legend>Confidence</legend>${radios("confidence",[["low","Low"],["medium","Medium"],["high","High"]], r.confidence)}</fieldset>
+    <fieldset><legend>Context</legend><label class="row"><input type="checkbox" name="missing_context" ${r.missing_context?"checked":""}> Decisive context seems to be missing from this case</label>
+      <input type="text" name="missing_note" placeholder="What is missing?" value="${esc(r.missing_note||"")}"></fieldset>
+    <div class="row"><button type="button" id="prev">Previous</button><button type="submit" class="primary">Save and next</button>
+      <span id="msg" class="muted" aria-live="polite"></span></div>
+    <div id="fb"></div>
+  </form>`;
+  const f = $("#f");
+  f.addEventListener("input", () => { collect(); updateNav(); });
+  f.addEventListener("submit", e => { e.preventDefault(); collect(); r.saved_at = new Date().toISOString();
+    if (!complete(r)) { $("#msg").textContent = "Choose a label and write a reason to complete this case."; save(); updateNav(); return; }
+    save(); updateNav(); if (it.practice) { showFeedback(it); return; } go(cur+1); });
+  $("#prev").onclick = () => go(cur-1);
+  if (it.practice && complete(r) && r.saved_at) showFeedback(it);
+  updateNav();
+}
+function showFeedback(it){
+  $("#fb").innerHTML = `<div class="fb"><strong>Handbook answer for this authored practice item: ${esc(it.practice_answer)}.</strong> ${esc(it.practice_explanation)}
+  <div class="row" style="margin-top:8px"><button type="button" id="nextAfterFb" class="primary">Next case</button></div></div>`;
+  $("#nextAfterFb").onclick = () => go(cur+1);
+}
+function collect(){
+  const it = P.items[cur], r = resp(it.item_id), f = $("#f"); const fd = new FormData(f);
+  for (const k of ["label","applies_1","applies_2","incompatible","winner","confidence"]) { const v = fd.get(k); if (v!==null) r[k] = v; }
+  r.evidence = fd.get("evidence"); r.reason = fd.get("reason"); r.missing_note = fd.get("missing_note");
+  r.missing_context = !!f.elements.missing_context.checked; save();
+}
+function go(i){ tick(); save(); if (i<0 || i>=P.items.length) { if (i>=P.items.length) $("#msg") && ($("#msg").textContent = "Last case. Export JSON when every case is complete."); return; }
+  cur = i; render(); $("#main").focus(); window.scrollTo(0,0); }
+function updateNav(){
+  const done = P.items.filter(it => complete(state.responses[it.item_id])).length;
+  $("#count").textContent = `${done} / ${P.items.length} complete`; $("#bar").style.width = (100*done/P.items.length)+"%";
+  $("#nav").innerHTML = P.items.map((it,i) => { const r = state.responses[it.item_id]; const cls = complete(r)?"done":(r&&r.label?"partial":"");
+    return `<button data-i="${i}" aria-current="${i===cur}"><span>${i+1}. ${esc(it.item_id)}${it.practice?" (practice)":""}</span><span class="dot ${cls}" aria-label="${cls||"empty"}"></span></button>`; }).join("");
+  $("#nav").querySelectorAll("button").forEach(b => b.onclick = () => go(+b.dataset.i));
+}
+function payload(){
+  tick(); save();
+  return {packet_id:P.packet_id, packet_sha256:P.packet_sha256, annotator_id:P.annotator_id, annotator_name:P.annotator_name,
+    seed:P.seed, tool_version:P.tool_version, handbook_version:P.handbook_version, exported_at:new Date().toISOString(),
+    items_total:P.items.length, items_complete:P.items.filter(it=>complete(state.responses[it.item_id])).length,
+    responses:P.items.map(it => ({...(state.responses[it.item_id]||{item_id:it.item_id})}))};
+}
+function download(name, text, type){ const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text],{type}));
+  a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+$("#exportJson").onclick = () => download(`${P.packet_id}_${P.annotator_id}_${new Date().toISOString().slice(0,16).replace(/[:T]/g,"-")}.json`, JSON.stringify(payload(), null, 1), "application/json");
+$("#exportCsv").onclick = () => { const p = payload(); const cols = ["item_id","label","applies_1","applies_2","incompatible","winner","confidence","missing_context","missing_note","evidence","reason","active_ms","saved_at"];
+  const q = v => `"${String(v ?? "").replace(/"/g,'""')}"`;
+  download(`${P.packet_id}_${P.annotator_id}.csv`, [cols.join(",")].concat(p.responses.map(r => cols.map(c => q(r[c])).join(","))).join("\n"), "text/csv"); };
+$("#importFile").onchange = async e => { const file = e.target.files[0]; if (!file) return;
+  try { const d = JSON.parse(await file.text()); if (d.packet_id !== P.packet_id) { alert("This file belongs to a different packet."); return; }
+    for (const r of d.responses) state.responses[r.item_id] = r; save(); render(); } catch (err) { alert("Could not read that file: " + err.message); } };
+$("#hbBtn").onclick = () => { const hb = $("#hb"); hb.hidden = !hb.hidden; $("#hbBtn").setAttribute("aria-expanded", String(!hb.hidden)); };
+document.addEventListener("keydown", e => { if (e.target.closest("textarea,input[type=text]") || e.ctrlKey || e.metaKey || e.altKey) return;
+  const n = "12345".indexOf(e.key); if (n >= 0) { const el = document.querySelector(`input[name=label][value="${LABELS[n]}"]`); if (el) { el.checked = true; collect(); updateNav(); } } });
+window.addEventListener("beforeunload", () => { tick(); save(); });
+(function handbook(){ const md = document.getElementById("handbook").textContent; let html = "", inTable = false;
+  for (const ln of md.split("\n")) { if (/^\|/.test(ln)) { if (/^\|[-| ]+\|$/.test(ln)) continue; const cells = ln.split("|").slice(1,-1).map(c=>esc(c.trim()).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>"));
+      if (!inTable) { html += "<table>"; inTable = true; } html += "<tr>" + cells.map(c=>`<td>${c}</td>`).join("") + "</tr>"; continue; }
+    if (inTable) { html += "</table>"; inTable = false; }
+    const h = ln.match(/^(#{1,3}) (.*)/); if (h) { html += `<h${h[1].length+1}>${esc(h[2])}</h${h[1].length+1}>`; continue; }
+    if (ln.trim()) html += `<p>${esc(ln).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`([^`]+)`/g,"<code>$1</code>")}</p>`; }
+  $("#hb").innerHTML = html + (inTable?"</table>":""); })();
+$("#who").textContent = `${P.title} · annotator ${P.annotator_id} (${P.annotator_name}) · ${P.items.length} cases`;
+if (!storageOk) { const w = document.createElement("div"); w.className = "warn"; w.setAttribute("role", "alert");
+  w.textContent = "This browser is not saving progress automatically. Use Export JSON often, and Import JSON to continue later. Opening the file directly in Chrome, Edge or Firefox normally enables autosave.";
+  document.querySelector("header").after(w); }
+render();
+</script>
+</body>
+</html>

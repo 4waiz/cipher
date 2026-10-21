@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recorded cases &middot; CIPHER</title>
+<meta name="description" content="Replay of recorded CIPHER cases: source spans at pinned commits, the human reference label and saved method outputs.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="../index.html">CIPHER</a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../index.html#lab">Case Lab</a></li>
+        <li><a href="../results/index.html">Results</a></li>
+        <li><a href="index.html" aria-current="page">Recorded cases</a></li>
+        <li><a href="../paper/index.html">Paper</a></li>
+        <li><a class="ext" href="https://github.com/4waiz/cipher">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="container page-head">
+    <p class="eyebrow">Replay</p>
+    <h1>Recorded cases</h1>
+    <p class="notice">Recorded outputs from saved runs; nothing here calls a model.</p>
+    <p class="provenance">
+      Rendered from <code class="code-inline">data/replay.json</code>. Each case shows the evidence an annotator
+      saw, the human reference label (solid badge) and the saved B0, B1 and B2 outputs (outlined badges).
+      Source text comes from public repositories at a pinned commit and is shown as plain text.
+    </p>
+  </div>
+  <div class="container section" id="cases-root">
+    <p class="note">Loading recorded cases&hellip;</p>
+    <noscript><p>The recorded cases are rendered from data/replay.json with JavaScript.</p></noscript>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p><strong>CIPHER</strong> &middot; Awaiz Ahmed, Mohammad Umar, Huda Mueen &middot; Al Ain University, UAE</p>
+      <p>Prepared for the TEXTUAL 2027 workshop at SANER 2027.</p>
+    </div>
+    <div>
+      <p><a class="ext" href="https://github.com/4waiz/cipher">Source on GitHub</a></p>
+      <p id="build-info"></p>
+    </div>
+  </div>
+</footer>
+
+<script src="../data/build.js"></script>
+<script src="../data/replay.js"></script>
+<script src="../assets/js/common.js"></script>
+<script src="../assets/js/cases.js"></script>
+</body>
+</html>

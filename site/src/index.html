@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CIPHER: Contextual Instruction Precedence and Hierarchy Evaluation for Repositories</title>
+<meta name="description" content="CIPHER studies whether apparent disagreements between AGENTS.md instructions are real conflicts, valid overrides, or instructions that never apply together.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html">CIPHER</a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="#lab">Case Lab</a></li>
+        <li><a href="results/index.html">Results</a></li>
+        <li><a href="cases/index.html">Recorded cases</a></li>
+        <li><a href="paper/index.html">Paper</a></li>
+        <li><a class="ext" href="https://github.com/4waiz/cipher">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero container" aria-labelledby="page-title">
+   <div class="hero-grid">
+   <div>
+    <p class="eyebrow">Research project &middot; TEXTUAL 2027 workshop at SANER 2027</p>
+    <h1 id="page-title">CIPHER</h1>
+    <p class="expansion">Contextual Instruction Precedence and Hierarchy Evaluation for Repositories</p>
+    <p class="lede">
+      Coding agents read project instructions from <code class="code-inline">AGENTS.md</code> files, one at the
+      repository root and sometimes more in subfolders. Two of those instructions can look like they disagree:
+      one file asks for four-space indentation, another for two. That is not always a real conflict. A more
+      specific file in the folder being edited may legitimately take precedence, or one instruction may simply not
+      apply to the file or task at hand. CIPHER asks whether automated methods can tell these situations apart,
+      labelling each apparent disagreement as an unresolved conflict, a valid override, disjoint applicability,
+      compatible, or insufficient evidence.
+    </p>
+    <p class="byline">Awaiz Ahmed, Mohammad Umar, Huda Mueen &middot; Al Ain University, United Arab Emirates</p>
+   </div>
+   <figure class="hero-figure" aria-labelledby="hero-figure-caption">
+     <div class="evidence">
+       <div class="evidence-head"><span class="who">Two instructions, one repository</span><span class="meta">authored example</span></div>
+       <div class="q-block"><span class="q-path">AGENTS.md</span><span class="q-text">Use exactly four spaces per indentation level.</span></div>
+       <div class="q-block"><span class="q-path">web/AGENTS.md</span><span class="q-text">Use exactly two spaces per indentation level.</span></div>
+     </div>
+     <figcaption id="hero-figure-caption">
+       <strong>Editing <code class="code-inline">web/src/button.ts</code>?</strong> <code class="code-inline">web/AGENTS.md</code> is deeper on its folder chain, so it overrides.
+       Editing <code class="code-inline">api/src/server.ts</code>? The <code class="code-inline">web/</code> rule is never loaded.
+       <a href="#lab">Try other placements in the Case Lab.</a>
+     </figcaption>
+   </figure>
+   </div>
+
+    <div class="status-box" aria-live="polite">
+      <p><span class="status-label">Status:</span> <span id="status-text">pilot study in progress &mdash; results not yet available</span></p>
+      <p class="status-meta" id="status-meta">Data export not yet available.</p>
+      <noscript><p class="status-meta">Status details are read from data/status.json with JavaScript.</p></noscript>
+    </div>
+
+    <nav aria-label="Project sections">
+      <ul class="link-row">
+        <li><a class="btn btn-primary" href="#lab">Case Lab</a></li>
+        <li><a class="btn" href="results/index.html">Results</a></li>
+        <li><a class="btn" href="cases/index.html">Recorded cases</a></li>
+        <li><a class="btn" href="paper/index.html">Paper</a></li>
+        <li><a class="btn ext" href="https://github.com/4waiz/cipher">GitHub</a></li>
+        <li><a class="btn" href="#reproducibility">Reproducibility</a></li>
+      </ul>
+    </nav>
+  </section>
+
+  <!-- Case Lab: authored illustration, computed by assets/js/profile.js -->
+  <section class="section" id="lab" aria-labelledby="lab-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Case Lab</p>
+        <h2 id="lab-title">Same two rules, different places</h2>
+        <p class="lab-disclaimer">Authored illustration of the declared profile, computed in your browser by fixed rules; not a model and not research data.</p>
+        <p>
+          The wording of both rules never changes. Move Rule B to a different <code class="code-inline">AGENTS.md</code>
+          file, or change which file is being edited, and follow how the decision sequence reaches a label.
+        </p>
+      </div>
+
+      <div class="lab-rules" aria-label="The two fixed rules">
+        <figure class="rule-card">
+          <span class="rule-id">Rule A &middot; always in root <code class="code-inline">AGENTS.md</code></span>
+          <blockquote><q>Use exactly four spaces per indentation level.</q></blockquote>
+          <span class="rule-fixed">Wording fixed</span>
+        </figure>
+        <figure class="rule-card">
+          <span class="rule-id">Rule B &middot; placement chosen below</span>
+          <blockquote><q>Use exactly two spaces per indentation level.</q></blockquote>
+          <span class="rule-fixed">Wording fixed</span>
+        </figure>
+      </div>
+
+      <div class="lab-top">
+        <form class="panel controls" id="lab-controls" aria-label="Case Lab controls" onsubmit="return false">
+          <fieldset>
+            <legend>Where Rule B lives</legend>
+            <div class="choice-list">
+              <label class="choice">
+                <input type="radio" name="placement" value="root">
+                <span class="choice-text"><span class="mono">AGENTS.md</span><span class="choice-hint">Root file, the same file as Rule A</span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="placement" value="web" checked>
+                <span class="choice-text"><span class="mono">web/AGENTS.md</span><span class="choice-hint">Nested file in the <span class="mono">web/</span> folder</span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="placement" value="api">
+                <span class="choice-text"><span class="mono">api/AGENTS.md</span><span class="choice-hint">Nested file in the <span class="mono">api/</span> folder</span></span>
+              </label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>File being edited (target)</legend>
+            <div class="choice-list">
+              <label class="choice">
+                <input type="radio" name="target" value="web/src/button.ts" checked>
+                <span class="choice-text"><span class="mono">web/src/button.ts</span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="target" value="api/src/server.ts">
+                <span class="choice-text"><span class="mono">api/src/server.ts</span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="target" value="scripts/build.ts">
+                <span class="choice-text"><span class="mono">scripts/build.ts</span></span>
+              </label>
+            </div>
+          </fieldset>
+          <p class="note small task-line">Task: add a helper function to the target file. Decision in question: indentation width.</p>
+          <p class="lab-mini" id="lab-mini" aria-hidden="true"></p>
+        </form>
+
+        <div class="panel result-card" id="lab-result" aria-labelledby="lab-result-title">
+          <h3 class="panel-title" id="lab-result-title">Resulting label</h3>
+          <noscript><p>The Case Lab computes its panels in your browser and needs JavaScript.</p></noscript>
+        </div>
+      </div>
+
+      <div class="lab-grid">
+        <div class="panel" id="lab-tree" aria-labelledby="lab-tree-title">
+          <h3 id="lab-tree-title">Repository</h3>
+        </div>
+        <div class="panel" id="lab-applicability" aria-labelledby="lab-app-title">
+          <h3 id="lab-app-title">Applicability</h3>
+        </div>
+        <div class="panel" id="lab-precedence" aria-labelledby="lab-prec-title">
+          <h3 id="lab-prec-title">Precedence</h3>
+        </div>
+      </div>
+
+      <div class="lab-spans" id="lab-spans" aria-label="Source spans"></div>
+
+      <p class="visually-hidden" id="lab-announce" aria-live="polite" aria-atomic="true"></p>
+    </div>
+  </section>
+
+  <section class="section" id="profile" aria-labelledby="profile-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Declared profile</p>
+        <h2 id="profile-title">How a label is decided</h2>
+        <p>
+          The study fixes one interpretation of <code class="code-inline">AGENTS.md</code> precedence before any
+          case is labelled. It is grounded in the <a class="ext" href="https://agents.md/">agents.md</a> description
+          and is a frozen experimental interpretation, not a claim about how every tool behaves.
+        </p>
+      </div>
+      <div class="two-col">
+        <div class="prose">
+          <h3>Profile</h3>
+          <ul>
+            <li>Only the root <code class="code-inline">AGENTS.md</code> and nested <code class="code-inline">AGENTS.md</code> files participate.</li>
+            <li>The binding loaded set for a target file is the <code class="code-inline">AGENTS.md</code> files on its ancestor chain.</li>
+            <li>A deeper applicable file overrides an incompatible instruction from an ancestor file.</li>
+            <li>Requirements in an ancestor file that the deeper file does not contradict stay in effect.</li>
+            <li>Contradictions between instructions of equal authority (same file or same depth) are not resolved by the order in which they appear.</li>
+            <li>Instructions from unrelated branches of the repository are not loaded.</li>
+          </ul>
+          <h3>Decision sequence</h3>
+          <ol>
+            <li><strong>Evidence sufficiency.</strong> Are the two source spans, the target and the task enough to judge?</li>
+            <li><strong>Initial joint applicability.</strong> Are both instructions active for this target and task?</li>
+            <li><strong>Incompatibility.</strong> Do they demand different outcomes for the same decision?</li>
+            <li><strong>Priority resolution.</strong> Does a deeper file on the ancestor chain settle it?</li>
+          </ol>
+        </div>
+        <div>
+          <h3>Labels</h3>
+          <ul class="labels-list">
+            <li><strong>Unresolved conflict</strong>Both apply, they are incompatible, and no file outranks the other.</li>
+            <li><strong>Valid override</strong>Both apply and are incompatible, but the deeper file on the target's chain wins.</li>
+            <li><strong>Disjoint applicability</strong>One instruction is inactive for this target or task, for example it lives in an unrelated folder or its condition excludes the task.</li>
+            <li><strong>Compatible</strong>Both apply and can be satisfied together.</li>
+            <li><strong>Insufficient evidence</strong>The available spans, target or task do not support a decision.</li>
+          </ul>
+          <h3 class="spaced">Methods compared</h3>
+          <ul class="labels-list">
+            <li><strong>B0 &middot; keyword heuristic</strong>A Ruleherd-style lexical check that outputs a binary conflict flag.</li>
+            <li><strong>B1 &middot; direct contextual LLM</strong>A local model given the case evidence and asked for a label directly.</li>
+            <li><strong>B2 &middot; structured pipeline</strong>The same local model, prompted through the decision sequence step by step.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="outputs" aria-labelledby="outputs-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Research outputs</p>
+        <h2 id="outputs-title">Results, recorded cases and paper</h2>
+        <p>Every number on this site is read from files generated by the analysis pipeline. The site itself computes no research numbers and calls no model.</p>
+      </div>
+      <div class="outputs-grid">
+        <article class="panel output-card">
+          <h3>Results</h3>
+          <p>Tables and figures exported by the analysis pipeline, with sample sizes as reported.</p>
+          <p class="availability" id="avail-results">Checking data/results.json&hellip;</p>
+          <a class="card-link" href="results/index.html">Open results</a>
+        </article>
+        <article class="panel output-card">
+          <h3>Recorded cases</h3>
+          <p>Replay of saved cases: source spans at pinned commits, the human reference label and recorded B0/B1/B2 outputs.</p>
+          <p class="availability" id="avail-replay">Checking data/replay.json&hellip;</p>
+          <a class="card-link" href="cases/index.html">Open recorded cases</a>
+        </article>
+        <article class="panel output-card">
+          <h3>Paper</h3>
+          <p>The four-page workshop manuscript as a readable web page, with the compiled PDF when it exists.</p>
+          <p class="availability" id="avail-paper">Checking build information&hellip;</p>
+          <a class="card-link" href="paper/index.html">Open paper</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="reproducibility" aria-labelledby="repro-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Reproducibility</p>
+        <h2 id="repro-title">Rebuilding from the repository</h2>
+      </div>
+      <div class="prose">
+        <p>
+          Instructions for reproducing the study (environment, pinned repository snapshots, annotation and run
+          commands) are kept with the code, in the
+          <a class="ext" href="https://github.com/4waiz/cipher#reproducibility">repository README</a>.
+        </p>
+        <p>This website is a static view of the generated files. To rebuild it from a checkout:</p>
+        <pre class="command"><code>python site/build.py
+python -m http.server 8000 --directory site/dist</code></pre>
+        <p class="note">
+          The build copies <code class="code-inline">analysis/exports/*.json</code> and the compiled manuscript from
+          <code class="code-inline">paper/build/</code> when they exist; when they do not, the pages say so instead
+          of showing placeholder numbers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p><strong>CIPHER</strong> &middot; Awaiz Ahmed, Mohammad Umar, Huda Mueen &middot; Al Ain University, UAE</p>
+      <p>Prepared for the TEXTUAL 2027 workshop at SANER 2027.</p>
+    </div>
+    <div>
+      <p><a class="ext" href="https://github.com/4waiz/cipher">Source on GitHub</a></p>
+      <p id="build-info"></p>
+    </div>
+  </div>
+</footer>
+
+<script src="data/build.js"></script>
+<script src="data/status.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/profile.js"></script>
+<script src="assets/js/lab.js"></script>
+<script src="assets/js/home.js"></script>
+</body>
+</html>

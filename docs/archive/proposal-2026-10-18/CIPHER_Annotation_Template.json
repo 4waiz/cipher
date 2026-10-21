@@ -1,0 +1,64 @@
+{
+  "status": "proposed schema, not collected data",
+  "case_id": "",
+  "source_family_id": "",
+  "repository_url": "",
+  "commit_sha": "",
+  "stratum": "original_repository_context | answer_changing_transform | answer_preserving_control",
+  "task_text": "",
+  "task_origin": "authored | observed_with_source",
+  "target_path": "",
+  "profile_id": "",
+  "profile_text": "",
+  "rule_a": {
+    "path": "",
+    "start_line": null,
+    "end_line": null,
+    "quote": "",
+    "heading_context": "",
+    "modality": "",
+    "condition": ""
+  },
+  "rule_b": {
+    "path": "",
+    "start_line": null,
+    "end_line": null,
+    "quote": "",
+    "heading_context": "",
+    "modality": "",
+    "condition": ""
+  },
+  "transformation": {
+    "original_case_id": null,
+    "changed_field": null,
+    "description": null
+  },
+  "annotator_1": {
+    "label": null,
+    "reason": null,
+    "evidence": []
+  },
+  "annotator_2": {
+    "label": null,
+    "reason": null,
+    "evidence": []
+  },
+  "adjudication": {
+    "label": null,
+    "reason": null,
+    "winner_source": null
+  },
+  "system_output": {
+    "label": null,
+    "voluntary_abstention": false,
+    "evidence": [],
+    "raw_output_file": null
+  },
+  "labels": [
+    "Unresolved conflict",
+    "Valid override",
+    "Disjoint applicability",
+    "Compatible",
+    "Insufficient evidence"
+  ]
+}

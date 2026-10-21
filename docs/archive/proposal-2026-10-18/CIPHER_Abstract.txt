@@ -1,0 +1,10 @@
+CIPHER: Contextual Instruction Precedence and Hierarchy Evaluation for Repositories
+
+Repository instruction files guide AI coding agents through project conventions, but apparent disagreement does not always indicate a defect. Two requirements may concern different directories, apply under different conditions, or be resolved by a documented local override. We propose CIPHER, Contextual Instruction Precedence and Hierarchy Evaluation for Repositories, a diagnostic framework for evaluating this distinction. CIPHER treats a case as two source-grounded instruction spans together with their document context, repository revision, target task, file paths, and an explicit instruction-loading profile. Its annotation scheme separates unresolved conflicts, valid overrides, disjoint applicability, compatible requirements, and insufficient evidence. The initial scope is root and nested AGENTS.md files under a frozen directory-precedence profile. We describe a study that combines naturally occurring instruction pairs with controlled variants that preserve rule wording while changing applicability or precedence, alongside transformations that should preserve the answer. Two independent annotators and an adjudicator will establish reference labels. A structured applicability-and-resolution pipeline will be compared with heuristic and direct language-model baselines, including a strong baseline receiving the same contextual evidence. Proposed measures include conflict precision and recall, false alarms on valid overrides, correctness across paired variants, and evidence fidelity. This paper contributes the task definition, annotation scheme, and evaluation protocol; it does not report a completed dataset or experimental results.
+
+Keywords: AI coding agents; AGENTS.md; instruction conflicts; repository mining; natural language software artifacts; scope and precedence
+
+Authors
+Awaiz Ahmed | Al Ain University | 202310183@aau.ac.ae
+Mohammad Umar | Al Ain University | 202240077@aau.ac.ae
+Huda Mueen | Al Ain University | Hudamueen2407@gmail.com

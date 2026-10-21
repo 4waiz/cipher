@@ -1,0 +1,45 @@
+{
+ "repo": "temporalio/sdk-java",
+ "commit": "c424910c3150c1f23da18575067dfc79a85e1b1b",
+ "default_branch": "main",
+ "retrieved_at": "2026-10-21T09:15:42+00:00",
+ "license": "Apache-2.0",
+ "fork": false,
+ "archived": false,
+ "tree_truncated": false,
+ "symlinked_agents_md": [],
+ "agents_files": [
+  {
+   "path": "AGENTS.md",
+   "blob_sha": "377a0138d81356a97842b66bc165b43aceb1b133",
+   "sha256": "bf67eb07b5bd28e084aba16e0c07af891f86d2b700c2d33147592f10c7589a21",
+   "content": "# Contributor Quickstart Guide\n\n## Repository Layout\n- `temporal-sdk`: core SDK implementation.\n- `temporal-testing`: utilities to help write workflow and activity tests.\n- `temporal-test-server`: in-memory Temporal server for fast tests.\n- `temporal-serviceclient`: gRPC client for communicating with the service.\n- `temporal-shaded`: prepackaged version of the SDK with shaded dependencies.\n- `temporal-spring-boot-autoconfigure`: Spring Boot auto configuration.\n- `temporal-kotlin`: Kotlin DSL for the SDK.\n- `contrib/temporal-opentracing`: OpenTracing interceptor integration.\n- `contrib/temporal-spring-ai`: one-time relocation POM; Spring AI development lives in `temporalio/ai-integrations`.\n\n## General Guidance\n- Avoid changing public API signatures. Anything under an `internal` directory\n  is not part of the public API and may change freely.\n- The SDK code is written for Java 8.\n\n## Building and Testing\n1. Format the code before committing (and don't bother running spotlessCheck, just run apply):\n   ```bash\n   ./gradlew --offline spotlessApply\n   ```\n2. Run the tests. This can take a long time so you may prefer to run individual tests.\n   ```bash\n   ./gradlew test\n   ```\n   To run only the core SDK tests or a single test:\n   ```bash\n   ./gradlew :temporal-sdk:test --offline --tests \"io.temporal.workflow.*\"\n   ./gradlew :temporal-sdk:test --offline --tests \"<package.ClassName>\"\n   ```\n3. Build the project:\n   ```bash\n   ./gradlew clean build\n   ```\n\n## Tests\n- All tests for this each package is located in `$PACKAGE_NAME/src/test/java/io/temporal`, where `$PACKAGE_NAME` is the name of the package\n- Workflow API tests should rely on `SDKTestWorkflowRule` to create a worker and\n  register workflows, activities, and nexus services.\n\n## Commit Messages and Pull Requests\n- Follow the [Chris Beams](http://chris.beams.io/posts/git-commit/) style for\n  commit messages.\n- Every pull request should answer:\n  - **What changed?**\n  - **Why?**\n  - **Breaking changes?**\n  - **Server PR** (if the change requires a coordinated server update)\n- Comments should be complete sentences and end with a period.\n\n## Review Checklist\n- `./gradlew spotlessCheck` must pass.\n- All tests from `./gradlew test` must succeed.\n- Add new tests for any new feature or bug fix.\n- Update documentation for user facing changes.\n\nFor more details see `CONTRIBUTING.md` in the repository root.\n"
+  },
+  {
+   "path": "temporal-kotlin/AGENTS.md",
+   "blob_sha": "23312afd00edbd6f03103872b54398952245280e",
+   "sha256": "b701d20d61236f55b346836eb4fdecaf75a2672d34da9f964f6612c04148904a",
+   "content": "Unlike the rest of this repository, this directory is for the Kotlin SDK so most of the code here is written in Kotlin, not Java.\n"
+  },
+  {
+   "path": "temporal-sdk/AGENTS.md",
+   "blob_sha": "4ebe0e163e36e37c9dfca187947a334b5623b423",
+   "sha256": "9b87ee0100b99dc6b7b150743fae0d1ac28af2cfbb2302064e1fc097e14fbad0",
+   "content": "This directory contains the core Temporal SDK code, which is used to build Temporal applications. The SDK provides a set of APIs and libraries that allow developers to create, manage, and execute workflows and activities in a distributed environment. The SDK is designed to be easy to use and provides a high-level abstraction over the underlying Temporal service.\n\nThe SDK is written in Java and is designed to be used with the Temporal service. It provides a set of APIs for defining workflows and activities, as well as for managing the execution of those workflows and activities.\n\n# Testing\n\nAll tests are written using JUnit4.\n"
+  },
+  {
+   "path": "temporal-sdk/src/main/java/io/temporal/internal/AGENTS.md",
+   "blob_sha": "fdfb881879b37ed4cb0b2fd2cb0d0dde17752f01",
+   "sha256": "23eb079896265ba12acae601b260646ea11424dadd2c9ecbf3630be4cc3d86f6",
+   "content": "All files in this directory and subdirectory are intended to be internal to the SDK and should not be used by external users. They do not have the same backwards compatibility guarantees as our other APIS"
+  },
+  {
+   "path": "temporal-sdk/src/test/java/io/temporal/workflow/AGENTS.md",
+   "blob_sha": "fecae42e0429de44ea6d45ed2802537ddaf83041",
+   "sha256": "93fa95cb5a4f2222ccbb18bcff0ce3fa82af221f02062ee13ac833c753251b5f",
+   "content": "# Summary\n\nThis directory and sub directory contain tests for workflow APIs.\n\n# Testing\n\nTests should use the `SDKTestWorkflowRule` to create a worker, register workflows, activities and nexus services."
+  }
+ ],
+ "tree_paths_file": "temporalio__sdk-java.tree.json.gz",
+ "tree_paths_count": 2035
+}

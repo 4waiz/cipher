@@ -1,0 +1,47 @@
+[1] AGENTS.md. AGENTS.md format and nested instruction guidance. Online specification, accessed 18 October 2026.
+https://agents.md/
+
+[2] W. Chatlatanagulchai et al. Agent READMEs: An Empirical Study of Context Files for Agentic Coding. arXiv:2511.12884v2, 2025, revised 2026.
+https://arxiv.org/abs/2511.12884v2
+
+[3] H. V. F. dos Santos, V. Costa, J. E. Montandon, L. L. Silva, and M. T. Valente. Configuration Smells in AGENTS.md Files: Common Mistakes in Configuring Coding Agents. SCAM 2026; arXiv:2606.15828v5.
+https://arxiv.org/abs/2606.15828v5
+
+[4] L. Yan, X. Chen, and X. Zhang. WIRE: Profiling Witnessed Within-Policy Instruction Collisions in LLM Agents. arXiv:2605.27784v2, 2026.
+https://arxiv.org/abs/2605.27784v2
+
+[5] R. K Sharma. ContextCov: Bridging the Gap Between Developer Intent and Autonomous Agent Execution. arXiv:2603.00822v2, 2026.
+https://arxiv.org/html/2603.00822v2
+
+[6] D. Ding et al. OctoBench: Benchmarking Scaffold-Aware Instruction Following in Repository-Grounded Agentic Coding. ACL 2026, pp. 5958-5978.
+https://aclanthology.org/2026.acl-long.269/
+
+[7] wiatrM. Guidefold research notes. Software project documentation, accessed 18 October 2026.
+https://github.com/wiatrM/guidefold/blob/main/docs/RESEARCH.md
+
+[8] princejain756. Ruleherd. Software project documentation, accessed 18 October 2026.
+https://github.com/princejain756/ruleherd
+
+[9] M. Galster, S. Mohsenimofidi, L. Bohme, J. L. Lulla, M. A. Abubakar, C. Treude, and S. Baltes. A Dataset of Agentic AI Coding Tool Configurations. AIware 2026; arXiv:2605.08435.
+https://arxiv.org/abs/2605.08435
+
+[10] T. Gloaguen, N. Mundler-Sasahara, M. N. Muller, V. Raychev, and M. Vechev. Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents? arXiv:2602.11988v3, 2026.
+https://arxiv.org/abs/2602.11988v3
+
+[11] C. Treude and S. Baltes. Context Rot in AI-Assisted Software Development: Repurposing Documentation Consistency for AI Configuration Artifacts. arXiv:2606.09090, 2026.
+https://arxiv.org/abs/2606.09090
+
+[12] SANER 2027. Workshops and Tutorials including accepted TEXTUAL workshop. Official conference page, accessed 18 October 2026.
+https://conf.researchr.org/track/saner-2027/saner-2027-workshops-tutorials-track
+
+[13] SANER 2027. Conference homepage. Official conference page, accessed 18 October 2026.
+https://conf.researchr.org/home/saner-2027
+
+[14] SANER 2027. In Person Conference. Official attendance policy, accessed 18 October 2026.
+https://conf.researchr.org/attending/saner-2027/in-person-conference
+
+[15] IEEE Author Center. Submission Policies. Official author policy, accessed 18 October 2026.
+https://conferences.ieeeauthorcenter.ieee.org/author-ethics/guidelines-and-policies/submission-policies/
+
+[16] IEEE Author Center. Authoring Tools and Templates. Official template guidance, accessed 18 October 2026.
+https://conferences.ieeeauthorcenter.ieee.org/write-your-paper/authoring-tools-and-templates/

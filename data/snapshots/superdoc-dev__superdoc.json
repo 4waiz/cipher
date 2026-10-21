@@ -1,0 +1,21 @@
+{
+ "repo": "superdoc-dev/superdoc",
+ "commit": "93cc904b755316a1972ff43a0db71c3c007a22a1",
+ "default_branch": "main",
+ "retrieved_at": "2026-10-21T09:16:23+00:00",
+ "license": "AGPL-3.0",
+ "fork": false,
+ "archived": false,
+ "tree_truncated": false,
+ "symlinked_agents_md": [],
+ "agents_files": [
+  {
+   "path": "AGENTS.md",
+   "blob_sha": "52f74df6fcc4d65698ddca726febbd5a8c45b000",
+   "sha256": "72793c0b5655ff931c3e3f8707b260f8d4beee6266d85e7de75af7c133601332",
+   "content": "# SuperDoc\n\nGrowing the published API surface needs a fixture under\n`tests/consumer-typecheck/src/` that asserts both the parameter and return\nshapes, and `pnpm check:public` has to pass.\n\nRun `pnpm` scripts from this directory, the one holding `pnpm-workspace.yaml`.\nIn an Orbit checkout that is `superdoc/public`, not the Orbit root, which does\nnot define them.\n\nFor local `.tgz` work in Orbit, use the root internal pack route in\n[SuperDoc build profiles](../../docs/superdoc-build-profiles.md). Its staged\nmanifest is private; publication must use the canonical release route.\n\nWhen extending a built-in UI controller, follow the naming, configuration, and\nruntime-control conventions in `packages/superdoc/src/public/ui/README.md`.\n\n## Code Review Rules\n\nReport only issues introduced or exposed by this PR that have a concrete failure\nmode or material impact. Prioritize correctness bugs, data loss or corruption,\nexploitable security or privacy weaknesses, concurrency or state errors,\narchitectural boundary or contract violations, and developer-facing regressions\nthat break or materially complicate setup, build, test, release, recovery, or\nsafe API usage.\n\nExplain the triggering condition and impact. Do not report formatting, naming,\ncomment wording, documentation polish, minor duplication, speculative\nrefactors, missing tests without a concrete risk, or findings already enforced\nby automated tooling. Omit uncertain or preference-only feedback.\n"
+  }
+ ],
+ "tree_paths_file": "superdoc-dev__superdoc.tree.json.gz",
+ "tree_paths_count": 2632
+}

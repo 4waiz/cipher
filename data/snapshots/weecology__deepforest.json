@@ -1,0 +1,27 @@
+{
+ "repo": "weecology/deepforest",
+ "commit": "081f1e07cf5e4fadc4f98480b1f1457d2bb782bd",
+ "default_branch": "main",
+ "retrieved_at": "2026-10-21T09:15:37+00:00",
+ "license": "MIT",
+ "fork": false,
+ "archived": false,
+ "tree_truncated": false,
+ "symlinked_agents_md": [],
+ "agents_files": [
+  {
+   "path": "AGENTS.md",
+   "blob_sha": "994f3bf6bff8bea133b9cd6ffb37fd60d8222882",
+   "sha256": "1dda81e4c70c26ac5cd2b673da779536bc04df7613226fc8e6b7e10c05067ecd",
+   "content": "# Project Overview\n\nDeepForest is a Python library for object detection in aerial images for biodiversity applications such as tree detection and wildlife observation. It uses pytorch and Pytorch Lightning framework for model training, prediction and evaluation.\n\nImagery is of a relatively high resolution and is generally not satellite data.\n\n## Setup and usage\n\n- We use `uv` for package management\n- NEVER edit dependencies in pyproject.toml directly, ALWAYS use `uv add`\n- To set up and run tests, use `uv sync --all-extras --dev`. You can reference the CI workflow in .github\n- Use the `deepforest` command line interface with Hydra overrides for simple tests\n- When you've finished, run `uv run pre-commit` with appropriate arguments to run formatting and linters on your work.\n\n## Folder Structure\n\n- `/src`: Contains the source code for the DeepForest library\n- `/src/conf`: Contains configuration files in OmegaConf/Hydra format, and the schema.py\n- `/src/scripts`: Contains CLI interface(s) to DeepForest\n- `/tests`: Contains the unit tests; we use pytest\n- `/docs`: Contains documentation for the project, build using Sphinx and hosted on readthedocs.\n\n## Libraries\n\n- torch, torchvision, torchmetrics, transformers, pandas, numpy, scipy\n- pytorch lightning\n- visualization using matplotlib and supervision\n\n## Data formats\n\n- Annotations are usually provided in CSV with Pascal VOC convention for bounding box coordinates. For example:\n\n```\nimage_path,xmin,ymin,xmax,ymax,label\nOSBS_029.tif,203,67,227,90,Tree\nOSBS_029.tif,256,99,288,140,Tree\nOSBS_029.tif,166,253,225,304,Tree\n```\n\n- Other input types are possible using utilities.read_file\n- Example CSV and shapefile inputs are in `/src/data`\n\n## Configuration\n\n- Use the configuration system to specify user-facing parameters instead of hardcoding/magic numbers in code\n- Make sure the schema is up to date with the config files\n\n## Coding standards\n\n- Simple and maintainable\n- Write docstrings and use type annotation\n- Limited comments, highlighting important details\n- Keep documentation in sync with code changes\n- We use ruff for linting with options set in pyproject.toml\n- Enforced by .pre-commit.yaml\n- Take advantage of implicit vectorization using pandas, numpy, etc. Avoid explicit loops if you can.\n\n## Code Style\n\n-  According to PEP 8, \"avoid trailing whitespace anywhere. Because it’s usually invisible, it can be confusing\"\n"
+  },
+  {
+   "path": "tests/AGENTS.md",
+   "blob_sha": "e544a04c60262f4c47e4aa0d08d7d353a37a8847",
+   "sha256": "a6422c1062db22d47e46b00dce2f34acd92418f45639533ac5186d897fe33a2c",
+   "content": "## Testing\n\n- When proposing code changes that require new tests:\n  - First add the minimal failing test(s) that reproduce the issue or specify the expected new behavior.\n  - Run those specific tests and show their failing output (red) before suggesting or implementing a fix.\n  - After implementing the fix, re-run the same tests and show they pass (green).\n- Keep tests short and focused, with a clear contract.\n- Prefer using existing data via `deepforest.get_data(...)` over generating new data at runtime.\n- Do not use print statements in tests; document failure with assertions.\n- Use fixtures for repeated setup; keep scope appropriate.\n- Test behavior, not implementation details.\n\n## Running tests\n\n- From the root folder, `uv run pytest tests`\n- Useful flags include `-s` to show output, `-x` to fail on first error and `--ff` to run failed tests first.\n"
+  }
+ ],
+ "tree_paths_file": "weecology__deepforest.tree.json.gz",
+ "tree_paths_count": 249
+}

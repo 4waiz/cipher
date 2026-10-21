@@ -1,0 +1,105 @@
+{
+ "repo": "swc-project/swc",
+ "commit": "f5e8a3549f91c758bc91efe73ad8024ccde87243",
+ "default_branch": "main",
+ "retrieved_at": "2026-10-21T09:17:08+00:00",
+ "license": "Apache-2.0",
+ "fork": false,
+ "archived": false,
+ "tree_truncated": true,
+ "symlinked_agents_md": [],
+ "agents_files": [
+  {
+   "path": "AGENTS.md",
+   "blob_sha": "083fe1828ba92b7bba3e723f8013d666e7cc1b99",
+   "sha256": "cd337c2a8af4a0a64aa9995914001d337c1a855a06c0dbbdfb5bee1192b45a30",
+   "content": "# Instructions\n\n## General rule\n\n-   Read the codebase - the codebase is source of truth, and you should prefer reading lots of source code over searching.\n-   Never consult pull requests linked in issue descriptions or comments, or SWC forks owned by other people, as references. Do not read or reuse their code, diffs, tests, or proposed implementations through GitHub, `gh`, local checkouts, or other tools.\n-   Do not search web unless explicitly asked to do so. Web search does not help in general for our project.\n-   Write performant code. Always prefer performance over other things.\n-   Use `gh` CLI tool for fetching data from `github.com`.\n-   Do not let sandbox constraints stall progress. If sandbox restrictions block required work, request escalation promptly and continue.\n\n## Code style\n\n-   Write comments and documentations in English.\n-   Write documentation for your code.\n-   When introducing a workaround, leave sufficient comments explaining why it is needed and any known limitations.\n-   Commit your work as frequent as possible using git. Do NOT use `--no-verify` flag.\n-   Prefer multiple small files over single large file.\n-   Prefer enum (or dedicated type) based modeling over raw string literals whenever possible.\n\n---\n\n-   When creating Atom instances, it's better to use `Cow<str>` or `&str` instead of `String`. Note that `&str` is better than `Cow<str>` here.\n\n## Debugging and logging\n\n-   Do not guess behavior. Verify assumptions by reading source, fixtures, and tests.\n-   Debug with logs when behavior is unclear.\n-   Write sufficient logs for debugging and operational troubleshooting.\n-   Prefer structured logging in Rust (`tracing`) over ad-hoc plain text logs when feasible.\n\n## Shell safety\n\n-   For shell commands or scripts, prefer `$(...)` over legacy backticks for command substitution.\n-   Quote and escape all dynamic shell values strictly.\n\n## Git workflow\n\n-   Run `git commit` only after `git add`.\n-   Once changes are staged, commit without unnecessary delay so staged history is preserved.\n-   When creating or updating a pull request, follow the repository pull request template.\n-   When creating a pull request, use the `add-changeset` skill to create the required changeset.\n-   After addressing pull request review comments and pushing updates, resolve the corresponding review threads.\n\n## Testing\n\n-   Write unit tests for your code.\n-   Prefer fixture tests over inline (`#[test]`) tests.\n-   Before running tests, run `git submodule update --init --recursive` to initialize and update all submodules.\n-   You can do `UPDATE=1 cargo test` to get test outputs updated for fixture tests.\n-   When instructed to fix tests, do not remove or modify existing tests.\n\n### Fixture Test Common Guide\n\n- Add new coverage by extending existing fixture suites instead of adding ad-hoc inline tests.\n- Find the exact fixture harness before adding files with: `rg -n \"#\\[(testing::)?fixture\\(\" tests src --glob \"*.rs\"`.\n- Keep each suite's naming conventions (for example: input.*, output.*, exec.*, .ans).\n- For snapshot-style tests, update expected outputs with `UPDATE=1 cargo test -p ...` using the exact crate command documented in each crate's AGENTS.md.\n- Always rerun the same crate tests without `UPDATE` before finishing.\n\n## Verification\n\n-   Before finishing a task, always run this baseline locally.\n    -   `cargo fmt --all`\n    -   `cargo clippy --all --all-targets -- -D warnings`\n-   For each touched Rust crate, run crate-level verification locally.\n    -   `cargo test -p <crate>`\n-   If wasm binding packages are touched, run:\n    -   `(cd bindings/binding_core_wasm && ./scripts/test.sh)`\n    -   `(cd bindings/binding_minifier_wasm && ./scripts/test.sh)`\n    -   `(cd bindings/binding_typescript_wasm && ./scripts/test.sh)`\n    -   `(cd bindings/binding_es_ast_viewer && ./scripts/test.sh)`\n-   If node bindings or integration paths are touched, run:\n    -   `(cd packages/core && pnpm build:dev && pnpm test)`\n\n## Compatibility rule\n\n-   Do not use unstable, nightly only features of rustc.\n-   Respect the project's MSRV. Do not rely on Rust language features or standard library APIs newer than the MSRV unless the change intentionally raises the MSRV.\n"
+  },
+  {
+   "path": "crates/jsdoc/AGENTS.md",
+   "blob_sha": "efa455da950dba32aeed3462e106089ca12ac0e0",
+   "sha256": "01c107aafc16f05405b2decdcc500275438aae313eb25deec6c4dde442897898",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixtures.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p jsdoc.\n- Verify without UPDATE before finishing: cargo test -p jsdoc.\n"
+  },
+  {
+   "path": "crates/swc/AGENTS.md",
+   "blob_sha": "7da80a148bce27f2b43f113e4174d0c921d53d84",
+   "sha256": "c41ddf810abfbe24fe43d607209efeb3ec273debc8bfd65745e943cf1491b488",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture, tests/errors, tests/exec, tests/minify, tests/typescript, tests/vercel, tests/stacktrace, tests/babel-exec.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc.\n- Verify without UPDATE before finishing: cargo test -p swc.\n"
+  },
+  {
+   "path": "crates/swc_bundler/AGENTS.md",
+   "blob_sha": "5bc919c35ec05b30787d5af358d4a877bea3ba3f",
+   "sha256": "dd72554884c303b8d2cd53a8db5138824588d1ebfc0ed7d6e7931f93c0f3ce3b",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture, tests/deno-exec.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_bundler.\n- Verify without UPDATE before finishing: cargo test -p swc_bundler.\n"
+  },
+  {
+   "path": "crates/swc_core/AGENTS.md",
+   "blob_sha": "89c4970187a19136b483e233c426996f4f11f11b",
+   "sha256": "b8dffdefdae730d5fc7243ad2bed8b2a255d9572e7b50461a8e9687f372020a3",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_core.\n- Verify without UPDATE before finishing: cargo test -p swc_core.\n"
+  },
+  {
+   "path": "crates/swc_css_codegen/AGENTS.md",
+   "blob_sha": "5142a01ba6623786d01bd3b474af38fd5d987ffa",
+   "sha256": "e2e4087a71e6ea0a5d2d68aebc1ddb67dd6ff19d5e148caa14754fb9053aac7e",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture, tests/options, ../swc_css_parser/tests/fixture.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_css_codegen.\n- Verify without UPDATE before finishing: cargo test -p swc_css_codegen.\n"
+  },
+  {
+   "path": "crates/swc_css_compat/AGENTS.md",
+   "blob_sha": "ff4f8b9fe07817a926264db54a2ae0c1613d2132",
+   "sha256": "93319f0ed0dc2a318accd1381decd2c688991d6a674d82e60c3db3f66796de6f",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/nesting, tests/custom-media-query, tests/media-query-ranges, tests/color-hex-alpha, tests/color-legacy, tests/selector-not, tests/color-hwb, tests/all.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_css_compat.\n- Verify without UPDATE before finishing: cargo test -p swc_css_compat.\n"
+  },
+  {
+   "path": "crates/swc_css_lints/AGENTS.md",
+   "blob_sha": "83c010a0f6b101699515fe53659fd6b34fb75522",
+   "sha256": "c8c8974f4685f305e27ab8f93542258ae5f9e22d49813b560bb1def42fa69923",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/rules/pass, tests/rules/fail.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_css_lints.\n- Verify without UPDATE before finishing: cargo test -p swc_css_lints.\n"
+  },
+  {
+   "path": "crates/swc_css_minifier/AGENTS.md",
+   "blob_sha": "72d5eb9d35ec6507ae01204e8dcb146a9a1b38ea",
+   "sha256": "047b6c00ea610e7cb8ceddf7ad23692e9d1803288619d8fec365f590a4b1901b",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_css_minifier.\n- Verify without UPDATE before finishing: cargo test -p swc_css_minifier.\n"
+  },
+  {
+   "path": "crates/swc_css_modules/AGENTS.md",
+   "blob_sha": "e14fb8ac969dc9afe6b0981d5f155328f431c081",
+   "sha256": "3f3674fa02cf69e93b806a9cd6835e7cd52ab36f358de8dc32ae15c7c45a9bbc",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture, tests/with-compat.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_css_modules.\n- Verify without UPDATE before finishing: cargo test -p swc_css_modules.\n"
+  },
+  {
+   "path": "crates/swc_css_parser/AGENTS.md",
+   "blob_sha": "99a80875392ee21d1e7f09aa0f0dcd8d5182a13c",
+   "sha256": "a15f73c1f0a5f1a459f74ced8edb1ae509ee84b3cf91b60c02e5e51a07db01bf",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture, tests/line-comment, tests/recovery, tests/recovery-cssmodules.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_css_parser.\n- Verify without UPDATE before finishing: cargo test -p swc_css_parser.\n"
+  },
+  {
+   "path": "crates/swc_css_prefixer/AGENTS.md",
+   "blob_sha": "62ff65158f32159bafaa4bd205122e0f80e537ba",
+   "sha256": "9765bbb7fe89289581dd538c68a999ea9a9f38b5f665aa7137913f782bd69676",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_css_prefixer.\n- Verify without UPDATE before finishing: cargo test -p swc_css_prefixer.\n"
+  },
+  {
+   "path": "crates/swc_ecma_codegen/AGENTS.md",
+   "blob_sha": "0530cc6db1c0dc4ddb0919bc11591c1c4cd8c212",
+   "sha256": "a67de96e7826940f94fc7e4da798c22a1ae519db14f760ad30d859230785c654",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture, tests/str-lits, ../swc_ecma_parser/tests/test262-parser/pass.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_ecma_codegen.\n- Verify without UPDATE before finishing: cargo test -p swc_ecma_codegen.\n"
+  },
+  {
+   "path": "crates/swc_ecma_lints/AGENTS.md",
+   "blob_sha": "04266fcf1efafc8f618ea78686094cea52b0c60b",
+   "sha256": "b218b9b21ce46dea282194e49d95e54d9b98a417bfd4b2c474f8fd92e4543002",
+   "content": "### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/pass.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_ecma_lints.\n- Verify without UPDATE before finishing: cargo test -p swc_ecma_lints.\n"
+  },
+  {
+   "path": "crates/swc_ecma_minifier/AGENTS.md",
+   "blob_sha": "82fbfb2777e31bbd2c7265a42b0133a957424dda",
+   "sha256": "ee9b58a9aafe1df67215926481243cf901c372dbbe1d8113d527171d7da22b45",
+   "content": "### Instructions\n\n- You can run execution tests by doing ./scripts/exec.sh to see if your changes are working.\n- Investigate execution test failures against the semantic assumptions and\n  implementation and review policy below. Fix regressions in supported behavior;\n  report policy conflicts explicitly instead of hiding failures or arbitrarily\n  changing or removing existing tests.\n- Always run execution tests after making changes.\n- You can run fixture tests by doing ./scripts/test.sh, and you can do UPDATE=1 ./scripts/test.sh to update fixtures.\n\n### Decorators\n\n- Decorators are lowered before minification and are never present in minifier input.\n- Do not add decorator-specific handling or defensive code to the minifier.\n- Do not add tests for decorator syntax or decorator transform behavior to minifier test suites. Place these tests in the parser or decorator transform suites instead.\n\n### Minifier Semantic Assumptions\n\nThe ECMAScript minifier may rely on the documented assumptions from the SWC\nminification guide:\n\n- Calls to primitive coercion helpers such as `toString` and `valueOf` are\n  side-effect free, and built-in object implementations have not been\n  overridden.\n- `undefined`, `NaN`, and `Infinity` have not been externally redefined.\n- `arguments.callee`, `arguments.caller`, and `Function.prototype.caller` are\n  not used.\n- Code does not depend on the exact contents of `Function.prototype.toString()`\n  or `Error.prototype.stack`.\n- Getting or setting properties on a plain object does not trigger side effects\n  through `watch`, `Proxy`, or similar mechanisms.\n- Object properties can be added, removed, and modified unless the change is\n  intentionally handling frozen, sealed, non-extensible, or descriptor-locked\n  objects.\n- `document.all` is treated as not `null`.\n- Assigning properties to classes is assumed to be side-effect free and\n  non-throwing.\n- Accessing declared top-level identifiers is assumed to be side-effect free.\n- TDZ violations are not preserved.\n- Arithmetic expressions are treated as side-effect free, including runtime\n  exceptions such as mixing `bigint` and `number`.\n\n#### Implementation and Review Policy\n\nThe following is a project policy for minifier implementation and review,\nseparate from the public documentation assumptions listed above:\n\n- Prioritize correctness for common usage, performance, and simple, maintainable\n  minifier code.\n- Do not require additional defensive logic or analysis solely to preserve\n  extreme edge cases involving monkey-patched globals or built-in objects,\n  unusual reassignment of `arguments.length`, bindings introduced by direct\n  `eval`, or dynamic name resolution inside `with`.\n- Semantic differences that depend only on these cases are not mandatory review\n  fixes. A required fix must demonstrate an impact on common usage or identify an\n  explicit support contract that the change violates.\n- Continue to account for ordinary lexical shadowing, side effects, and\n  exceptions within the supported assumptions. This policy does not authorize\n  blanket removal of existing `eval` or `with` handling or tests.\n\nIf a minifier change relies on an assumption beyond this list and policy, update the\npublic minification documentation or leave an explicit code comment describing\nthe narrower local invariant. The edge cases explicitly covered by this policy\ndo not require repeated, case-specific justification.\n\n### Fixture Test Addition Guide\n\n- Preferred fixture roots in this crate: tests/fixture, tests/mangle, tests/pass-1, tests/pass-default, tests/full, tests/projects, benches/full.\n- Do not add new regression coverage to tests/terser. Use SWC-owned fixtures such as tests/fixture/issues instead.\n- Update generated fixture outputs with: UPDATE=1 cargo test -p swc_ecma_minifier.\n- Verify without UPDATE before finishing: cargo test -p swc_ecma_minifier.\n\n### Terser Fixture Backlog Workflow\n\n`tests/TODO.txt` and `tests/postponed.txt` are equivalent backlogs of ignored\nTerser compressor fixtures. Work on exactly one entry from either list at a\ntime; there is no priority between the lists. An entry such as\n`arrays/constant_join_3/input.js` identifies the fixture at\n`tests/terser/compress/arrays/constant_join_3`:\n\n- `config.json` defines the Terser compression options to reproduce.\n- `input.js` is the source program to minify.\n- `output.js` is the expected Terser-compatible output.\n\nBefore changing the minifier, delete only the selected entry from the list\nwhere it appears. This activates the existing fixture test; leave every other\nbacklog entry untouched. Then change the minifier implementation so that the\nfixture passes. Do not make a failing fixture pass by changing its Terser\nfixture input or expected output.\n\nVerify the activated fixture first with:\n\n```sh\ncargo test -p swc_ecma_minifier --test compress fixture_tests__terser__compress__\n```\n\nThen run the full crate fixture suite without `UPDATE`, followed by the\nexecution tests required above. Do not use `scripts/update-list.sh` while\nprocessing an individual entry: it regenerates the lists and can change\nunrelated backlog items.\n"
+  }
+ ],
+ "tree_paths_file": "swc-project__swc.tree.json.gz",
+ "tree_paths_count": 42817
+}

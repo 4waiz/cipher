@@ -1,0 +1,294 @@
+{
+ "seed": 20261021,
+ "rule": "repos in seeded frame order that are snapshot-eligible and yield >= 4 candidate pairs with >= 2 across files; first 2 -> calibration, next 8 -> evaluation",
+ "repos": [
+  {
+   "repo": "dartsim/dart",
+   "position": 0,
+   "decision": "calibration",
+   "commit": "738349bd45477c5eeadd128f85ec66dfc34f195d",
+   "candidate_pairs": 21,
+   "cross_file_pairs": 15,
+   "reasons": []
+  },
+  {
+   "repo": "pulumi/pulumi-java",
+   "position": 1,
+   "decision": "excluded",
+   "commit": "d2770980ee920806a2458349baf31ffecb426af6",
+   "candidate_pairs": 0,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 0 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "weecology/deepforest",
+   "position": 2,
+   "decision": "excluded",
+   "commit": "081f1e07cf5e4fadc4f98480b1f1457d2bb782bd",
+   "candidate_pairs": 0,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 0 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "temporalio/sdk-java",
+   "position": 3,
+   "decision": "excluded",
+   "reasons": [
+    "no nested AGENTS.md with at least 5 non-empty lines"
+   ]
+  },
+  {
+   "repo": "dlt-hub/dlt",
+   "position": 4,
+   "decision": "excluded",
+   "reasons": [
+    "no nested AGENTS.md with at least 5 non-empty lines"
+   ]
+  },
+  {
+   "repo": "hofstadter-io/hof",
+   "position": 5,
+   "decision": "excluded",
+   "commit": "52feda8ce076ec6a3501811c72dde0ca599b798d",
+   "candidate_pairs": 0,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 0 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "meilisearch/strapi-plugin-meilisearch",
+   "position": 6,
+   "decision": "excluded",
+   "commit": "3b2322808a465fb497ee37cfe1a22e25157d063f",
+   "candidate_pairs": 0,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 0 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "SEMOSS/semoss-ui",
+   "position": 7,
+   "decision": "calibration",
+   "commit": "535fc9a41111c739473142cebf1872b8980619ed",
+   "candidate_pairs": 50,
+   "cross_file_pairs": 45,
+   "reasons": []
+  },
+  {
+   "repo": "valkey-io/valkey-glide",
+   "position": 8,
+   "decision": "excluded",
+   "commit": "7eb87db2899f70dae53b0add67c7cd9d26921a16",
+   "candidate_pairs": 0,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 0 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "jaegertracing/jaeger",
+   "position": 9,
+   "decision": "excluded",
+   "commit": "1fa8e894cc42ba659c2dead606af31d56fc60aeb",
+   "candidate_pairs": 7,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 7 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "superdoc-dev/superdoc",
+   "position": 10,
+   "decision": "excluded",
+   "reasons": [
+    "no nested AGENTS.md with at least 5 non-empty lines"
+   ]
+  },
+  {
+   "repo": "microsoft/fluentui-contrib",
+   "position": 11,
+   "decision": "excluded",
+   "commit": "a9800b7acbbb280bdd10a841aff90810def9f64f",
+   "candidate_pairs": 3,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 3 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "marin-community/marin",
+   "position": 12,
+   "decision": "evaluation",
+   "commit": "af9c6789e878bed1a6fc9513232bcfc54ac73b3a",
+   "candidate_pairs": 35,
+   "cross_file_pairs": 33,
+   "reasons": []
+  },
+  {
+   "repo": "daangn/seed-design",
+   "position": 13,
+   "decision": "excluded",
+   "commit": "d513729780ed24107a49769a56d85e0ca889707a",
+   "candidate_pairs": 0,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 0 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "swc-project/swc",
+   "position": 14,
+   "decision": "excluded",
+   "reasons": [
+    "git tree truncated"
+   ]
+  },
+  {
+   "repo": "cypress-io/cypress",
+   "position": 15,
+   "decision": "evaluation",
+   "commit": "b7fd293f3c71cb5080466a98860f73eee796f724",
+   "candidate_pairs": 284,
+   "cross_file_pairs": 261,
+   "reasons": []
+  },
+  {
+   "repo": "zenml-io/zenml",
+   "position": 16,
+   "decision": "evaluation",
+   "commit": "f3824dfebc4b45e6eebc17fe1f535382070df05f",
+   "candidate_pairs": 10,
+   "cross_file_pairs": 10,
+   "reasons": []
+  },
+  {
+   "repo": "TracecatHQ/tracecat",
+   "position": 17,
+   "decision": "evaluation",
+   "commit": "3d4ef46b342f358f8176bc10a2623e98b27f59c8",
+   "candidate_pairs": 42,
+   "cross_file_pairs": 23,
+   "reasons": []
+  },
+  {
+   "repo": "opsmill/infrahub-sdk-python",
+   "position": 18,
+   "decision": "evaluation",
+   "commit": "cb03b59b7d7a80f98743872de89adbe45a363a62",
+   "candidate_pairs": 15,
+   "cross_file_pairs": 15,
+   "reasons": []
+  },
+  {
+   "repo": "RSSNext/Folo",
+   "position": 19,
+   "decision": "evaluation",
+   "commit": "84692b51f18349b05554a0a6f6ed73e575d2ed79",
+   "candidate_pairs": 6,
+   "cross_file_pairs": 2,
+   "reasons": []
+  },
+  {
+   "repo": "dxos/dxos",
+   "position": 20,
+   "decision": "excluded",
+   "reasons": [
+    "license 'NOASSERTION' not an open-source licence recognised by GitHub"
+   ]
+  },
+  {
+   "repo": "appwrite/appwrite",
+   "position": 21,
+   "decision": "evaluation",
+   "commit": "0f30fbc1c2b4d2bccb6a8fa85b61e53c95f26920",
+   "candidate_pairs": 17,
+   "cross_file_pairs": 4,
+   "reasons": []
+  },
+  {
+   "repo": "tryghost/ghost",
+   "position": 22,
+   "decision": "evaluation",
+   "commit": "980e36882c7c7a091eabf6e6c8bb6644504e81c5",
+   "candidate_pairs": 42,
+   "cross_file_pairs": 33,
+   "reasons": []
+  },
+  {
+   "repo": "spacedriveapp/spacedrive",
+   "position": 23,
+   "decision": "reserve (not used)",
+   "commit": "4d41a379f612e23ac43a66ffd67df52ca77f57d4",
+   "candidate_pairs": 11,
+   "cross_file_pairs": 8,
+   "reasons": []
+  },
+  {
+   "repo": "micronaut-projects/micronaut-kafka",
+   "position": 24,
+   "decision": "excluded",
+   "commit": "330b4d715f9524e58d4d48216a091c806d22a7ec",
+   "candidate_pairs": 0,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 0 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "obi1kenobi/cargo-semver-checks",
+   "position": 25,
+   "decision": "excluded",
+   "commit": "8d93ebbc3d0e5bc734d358adb48e88c7edb000fc",
+   "candidate_pairs": 1,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 1 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "saleor/saleor",
+   "position": 26,
+   "decision": "excluded",
+   "commit": "9ae360ae76b4777c7101215d8b3348022fcd3683",
+   "candidate_pairs": 13,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 13 candidate pairs (0 across files)"
+   ]
+  },
+  {
+   "repo": "typedb/typedb-studio",
+   "position": 27,
+   "decision": "excluded",
+   "reasons": [
+    "no nested AGENTS.md with at least 5 non-empty lines"
+   ]
+  },
+  {
+   "repo": "netresearch/t3x-rte_ckeditor_image",
+   "position": 28,
+   "decision": "reserve (not used)",
+   "commit": "8880afae6ad33b0a904148fc87a31f3f48f786b5",
+   "candidate_pairs": 6,
+   "cross_file_pairs": 5,
+   "reasons": []
+  },
+  {
+   "repo": "rocketchat/rocket.chat.electron",
+   "position": 29,
+   "decision": "excluded",
+   "commit": "f685f1332cb491ff3de93a7300160a1527d35f43",
+   "candidate_pairs": 23,
+   "cross_file_pairs": 0,
+   "reasons": [
+    "only 23 candidate pairs (0 across files)"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "repo": "dlt-hub/dlt",
+ "commit": "2c984279acff03b29b7dc2f7de496cc65898ea18",
+ "default_branch": "devel",
+ "retrieved_at": "2026-10-21T09:15:44+00:00",
+ "license": "Apache-2.0",
+ "fork": false,
+ "archived": false,
+ "tree_truncated": false,
+ "symlinked_agents_md": [],
+ "agents_files": [
+  {
+   "path": "AGENTS.md",
+   "blob_sha": "bc864ae10f75eb3d8750cd677eb99700cda407c8",
+   "sha256": "40ae196fe40715f365a97f69d135b34762cebc00f5ca5ffa83b5f52b4dd25420",
+   "content": "# dlt principles\n- This is a mature library used by thousands of the best engineers in the world\n- dlt is a library, not a platform. users add it to their code. we respect existing workflows and other libraries they use\n- no black boxes: clean, minimal Pythonic interfaces, human readable file formats, no side effects, documentation\n- multiply - don't add: we do more work here so our users do less.\n\n# dlt repo\n- we use `uv` and `uv run`. look in @Makefile\n- we branch from `devel` for feature branches\n\n# Commit messages (all agents)\n- [Conventional Commits](https://www.conventionalcommits.org/): `type:` or `type(scope):`, lowercase imperative subject, no trailing period.\n- Subject line only for the vast majority of commits; add a body line only for a non-obvious *why* (max ~3 lines total).\n- No footers — no `Co-Authored-By`, no \"Generated with ...\". No emojis.\n- When squash-merging, clean the squash message down to a single subject line.\n- Full rules (enforced per-agent via git/gh hooks under `.claude/`, `.cursor/`, `.codex/`): @.agents/rules/git-github.md"
+  },
+  {
+   "path": "tests/workspace/cli/dlthub/ai/cases/mock_workbench/init/AGENTS.md",
+   "blob_sha": "9cfea3fc40f9662f49bab9afbf78cc34d0ab86a2",
+   "sha256": "abc6977b68a7e68352ecd2eed61ac62363537c55a305c5f7f02ad8d01906ead7",
+   "content": "## ALWAYS ACTIVATE those skills\nthey are essential for ANY work in this project\n"
+  }
+ ],
+ "tree_paths_file": "dlt-hub__dlt.tree.json.gz",
+ "tree_paths_count": 2139
+}

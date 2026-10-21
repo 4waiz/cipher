@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found &middot; CIPHER</title>
+<meta name="robots" content="noindex">
+<style>
+  /* Inline styles: this page can be served at any depth, so it cannot rely on relative asset paths. */
+  :root { color-scheme: light; }
+  body { margin: 0; background: #f7f6f2; color: #1b2227; font: 1rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 60ch; margin: 0 auto; padding: 72px 16px; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 600; font-size: 2rem; margin: 0 0 12px; }
+  .eyebrow { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #0e6470; margin: 0 0 10px; }
+  a { color: #0e6470; }
+  a:focus-visible { outline: 3px solid #0b57d0; outline-offset: 2px; }
+  ul { padding-left: 1.2em; }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.9em; overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">CIPHER</p>
+  <h1>Page not found</h1>
+  <p>Nothing is published at <code id="missing-path">this address</code>.</p>
+  <ul>
+    <li><a data-path="index.html" href="/cipher/index.html">Project home and Case Lab</a></li>
+    <li><a data-path="results/index.html" href="/cipher/results/index.html">Results</a></li>
+    <li><a data-path="cases/index.html" href="/cipher/cases/index.html">Recorded cases</a></li>
+    <li><a data-path="paper/index.html" href="/cipher/paper/index.html">Paper</a></li>
+    <li><a href="https://github.com/4waiz/cipher">Code on GitHub</a></li>
+  </ul>
+</main>
+<script>
+  (function () {
+    // On GitHub Pages the site lives under /cipher/; locally it is usually served from /.
+    var base = /^\/cipher(\/|$)/.test(location.pathname) ? "/cipher/" : "/";
+    if (location.protocol === "file:") return;
+    var links = document.querySelectorAll("a[data-path]");
+    for (var i = 0; i < links.length; i++) links[i].setAttribute("href", base + links[i].getAttribute("data-path"));
+    var slot = document.getElementById("missing-path");
+    if (slot) slot.textContent = location.pathname;
+  })();
+</script>
+</body>
+</html>
