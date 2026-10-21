@@ -59,14 +59,14 @@ public artifact.**
 `evidence_status` with the handbook's step-1 wording.** Calibration traces showed the boolean contradicting the model's
 own explanation in 5 of 14 cases. This corrects an interface defect; it was not fitted to reference labels (none existed).
 
-**D15 15:20. Freeze 3 and v2 re-run of all held-out arms.** The review's finding 1 (misleading scope-statement header in
+**D15 15:12. Freeze 3 and v2 re-run of all held-out arms.** The review's finding 1 (misleading scope-statement header in
 the model input) affects B1/B1R on 13 of 54 annotated cases, mostly target-path variants. Because no held-out
 prediction had been inspected, the input is corrected and every arm is re-run (v2) as the primary analysis; the v1 runs
 are preserved unopened as superseded and are not analysed. The annotators' packets, already issued, keep the old header;
 they also show the target's directory chain explicitly, so the effect on human judgments is expected to be small and is
 disclosed.
 
-**D16 15:40. Review findings 2-15 addressed without touching the model input again.** Disclosed in the manuscript:
+**D16 15:18. Review findings 2-15 addressed without touching the model input again.** Disclosed in the manuscript:
 evidence asymmetry between annotators and models, procedural blinding (keys and sealed outputs on the first author's
 machine), handbook frozen before calibration, heading loss in placement variants, B2's handling of unclear conditions
 and inability to abstain, and the two pre-inspection method changes. Analysis code fixed and frozen (Freeze 3b,
