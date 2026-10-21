@@ -35,3 +35,7 @@ Chronological record of what was done and observed. Times are Asia/Dubai.
   19:23 runs resumed with `runs/run_resume_v2.sh`, which logs the runtime version before each segment
   (`runs/sealed/runtime_versions.jsonl`). B0, B1 and 77 B2 cases ran on 0.40.6; the remaining 4 B2 cases, B1R and the
   secondary runs on 0.40.7.
+- 20:46 Primary v2 held-out runs complete: B0, B1, B2, B1R each 81/81 with 0 errors; no digest change in any recorded
+  session; code not dirty. Provenance gap: B2's first segment (77 cases, 16:23-17:28, Ollama 0.40.6) was killed by the
+  sleep before `run.py` wrote its session record, so `heldout-v2-B2/run_manifest.json` records only the resumed session
+  (4 cases, Ollama 0.40.7); `predictions_sha256` covers all 81 records. Predictions remain sealed and unopened.
