@@ -88,7 +88,7 @@ def adjudication() -> None:
     incomplete = [c for c in a1 if not (complete(a1.get(c)) and complete(a2.get(c)))]
     if incomplete:
         sys.exit(f"{len(incomplete)} items are incomplete in at least one submission; adjudication waits")
-    STATS.write_text(json.dumps({"evaluation": agreement("evaluation")}, indent=1), encoding="utf-8")
+    STATS.write_text(json.dumps({"evaluation": agreement("evaluation")}, indent=1), encoding="utf-8", newline="\n")
     dis = sorted(c for c in a1 if a1[c]["label"] != a2[c]["label"])
     rng = random.Random(20261021)
     rng.shuffle(dis)
@@ -112,10 +112,10 @@ def adjudication() -> None:
     page = tpl.replace("/*__PACKET__*/", json.dumps(packet, ensure_ascii=False).replace("</", "<\\/")).replace(
         "/*__HANDBOOK__*/", annotate.HANDBOOK.read_text(encoding="utf-8").replace("</", "<\\/"))
     ADJ.mkdir(parents=True, exist_ok=True)
-    (ADJ / "CIPHER_adjudication_Huda.html").write_text(page, encoding="utf-8")
+    (ADJ / "CIPHER_adjudication_Huda.html").write_text(page, encoding="utf-8", newline="\n")
     (KEYS / "CIPHER-adjudication_ADJ.json").write_text(json.dumps(
         {"packet_id": packet["packet_id"], "packet_sha256": packet["packet_sha256"], "items": key}, indent=1),
-        encoding="utf-8")
+        encoding="utf-8", newline="\n")
     print(f"{len(dis)} disagreements of {len(a1)} -> annotations/adjudication/CIPHER_adjudication_Huda.html")
 
 
@@ -145,7 +145,7 @@ is unchanged. Do this after adjudication. Then click Export.</p><button onclick=
 document.querySelectorAll('input[data-id]').forEach(e=>{{r.items[e.dataset.id]={{valid:e.checked,note:document.querySelector(`input[data-note="${{e.dataset.id}}"]`).value}}}});
 const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(r,null,1)]));a.download='transformation_review.json';a.click();}}</script>"""
     ADJ.mkdir(parents=True, exist_ok=True)
-    (ADJ / "CIPHER_transformation_review.html").write_text(page, encoding="utf-8")
+    (ADJ / "CIPHER_transformation_review.html").write_text(page, encoding="utf-8", newline="\n")
     print(f"{len(rows)} transformations -> annotations/adjudication/CIPHER_transformation_review.html")
 
 
@@ -186,7 +186,7 @@ def finalize() -> None:
                         "label": parent.get("label") if ok else None,
                         "status": ("inherited" if parent.get("label") else "pending") if ok else
                         "pending_transformation_review"}
-    OUT.write_text(json.dumps(list(out.values()), indent=1), encoding="utf-8")
+    OUT.write_text(json.dumps(list(out.values()), indent=1), encoding="utf-8", newline="\n")
     print(Counter(r["status"] for r in out.values()))
 
 

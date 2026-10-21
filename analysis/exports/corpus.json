@@ -1,0 +1,102 @@
+{
+ "frame_size": 237,
+ "retrieved": 30,
+ "snapshot_eligible": 24,
+ "pair_eligible": 12,
+ "calibration_repos": [
+  "SEMOSS/semoss-ui",
+  "dartsim/dart"
+ ],
+ "evaluation_repos": [
+  "RSSNext/Folo",
+  "TracecatHQ/tracecat",
+  "appwrite/appwrite",
+  "cypress-io/cypress",
+  "marin-community/marin",
+  "opsmill/infrahub-sdk-python",
+  "tryghost/ghost",
+  "zenml-io/zenml"
+ ],
+ "calibration_originals": 7,
+ "calibration_variants": 7,
+ "originals": 27,
+ "variants": 27,
+ "controls": 27,
+ "relation_counts": {
+  "ancestor_descendant": 16,
+  "unrelated": 5,
+  "same_file": 6
+ },
+ "variant_changes": {
+  "target_path": 16,
+  "source_placement": 11
+ },
+ "originals_per_repo": {
+  "marin-community/marin": 2,
+  "cypress-io/cypress": 4,
+  "zenml-io/zenml": 4,
+  "TracecatHQ/tracecat": 4,
+  "opsmill/infrahub-sdk-python": 2,
+  "RSSNext/Folo": 3,
+  "appwrite/appwrite": 4,
+  "tryghost/ghost": 4
+ },
+ "agents_files": {
+  "RSSNext/Folo": {
+   "files": 4,
+   "license": "AGPL-3.0",
+   "commit": "84692b51f18349b05554a0a6f6ed73e575d2ed79"
+  },
+  "TracecatHQ/tracecat": {
+   "files": 7,
+   "license": "AGPL-3.0",
+   "commit": "3d4ef46b342f358f8176bc10a2623e98b27f59c8"
+  },
+  "appwrite/appwrite": {
+   "files": 3,
+   "license": "BSD-3-Clause",
+   "commit": "0f30fbc1c2b4d2bccb6a8fa85b61e53c95f26920"
+  },
+  "cypress-io/cypress": {
+   "files": 60,
+   "license": "MIT",
+   "commit": "b7fd293f3c71cb5080466a98860f73eee796f724"
+  },
+  "marin-community/marin": {
+   "files": 23,
+   "license": "Apache-2.0",
+   "commit": "af9c6789e878bed1a6fc9513232bcfc54ac73b3a"
+  },
+  "opsmill/infrahub-sdk-python": {
+   "files": 5,
+   "license": "Apache-2.0",
+   "commit": "cb03b59b7d7a80f98743872de89adbe45a363a62"
+  },
+  "tryghost/ghost": {
+   "files": 5,
+   "license": "MIT",
+   "commit": "980e36882c7c7a091eabf6e6c8bb6644504e81c5"
+  },
+  "zenml-io/zenml": {
+   "files": 10,
+   "license": "Apache-2.0",
+   "commit": "f3824dfebc4b45e6eebc17fe1f535382070df05f"
+  },
+  "SEMOSS/semoss-ui": {
+   "files": 17,
+   "license": "Apache-2.0",
+   "commit": "535fc9a41111c739473142cebf1872b8980619ed"
+  },
+  "dartsim/dart": {
+   "files": 5,
+   "license": "BSD-2-Clause",
+   "commit": "738349bd45477c5eeadd128f85ec66dfc34f195d"
+  }
+ },
+ "task_templates": {
+  "Make a small fix in": 8,
+  "Make a small behaviour change in": 14,
+  "Add a new third-party dependency used by": 3,
+  "Revise one section of": 2
+ }
+}

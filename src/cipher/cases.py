@@ -275,8 +275,8 @@ def main() -> None:
         c["case_sha256"] = case_hash(c)
     cases.sort(key=lambda c: c["case_id"])
     CASES_DIR.mkdir(parents=True, exist_ok=True)
-    (CASES_DIR / "manifest.json").write_text(json.dumps(cases, indent=1, ensure_ascii=False), encoding="utf-8")
-    (CASES_DIR / "selection_log.json").write_text(json.dumps(selection, indent=1), encoding="utf-8")
+    (CASES_DIR / "manifest.json").write_text(json.dumps(cases, indent=1, ensure_ascii=False), encoding="utf-8", newline="\n")
+    (CASES_DIR / "selection_log.json").write_text(json.dumps(selection, indent=1), encoding="utf-8", newline="\n")
     counts = {}
     for c in cases:
         counts[(c["split"], c["stratum"])] = counts.get((c["split"], c["stratum"]), 0) + 1

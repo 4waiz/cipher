@@ -77,7 +77,7 @@ def main() -> None:
     session = {"started_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "code": git_state(),
                "digest_before": None if args.method == "B0" else installed_digest(cfg.model)}
     n_ok = n_err = 0
-    with pred_file.open("a", encoding="utf-8") as fh:
+    with pred_file.open("a", encoding="utf-8", newline="\n") as fh:
         for c in cases:
             if c["case_id"] in done:
                 continue
@@ -101,7 +101,7 @@ def main() -> None:
         session["warning"] = "model digest changed during the session"
     manifest["sessions"].append(session)
     manifest["predictions_sha256"] = sha(pred_file)
-    manifest_path.write_text(json.dumps(manifest, indent=1), encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=1), encoding="utf-8", newline="\n")
     print(f"done: ok={n_ok} errors={n_err} -> {out}")
 
 

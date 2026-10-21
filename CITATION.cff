@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite it as below. The paper is under review; no acceptance or DOI is claimed."
+title: "CIPHER: Contextual Instruction Precedence and Hierarchy Evaluation for Repositories"
+type: software
+authors:
+  - family-names: Ahmed
+    given-names: Awaiz
+    affiliation: Al Ain University
+  - family-names: Umar
+    given-names: Mohammad
+    affiliation: Al Ain University
+  - family-names: Mueen
+    given-names: Huda
+    affiliation: Al Ain University
+repository-code: "https://github.com/4waiz/cipher"
+url: "https://4waiz.github.io/cipher/"
+license: MIT
+date-released: 2026-10-23
+keywords: [AGENTS.md, AI coding agents, instruction conflicts, scope and precedence, repository mining]

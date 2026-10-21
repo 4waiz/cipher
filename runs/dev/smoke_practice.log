@@ -5,3 +5,14 @@ P4: ok -> Compatible calls=1 tok=1090/1467 21.01s
 P5: ok -> Disjoint applicability calls=1 tok=1114/1350 20.21s
 P6: ok -> Compatible calls=1 tok=1084/2661 40.04s
 done: ok=6 errors=0 -> C:\Users\awaiz\OneDrive\Desktop\CIPHER\cipher\runs\dev\dev1-B1-practice
+P1: ok -> Unresolved conflict calls=2 tok=1041/2663 43.21s
+P2: ok -> Valid override calls=2 tok=1000/3139 45.74s
+P3: ok -> Disjoint applicability calls=1 tok=635/3065 39.33s
+P4: ok -> Compatible calls=2 tok=1001/3594 45.98s
+P5: ok -> Disjoint applicability calls=1 tok=654/2577 36.56s
+P6: ok -> Compatible calls=2 tok=980/4289 52.59s
+done: ok=6 errors=0 -> C:\Users\awaiz\OneDrive\Desktop\CIPHER\cipher\runs\dev\dev1-B2-practice
+P1: ok -> Unresolved conflict calls=2 tok=2391/2891 40.52s
+P2: ok -> Valid override calls=2 tok=2299/2076 65.36s
+P3: ok -> Disjoint applicability calls=2 tok=2311/1936 56.55s
+P4: ok -> Compatible calls=2 tok=2262/2256 64.58s

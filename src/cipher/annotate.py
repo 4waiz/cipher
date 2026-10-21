@@ -59,10 +59,10 @@ def build(packet_name: str, title: str, cases: list[dict], practice: list[dict],
     OUT.mkdir(parents=True, exist_ok=True)
     KEYS.mkdir(parents=True, exist_ok=True)
     path = OUT / f"CIPHER_{packet_name}_{annotator}.html"
-    path.write_text(html, encoding="utf-8")
+    path.write_text(html, encoding="utf-8", newline="\n")
     (KEYS / f"CIPHER-{packet_name}_{annotator}.json").write_text(
         json.dumps({"packet_id": packet["packet_id"], "annotator_id": annotator, "seed": seed,
-                    "packet_sha256": packet["packet_sha256"], "items": key}, indent=1), encoding="utf-8")
+                    "packet_sha256": packet["packet_sha256"], "items": key}, indent=1), encoding="utf-8", newline="\n")
     return path
 
 

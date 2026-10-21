@@ -134,11 +134,11 @@ def save(snap: dict) -> Path:
     out = SNAP_DIR / f"{name}.json"
     tree_paths = snap.pop("tree_paths")
     tp_file = SNAP_DIR / f"{name}.tree.json.gz"
-    with gzip.open(tp_file, "wt", encoding="utf-8") as fh:
+    with gzip.open(tp_file, "wt", encoding="utf-8", newline="\n") as fh:
         json.dump(tree_paths, fh)
     snap["tree_paths_file"] = tp_file.name
     snap["tree_paths_count"] = len(tree_paths)
-    out.write_text(json.dumps(snap, indent=1, ensure_ascii=False), encoding="utf-8")
+    out.write_text(json.dumps(snap, indent=1, ensure_ascii=False), encoding="utf-8", newline="\n")
     return out
 
 
@@ -180,7 +180,7 @@ def main() -> None:
         log["tried"].append(entry)
         print(pos, repo, entry["status"], reasons, flush=True)
     log["retrieved_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    (ROOT / "data" / "acquisition_log.json").write_text(json.dumps(log, indent=1), encoding="utf-8")
+    (ROOT / "data" / "acquisition_log.json").write_text(json.dumps(log, indent=1), encoding="utf-8", newline="\n")
 
 
 if __name__ == "__main__":

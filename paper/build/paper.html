@@ -1,0 +1,345 @@
+<section id="abstract" class="level1 unnumbered">
+<h1 class="unnumbered">Abstract</h1>
+<p><strong>Draft: results pending human reference labels.</strong></p>
+<p><strong>Keywords:</strong> AI coding agents, AGENTS.md, instruction
+conflicts, repository mining, scope and precedence</p>
+</section>
+<section id="sec:intro" class="level1">
+<h1>Introduction</h1>
+<p>AI coding agents read project guidance from natural-language files in
+the repository. The AGENTS.md convention allows one file per package and
+states that “the closest AGENTS.md to the edited file wins” <span
+class="citation" data-cites="agentsmd"><a href="#ref-agentsmd"
+role="doc-biblioref">[1]</a></span>. Apparent disagreement between such
+files is therefore not always a defect. Suppose the root file says “use
+exactly four spaces per indentation level” and a file in
+<code>web/</code> says “use exactly two”. For a new line in the root
+package the two rules may genuinely conflict; for
+<code>web/src/button.ts</code> the nested rule is a documented local
+override; and if the second rule lived in <code>api/</code>, it would
+not apply to that target at all. The wording is identical in all three
+situations; only the task’s location and the files’ placement
+differ.</p>
+<p>A conflict detector can fail in both directions: it can miss
+incompatible obligations, or it can report a legitimate local exception
+as a defect and suggest deleting useful guidance. Existing detectors
+flag contradictions from text alone. In a study of 100 repositories, a
+model-based smell detector reported 28 conflicting-instruction cases, of
+which the first author confirmed 16 <span class="citation"
+data-cites="santos2026smells"><a href="#ref-santos2026smells"
+role="doc-biblioref">[2]</a></span>; the keyword heuristics of
+Ruleherd <span class="citation" data-cites="ruleherd"><a
+href="#ref-ruleherd" role="doc-biblioref">[3]</a></span> compare files
+without regard to scope. Whether scope or precedence explains such false
+alarms has not been tested.</p>
+<p>CIPHER asks whether making applicability and precedence explicit
+improves the classification of apparent conflicts. We contribute (1) a
+task-conditioned, five-label definition of the problem under a declared
+AGENTS.md loading profile; (2) a pilot of 27 real instruction pairs from
+eight repositories at pinned commits, each with a context-changing
+variant and an order control, labeled independently by two authors and
+adjudicated by a third; and (3) a comparison of a keyword heuristic, a
+direct model given the full evidence, and a structured pipeline using
+the same local model. Section <a href="#sec:results"
+data-reference-type="ref" data-reference="sec:results">6</a> reports
+results once the human reference labels are final. The protocol, data,
+prompts, raw outputs, and analysis code are released at <a
+href="https://github.com/4waiz/cipher"
+class="uri">https://github.com/4waiz/cipher</a>.</p>
+</section>
+<section id="sec:related" class="level1">
+<h1>Related Work</h1>
+<p>Agent context files have been characterized at scale <span
+class="citation"
+data-cites="chatlatanagulchai2026agentreadmes galster2026dataset"><a
+href="#ref-chatlatanagulchai2026agentreadmes"
+role="doc-biblioref">[4]</a>, <a href="#ref-galster2026dataset"
+role="doc-biblioref">[5]</a></span>, and their effect on task success is
+contested <span class="citation" data-cites="gloaguen2026evaluating"><a
+href="#ref-gloaguen2026evaluating" role="doc-biblioref">[6]</a></span>.
+Configuration Smells <span class="citation"
+data-cites="santos2026smells"><a href="#ref-santos2026smells"
+role="doc-biblioref">[2]</a></span> treats conflicting instructions as a
+smell detected within one file; Context Rot <span class="citation"
+data-cites="treude2026contextrot"><a href="#ref-treude2026contextrot"
+role="doc-biblioref">[7]</a></span> studies staleness against code.
+WIRE <span class="citation" data-cites="yan2026wire"><a
+href="#ref-yan2026wire" role="doc-biblioref">[8]</a></span> grounds
+rules in spans and models activation conditions and decision surfaces,
+but reports no matched compatible-pair or priority-insertion controls.
+ContextCov <span class="citation" data-cites="sharma2026contextcov"><a
+href="#ref-sharma2026contextcov" role="doc-biblioref">[9]</a></span>
+extracts scoped constraints and enforces them, and OctoBench <span
+class="citation" data-cites="ding2026octobench"><a
+href="#ref-ding2026octobench" role="doc-biblioref">[10]</a></span>
+measures which source an agent follows under explicit conflicts.
+Guidefold <span class="citation" data-cites="guidefold"><a
+href="#ref-guidefold" role="doc-biblioref">[11]</a></span> already
+resolves guidance with a most-specific-scope lattice and structural
+replays, while noting that human-labeled conflicts were still missing. A
+factorial study found no detectable effect of injected cross-file
+contradictions on adherence <span class="citation"
+data-cites="mcmillan2026adherence"><a href="#ref-mcmillan2026adherence"
+role="doc-biblioref">[12]</a></span>, and Arbiter catalogs interference
+in system prompts <span class="citation"
+data-cites="mason2026arbiter"><a href="#ref-mason2026arbiter"
+role="doc-biblioref">[13]</a></span>. Applicability and precedence
+reasoning are therefore not new. Our contribution is narrower: human
+reference labels that separate valid overrides and disjoint
+applicability from unresolved conflict in mined AGENTS.md hierarchies,
+with controlled variants, and a same-evidence comparison of a direct and
+a structured model.</p>
+</section>
+<section id="sec:task" class="level1">
+<h1>Task and Instruction Profile</h1>
+<p>A <em>case</em> is one pair of verbatim instruction spans (with file
+path, line numbers, heading, and enclosing section), one concrete task
+that edits one target file, one pinned commit, and one loading profile.
+The label concerns this pair and task, not the overall quality of a
+repository.</p>
+<p><strong>Profile P1</strong> (frozen; an experimental interpretation
+of <span class="citation" data-cites="agentsmd"><a href="#ref-agentsmd"
+role="doc-biblioref">[1]</a></span>, not a claim about every tool). Only
+AGENTS.md files participate. The binding loaded set is every AGENTS.md
+on the target’s ancestor directory chain; files in unrelated branches
+are not loaded. A loaded instruction is in force unless its own wording
+limits it. When two loaded instructions are incompatible on the same
+decision, the more deeply nested file wins, and ancestor instructions
+about other decisions stay in force. Equal authority (same file or same
+depth) is not ranked by order of appearance; only an explicit statement
+can create priority. User prompts, other file formats, imports, symbolic
+links, multiple working roots, and multi-target tasks are excluded.</p>
+<p><strong>Labels and decision sequence.</strong> Annotators and methods
+follow the same order: (1) if meaning or applicability cannot be
+established, <em>Insufficient evidence</em>; (2) if, before priority,
+either instruction is inactive (not loaded, or excluded by its own
+condition), <em>Disjoint applicability</em>; (3) if the active
+instructions can be satisfied together, <em>Compatible</em> (different
+decisions, refinements, duplicates, or a preference beside a
+requirement); (4) otherwise <em>Valid override</em> if P1 or an explicit
+statement picks a winner, else <em>Unresolved conflict</em>. Modality is
+preserved: “prefer X” does not forbid Y, and descriptions or examples
+are not rules unless worded as requirements.</p>
+</section>
+<section id="sec:corpus" class="level1">
+<h1>Corpus and Annotation</h1>
+<p><strong>Sampling.</strong> The discovery frame was the
+<code>context_files.csv</code> table of a public configuration
+dataset <span class="citation" data-cites="galster2026dataset"><a
+href="#ref-galster2026dataset" role="doc-biblioref">[5]</a></span>
+(Zenodo record 20090356): 237 repositories whose rows show a root and at
+least one nested AGENTS.md. In a seeded random order we retrieved the
+first 30 through the GitHub API at their default-branch commit on
+21 October 2026, storing every AGENTS.md as inert JSON with its SHA-256.
+Repositories had to carry an open-source license, not be forks or
+archived, have no symlinked AGENTS.md, and have a root and a nested file
+with at least five non-empty lines (24 of 30). Nested files under
+template, example, vendored, or hidden directories were excluded as
+separate project roots.</p>
+<p><strong>Candidate pairs.</strong> Retrieval is separate from
+classification and deliberately challenge-oriented: instruction units
+(list items and paragraphs outside code fences that contain a directive
+verb or modal) are paired when they share a specific term (a tool,
+command, or convention word) or name different values from one family
+(for example <code>npm</code> and <code>pnpm</code>); the score favors
+different values, opposite polarity, conditions, and precedence words.
+Verbatim duplicates are excluded. Repositories needed at least four
+candidate pairs, two of them across files (12 qualified); the first two
+in frame order formed the calibration split and the next eight the
+evaluation split, so no repository crosses splits. Up to four pairs per
+repository were selected by score with a quota for ancestor–descendant
+and unrelated-branch pairs, yielding 27 evaluation originals (16
+ancestor–descendant, 5 unrelated-branch, 6 same-file) and 7 calibration
+originals. Tasks are researcher-authored from fixed templates (for
+example “make a small fix in <code>&lt;target&gt;</code> and complete
+the checks this change requires before committing”), and targets are
+real files under the relevant directory. This selected sample cannot
+estimate how often conflicts occur.</p>
+<p><strong>Strata.</strong> Each original has a <em>context-changing
+variant</em> that keeps both instructions’ wording and changes one
+documented property: the target path (16 cases, moving the target
+outside the nested file’s directory) or the placement of one instruction
+(11 cases, relocating it to the root or to a nested file on the target’s
+chain). Each original also has an <em>order control</em> that only swaps
+the presentation order of the two instructions. Variants are constructed
+material and are reported separately from originals.</p>
+<p><strong>Annotation.</strong> Two authors labeled every original and
+variant independently in a standalone tool, with separately randomized
+orders, opaque IDs, and no access to predictions, strata, or each
+other’s answers; the tool showed the task, target, profile, the
+AGENTS.md paths with the target’s chain marked, both spans with their
+sections and full files, and keyword-scanned scope statements. After a
+20-item calibration round (six authored practice items), the handbook
+was frozen. The third author adjudicated disagreements. Order controls
+inherit their parent’s final label after a human check that only the
+order changed.</p>
+</section>
+<section id="sec:methods" class="level1">
+<h1>Methods and Setup</h1>
+<p><strong>B0</strong> applies Ruleherd’s contradiction rules (v0.1.3,
+commit 94559fc6; keyword pairs such as npm/pnpm and tabs/spaces, and
+never/always polarity across different files) to the two spans of a
+case; it yields a binary flag and is scored only on conflict detection.
+<strong>B1</strong> is a direct contextual model: one call receives the
+evidence packet (task, target, commit, all AGENTS.md paths, both spans
+with line-numbered sections, and the scope statements), the full
+profile, the label definitions, and the decision sequence.
+<strong>B2</strong>, the CIPHER pipeline, uses the same model and
+packet. One call extracts, for each instruction, its requirement,
+regulated decision, modality, explicit condition, and whether that
+condition covers the task, plus any explicit priority statement. Code
+then computes the loaded set and depth precedence deterministically. A
+second call, made only when both instructions remain active and binding,
+judges whether they constrain the same decision incompatibly; fixed
+rules map the results to a label. Because B2 may use two calls,
+<strong>B1R</strong> adds an equal-call control: B1 followed by one
+self-review call over the same evidence.</p>
+<p>All model arms used Qwen3.6-35B-A3B <span class="citation"
+data-cites="qwen36"><a href="#ref-qwen36"
+role="doc-biblioref">[14]</a></span> (Q4_K_M, Ollama digest a7eb95c5)
+locally with thinking enabled, temperature 0.6,
+top-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+0.95,
+top-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+20, a fixed seed, JSON-schema-constrained output, and at most two
+retries with a changed seed. Each request contained only the method
+prompt and the evidence; no case identifier, stratum, or label. The
+profile, handbook, case manifest, prompts, schemas, retry policy, and
+analysis plan were frozen by hash before held-out runs, and held-out
+predictions stayed sealed until the reference labels were final. The
+primary outcome is five-class macro-F1 on originals (B2 versus B1) over
+classes present in the reference; abstentions and failures count as
+incorrect.</p>
+</section>
+<section id="sec:results" class="level1">
+<h1>Results</h1>
+<p><strong>Pending.</strong> Human reference labels are not final, so no
+accuracy is reported. Held-out model runs are sealed.</p>
+</section>
+<section id="sec:threats" class="level1">
+<h1>Threats to Validity</h1>
+<p>The sample is small (27 originals from eight repositories) and
+challenge-oriented, so class supports are uneven and some labels are
+rare; interval estimates over eight repository clusters are descriptive.
+Tasks were authored from templates, and variants are constructed, so
+neither represents observed agent sessions. The annotators are authors,
+which risks shared assumptions; independence, blinding, and adjudication
+reduce but do not remove this. One profile and one quantized open-weight
+model limit generalization, and public repositories may appear in its
+training data. Results concern classification under P1, not whether
+agents follow instructions or produce better code.</p>
+</section>
+<section id="sec:conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Pending.</p>
+</section>
+<section id="acknowledgment" class="level1 unnumbered">
+<h1 class="unnumbered">Acknowledgment</h1>
+<p>Pending.</p>
+</section>
+<section id="references" class="level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0"
+role="list">
+<div id="ref-agentsmd" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div
+class="csl-right-inline"><span>“<span
+class="nocase">AGENTS.md</span>.”</span> <a href="https://agents.md/"
+class="uri">https://agents.md/</a>, 2026.</div>
+</div>
+<div id="ref-santos2026smells" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">H.
+V. F. dos Santos, V. Costa, J. E. Montandon, L. L. Silva, and M. T.
+Valente, <span>“Configuration smells in <span
+class="nocase">AGENTS.md</span> files: Common mistakes in configuring
+coding agents,”</span> in <em>Proc. 26th IEEE int. Conf. Source code
+analysis and manipulation (SCAM)</em>, 2026. Available: <a
+href="https://arxiv.org/abs/2606.15828v5">https://arxiv.org/abs/2606.15828v5</a></div>
+</div>
+<div id="ref-ruleherd" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div
+class="csl-right-inline">princejain756, <span>“Ruleherd v0.1.3.”</span>
+GitHub, commit 94559fc6, MIT License, 2026. Available: <a
+href="https://github.com/princejain756/ruleherd">https://github.com/princejain756/ruleherd</a></div>
+</div>
+<div id="ref-chatlatanagulchai2026agentreadmes" class="csl-entry"
+role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">W.
+Chatlatanagulchai <em>et al.</em>, <span>“Agent <span>READMEs</span>: An
+empirical study of context files for agentic coding.”</span> 2026.
+Available: <a
+href="https://arxiv.org/abs/2511.12884v2">https://arxiv.org/abs/2511.12884v2</a></div>
+</div>
+<div id="ref-galster2026dataset" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">M.
+Galster <em>et al.</em>, <span>“A dataset of agentic <span>AI</span>
+coding tool configurations,”</span> in <em>Proc. 3rd ACM int. Conf.
+AI-powered software (AIware ’26)</em>, 2026, pp. 314–322. doi: <a
+href="https://doi.org/10.1145/3805760.3814922">10.1145/3805760.3814922</a>.</div>
+</div>
+<div id="ref-gloaguen2026evaluating" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">T.
+Gloaguen, N. Mündler-Sasahara, M. N. Müller, V. Raychev, and M. Vechev,
+<span>“Evaluating <span class="nocase">AGENTS.md</span>: Are
+repository-level context files helpful for coding agents?”</span> 2026.
+Available: <a
+href="https://arxiv.org/abs/2602.11988v3">https://arxiv.org/abs/2602.11988v3</a></div>
+</div>
+<div id="ref-treude2026contextrot" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">C.
+Treude and S. Baltes, <span>“Context rot in <span>AI</span>-assisted
+software development: Repurposing documentation consistency for
+<span>AI</span> configuration artifacts.”</span> 2026. Available: <a
+href="https://arxiv.org/abs/2606.09090v1">https://arxiv.org/abs/2606.09090v1</a></div>
+</div>
+<div id="ref-yan2026wire" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">L.
+Yan, X. Chen, and X. Zhang, <span>“<span>WIRE</span>: Profiling
+witnessed within-policy instruction collisions in <span>LLM</span>
+agents.”</span> 2026. Available: <a
+href="https://arxiv.org/abs/2605.27784v2">https://arxiv.org/abs/2605.27784v2</a></div>
+</div>
+<div id="ref-sharma2026contextcov" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">R.
+K. Sharma, <span>“<span>ContextCov</span>: Deriving and enforcing
+executable constraints from agent instruction files.”</span> 2026.
+Available: <a
+href="https://arxiv.org/abs/2603.00822v2">https://arxiv.org/abs/2603.00822v2</a></div>
+</div>
+<div id="ref-ding2026octobench" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">D.
+Ding <em>et al.</em>, <span>“<span>OctoBench</span>: Benchmarking
+scaffold-aware instruction following in repository-grounded agentic
+coding,”</span> in <em>Proc. 64th annu. Meeting assoc. Comput.
+Linguistics (vol. 1: Long papers)</em>, 2026, pp. 5958–5978. doi: <a
+href="https://doi.org/10.18653/v1/2026.acl-long.269">10.18653/v1/2026.acl-long.269</a>.</div>
+</div>
+<div id="ref-guidefold" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div
+class="csl-right-inline">wiatrM, <span>“Guidefold: Docs/<span
+class="nocase">RESEARCH.md</span>.”</span> GitHub, commit 1c98b24f,
+2026. Available: <a
+href="https://github.com/wiatrM/guidefold/blob/1c98b24f8b6fc28a3a7253ab6dd9c3cc626f885e/docs/RESEARCH.md">https://github.com/wiatrM/guidefold/blob/1c98b24f8b6fc28a3a7253ab6dd9c3cc626f885e/docs/RESEARCH.md</a></div>
+</div>
+<div id="ref-mcmillan2026adherence" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline">D.
+McMillan, <span>“Instruction adherence in coding agent configuration
+files: A factorial study of four file-structure variables.”</span> 2026.
+Available: <a
+href="https://arxiv.org/abs/2605.10039v1">https://arxiv.org/abs/2605.10039v1</a></div>
+</div>
+<div id="ref-mason2026arbiter" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline">T.
+Mason, <span>“Arbiter: Detecting interference in <span>LLM</span> agent
+system prompts.”</span> 2026. Available: <a
+href="https://arxiv.org/abs/2603.08993v2">https://arxiv.org/abs/2603.08993v2</a></div>
+</div>
+<div id="ref-qwen36" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[14] </div><div
+class="csl-right-inline">Qwen Team,
+<span>“<span>Qwen3.6-35B-A3B</span>.”</span> Open-weight model, run
+locally as Ollama tag qwen3.6:35b-a3b (Q4_K_M, digest a7eb95c5),
+2026.</div>
+</div>
+</div>
+</section>
