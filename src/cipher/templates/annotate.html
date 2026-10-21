@@ -123,6 +123,9 @@ function render(){
     <details style="margin-left:0"><summary>Instruction-loading profile P1</summary><pre>${esc(P.profile_text)}</pre></details></div>
   <div class="rules">${ruleHtml(pk.rule_1,1,pk)}${ruleHtml(pk.rule_2,2,pk)}</div>
   <div class="card" style="margin-top:14px"><h2>Scope and precedence statements found in the loaded files</h2>${scope}</div>
+  ${it.judgments ? `<div class="card"><h2>Independent judgments to adjudicate</h2>${it.judgments.map(j => `<p><strong>${esc(j.who)}: ${esc(j.label)}</strong>
+    <span class="muted">(instruction 1 ${esc(j.applies_1||"?")}, instruction 2 ${esc(j.applies_2||"?")}, incompatible ${esc(j.incompatible||"?")}, winner ${esc(j.winner||"?")}, confidence ${esc(j.confidence||"?")}${j.missing_context?", flagged missing context":""})</span><br>${esc(j.reason)}${j.evidence?`<br><span class="mono">${esc(j.evidence)}</span>`:""}</p>`).join("")}
+    <p class="muted">Record the final label and the reason for it. The independent judgments are kept unchanged.</p></div>` : ""}
   <form class="card" id="f" aria-label="Judgment"><h2>Your judgment</h2>
     <fieldset><legend>Label (required)</legend><div class="labels">${radios("label", LABELS.map(l=>[l,l]), r.label)}</div>
       <p class="muted" style="margin:6px 0 0">Keys 1-5 choose a label when you are not typing.</p></fieldset>

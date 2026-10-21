@@ -1,0 +1,14 @@
+Labels (choose exactly one):
+- Unresolved conflict: both hard requirements are in force for the same decision, cannot both be satisfied, and nothing in the profile or the files picks a winner.
+- Valid override: both instructions apply before priority is considered, they are incompatible, and the profile (the more deeply nested file wins) or an explicit statement in the files resolves which one wins.
+- Disjoint applicability: before priority is considered, at least one instruction is inactive for this target or task (its file is not on the target's ancestor chain, or its own condition excludes this task or target).
+- Compatible: everything in force can be satisfied together: different decisions, refinements, duplicates, or a non-binding preference next to a requirement.
+- Insufficient evidence: the material shown cannot establish meaning, applicability, or precedence well enough to choose another label.
+
+Decision sequence (stop at the first step that determines the label):
+1. Evidence sufficiency: can you tell what each instruction requires and whether it applies?
+2. Initial joint applicability, before priority: is each instruction's file in the loaded set for the target, and does its own condition cover this task and target? Being outranked by a deeper file is not inactivity.
+3. Same decision, incompatible requirements: can both active instructions be satisfied together while doing this task?
+4. Priority: if incompatible, does the profile or an explicit statement make one win (Valid override) or not (Unresolved conflict)?
+
+Reading rules: preserve modality ("prefer X" is not "never use Y"; "use tool A" does not by itself forbid tool B). Examples, code blocks and descriptions of how the project works are not rules unless worded as requirements. An instruction that limits itself ("for documentation-only edits", "in tests") is inactive outside that limit. A task can involve several decisions; ask whether both instructions constrain the same one.

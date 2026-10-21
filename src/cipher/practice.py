@@ -18,7 +18,8 @@ def _rule(files: dict[str, str], path: str, needle: str) -> dict:
     i = next(n for n, ln in enumerate(lines, start=1) if needle in ln)
     head = next((ln.lstrip("# ").strip() for ln in reversed(lines[:i]) if ln.startswith("#")), "")
     return {"path": path, "start_line": i, "end_line": i, "heading": head, "text": lines[i - 1],
-            "section_first_line": 1, "section_last_line": len(lines), "section_text": files[path].rstrip("\n")}
+            "section_first_line": 1, "section_last_line": len(files[path].rstrip("\n").split("\n")),
+            "section_text": files[path].rstrip("\n")}
 
 
 def _item(pid: str, files: dict[str, str], target: str, task: str, r1: tuple[str, str], r2: tuple[str, str],
