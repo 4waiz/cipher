@@ -16,3 +16,14 @@ Chronological record of what was done and observed. Times are Asia/Dubai.
   row; 321 have two or more AGENTS.md rows.
 - 13:09 Tectonic 0.17.0 compiled the archived proposal source successfully.
 - 13:12 Ruleherd inspected at commit 94559fc6399a5fbf77c2f76f96172d2207d32e8d (package version 0.1.3, MIT).
+- 13:20-13:45 Corpus frozen (manifest 4ff2cc31...f177 after LF normalisation); annotation packets issued to
+  `Desktop\CIPHER\annotation_packets`. No human submission received yet.
+- 13:35 Several Ollama models (gpt-oss:20b, gemma4, MTP variants) disappeared from the local store between 13:05 and
+  13:35; qwen3.6:35b-a3b (digest a7eb95c5) remains and is the primary model.
+- 13:40-13:55 Practice smoke test: B1, B2, B1R ran 6/6 authored items without failures; ~20-90 s per case.
+- 13:50 CI (GitHub Actions) green: fixtures, provenance, offline replay, stale-output check, paper compile, site build.
+- 13:55 Calibration dev1: B2 labelled 8/14 calibration cases "Insufficient evidence". Traces show the extraction's
+  boolean `evidence_sufficient` was set to false while the model's own note said the meaning was fully clear
+  (K102, K201, K201v, K203v). Diagnosed as a schema-design defect, not a labelling disagreement (no human calibration
+  labels existed). Fix: enum `evidence_status` (sufficient/insufficient) with the handbook's step-1 wording, which B1 and
+  the annotators already receive. dev1 outputs are preserved; dev2 re-runs B2 on calibration.

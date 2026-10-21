@@ -58,3 +58,9 @@ control for B2). One run per arm with fixed decoding settings and seed; no repet
 - Calibration cases are never scored as held-out data.
 - Illustrative cases in the paper are chosen by rule: the first case (by case ID) in each of these groups, where it
   exists: B2 correct and B1 wrong; B1 correct and B2 wrong; both wrong.
+
+## Secondary analysis (declared before any held-out prediction existed; run only if GPU time permits)
+
+B1 and B2 repeated with the smaller local model `qwen3.5:9b` (Ollama digest recorded in its run manifest), same
+prompts, schemas, decoding settings and evidence. Purpose: whether the structured pipeline's effect differs for a
+smaller model. Reported in the artifact; in the paper at most as one sentence, labelled secondary.

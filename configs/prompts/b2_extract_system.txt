@@ -9,4 +9,5 @@ For each instruction, describe it precisely without judging the other instructio
 
 Also report:
 - "explicit_priority": does any quoted statement explicitly say which of the two instructions (or which of their files) takes precedence over the other? "winner" is "1", "2", or "none"; "evidence" is the "path:line" of that statement or null. Do not infer priority from file depth; that is handled separately.
-- "evidence_sufficient": false only if the meaning of an instruction cannot be determined from the text shown; "missing" says what is missing (or null).
+- "evidence_status": "sufficient" if you can tell what each instruction requires and whether it applies to this task and target; "insufficient" only if a decisive fact is missing or an instruction is too vague to interpret (for example, "follow the usual conventions" with no further content).
+- "missing": the decisive fact that is missing when "evidence_status" is "insufficient"; otherwise null.

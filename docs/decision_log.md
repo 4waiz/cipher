@@ -54,3 +54,7 @@ annotators can flag missing context.
 **D13 13:50. Venue category check: TEXTUAL page lists no anonymity rule; named PDF default, anonymous PDF fallback.
 Repository stays private until the end of the task, then becomes public with Pages, because no stated rule restricts a
 public artifact.**
+
+**D14 14:05. B2 extraction schema change before any held-out run: boolean `evidence_sufficient` replaced by enum
+`evidence_status` with the handbook's step-1 wording.** Calibration traces showed the boolean contradicting the model's
+own explanation in 5 of 14 cases. This corrects an interface defect; it was not fitted to reference labels (none existed).

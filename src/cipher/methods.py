@@ -166,8 +166,9 @@ EXTRACT_SCHEMA = {
                                          "properties": {"winner": {"type": "string", "enum": ["1", "2", "none"]},
                                                         "evidence": {"type": ["string", "null"]}},
                                          "required": ["winner", "evidence"]},
-                   "evidence_sufficient": {"type": "boolean"}, "missing": {"type": ["string", "null"]}},
-    "required": ["instruction_1", "instruction_2", "explicit_priority", "evidence_sufficient", "missing"],
+                   "evidence_status": {"type": "string", "enum": ["sufficient", "insufficient"]},
+                   "missing": {"type": ["string", "null"]}},
+    "required": ["instruction_1", "instruction_2", "explicit_priority", "evidence_status", "missing"],
 }
 COMPARE_SCHEMA = {
     "type": "object",
@@ -205,7 +206,7 @@ def b2(case: dict, cfg: ModelConfig) -> dict:
                    trace=trace)
         return out
 
-    if not e["evidence_sufficient"]:
+    if e["evidence_status"] == "insufficient":
         return done("Insufficient evidence", f"Evidence insufficient: {e['missing'] or 'meaning not determinable'}.")
     inactive = []
     for n in (1, 2):

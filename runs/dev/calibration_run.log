@@ -32,3 +32,23 @@ K101: ok -> Disjoint applicability calls=1 tok=1119/3252 35.75s
 K101v: ok -> Disjoint applicability calls=1 tok=1059/3171 35.47s
 K102: ok -> Insufficient evidence calls=1 tok=995/3858 46.23s
 K102v: ok -> Insufficient evidence calls=1 tok=919/2934 35.33s
+K103: ok -> Compatible calls=2 tok=1713/5888 74.84s
+K103v: ok -> Insufficient evidence calls=1 tok=1107/2306 30.71s
+K201: ok -> Insufficient evidence calls=1 tok=2134/2732 33.93s
+K201v: ok -> Insufficient evidence calls=1 tok=2126/3058 41.16s
+K202: ok -> Insufficient evidence calls=1 tok=1731/3853 51.57s
+K202v: ok -> Insufficient evidence calls=1 tok=1649/2920 39.49s
+K203: ok -> Disjoint applicability calls=1 tok=2917/3394 47.47s
+K203v: ok -> Insufficient evidence calls=1 tok=2055/3559 47.14s
+K204: ok -> Disjoint applicability calls=1 tok=2240/3033 40.99s
+K204v: ok -> Disjoint applicability calls=1 tok=1567/4192 46.47s
+done: ok=14 errors=0 -> C:\Users\awaiz\OneDrive\Desktop\CIPHER\cipher\runs\dev\dev1-B2-calibration
+K101: ok -> Disjoint applicability calls=2 tok=3280/3860 45.96s
+K101v: ok -> Disjoint applicability calls=2 tok=3165/3685 92.68s
+K102: ok -> Compatible calls=2 tok=3014/2475 62.26s
+K102v: ok -> Disjoint applicability calls=2 tok=2889/3062 103.91s
+K103: ok -> Compatible calls=2 tok=3417/4440 90.36s
+K103v: ok -> Disjoint applicability calls=2 tok=3265/3985 99.01s
+K201: ok -> Compatible calls=2 tok=5299/3190 108.38s
+K201v: ok -> Disjoint applicability calls=2 tok=5307/4826 127.13s
+K202: ok -> Disjoint applicability calls=2 tok=4521/3289 108.89s

@@ -60,7 +60,7 @@ def _with_extraction(case, ext, cmp_=None):
 REP = {"requirement": "r", "decision": "indentation width", "modality": "must", "condition": None,
        "condition_covers_task": "no_condition"}
 EXT = {"instruction_1": REP, "instruction_2": REP, "explicit_priority": {"winner": "none", "evidence": None},
-       "evidence_sufficient": True, "missing": None}
+       "evidence_status": "sufficient", "missing": None}
 INCOMPAT = {"same_decision": True, "jointly_satisfiable": "no", "reason": "4 vs 2 spaces"}
 
 
@@ -74,7 +74,7 @@ def test_b2_resolution_rules_on_authored_items():
     assert _with_extraction(p["P5"], cond)["label"] == "Disjoint applicability"
     compat = {"same_decision": False, "jointly_satisfiable": "yes", "reason": "different decisions"}
     assert _with_extraction(p["P4"], EXT, compat)["label"] == "Compatible"
-    assert _with_extraction(p["P6"], dict(EXT, evidence_sufficient=False, missing="usual conventions"))["label"] \
+    assert _with_extraction(p["P6"], dict(EXT, evidence_status="insufficient", missing="usual conventions"))["label"] \
         == "Insufficient evidence"
     explicit = dict(EXT, explicit_priority={"winner": "1", "evidence": "AGENTS.md:3"})
     assert _with_extraction(p["P1"], explicit, INCOMPAT)["label"] == "Valid override"

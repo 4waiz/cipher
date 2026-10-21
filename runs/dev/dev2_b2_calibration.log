@@ -1,0 +1,15 @@
+K101: ok -> Disjoint applicability calls=1 tok=1172/2276 27.56s
+K101v: ok -> Disjoint applicability calls=1 tok=1112/2449 51.74s
+K102: ok -> Compatible calls=2 tok=1520/3241 67.42s
+K102v: ok -> Disjoint applicability calls=1 tok=972/3000 46.12s
+K103: ok -> Compatible calls=2 tok=1739/4563 87.1s
+K103v: ok -> Disjoint applicability calls=1 tok=1160/2257 51.42s
+K201: ok -> Compatible calls=1 tok=2187/2365 47.84s
+K201v: ok -> Disjoint applicability calls=1 tok=2179/2607 56.12s
+K202: ok -> Disjoint applicability calls=1 tok=1784/2398 42.63s
+K202v: ok -> Disjoint applicability calls=1 tok=1702/4114 66.85s
+K203: ok -> Disjoint applicability calls=1 tok=2970/2876 48.92s
+K203v: ok -> Disjoint applicability calls=1 tok=2108/3436 70.55s
+K204: ok -> Disjoint applicability calls=1 tok=2293/3313 59.17s
+K204v: ok -> Disjoint applicability calls=1 tok=1620/3223 59.53s
+done: ok=14 errors=0 -> C:\Users\awaiz\OneDrive\Desktop\CIPHER\cipher\runs\dev\dev2-B2-calibration

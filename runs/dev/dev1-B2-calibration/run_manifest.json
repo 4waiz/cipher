@@ -1,0 +1,55 @@
+{
+ "run_id": "dev1-B2-calibration",
+ "method": "B2",
+ "split": "calibration",
+ "sealed": false,
+ "started_at": "2026-10-21T09:52:20+00:00",
+ "model": {
+  "provider": "ollama",
+  "model": "qwen3.6:35b-a3b",
+  "digest": "a7eb95c53bcf96b4bdd008d0fab4a5dac88047d9c1a7a9ab88ed453423fbd87c",
+  "think": true,
+  "temperature": 0.6,
+  "top_p": 0.95,
+  "top_k": 20,
+  "seed": 20261021,
+  "num_ctx": 16384,
+  "num_predict": 8192,
+  "max_retries": 2,
+  "timeout_s": 900
+ },
+ "prompts_sha256": {
+  "b1_system.txt": "54bf4ee86bce75b691a91ce620ea82fdf24a55565db7ea1ed8b2d450962d16b3",
+  "b1r_review_system.txt": "364901ada44ed7bfa8197598ea55420091f8e835f2b5be3717f8901119d14aed",
+  "b2_compare_system.txt": "375464c29f2643f391538bb2c2e98ce07fa9ccd72486cefb892840e9b652215b",
+  "b2_extract_system.txt": "0aba46dfb03954e416e912f63fd1b3de43f4d1b1484aed360f0073fe63df2e0a",
+  "common_guidance.txt": "24558e679fbe8905b816678511e911505fcc05049a9eabeb9657e11b4b97d3b1"
+ },
+ "case_manifest_sha256": "4ff2cc31b10d1f2f2d996468445eca32e9f32b334a98e73aaa57c03ec1e7f177",
+ "code": {
+  "commit": "123ac27a27c2632f6d78128573c6438d30af4bc7",
+  "dirty": false
+ },
+ "python": "3.12.10",
+ "platform": "Windows-11-10.0.26200-SP0",
+ "packages": {
+  "requests": "2.34.2",
+  "numpy": "2.4.6",
+  "matplotlib": "3.11.0"
+ },
+ "sessions": [
+  {
+   "started_at": "2026-10-21T09:52:20+00:00",
+   "code": {
+    "commit": "123ac27a27c2632f6d78128573c6438d30af4bc7",
+    "dirty": false
+   },
+   "digest_before": "a7eb95c53bcf96b4bdd008d0fab4a5dac88047d9c1a7a9ab88ed453423fbd87c",
+   "finished_at": "2026-10-21T10:02:29+00:00",
+   "ok": 14,
+   "errors": 0,
+   "digest_after": "a7eb95c53bcf96b4bdd008d0fab4a5dac88047d9c1a7a9ab88ed453423fbd87c"
+  }
+ ],
+ "predictions_sha256": "a3cdb0264cbdf5aad6dd332238551eb68825943933bd0e03f46e516fd3311298"
+}
