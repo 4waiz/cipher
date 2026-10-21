@@ -28,6 +28,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import stat
 import sys
 from html.parser import HTMLParser
@@ -504,7 +505,12 @@ def main(argv: list[str] | None = None) -> int:
     loaded: dict[str, object] = {}
     if exports.is_dir():
         for key, src, data in sources:
-            write_data(out_data, key, data, raw_source=src)
+            if key == "status" and isinstance(data, dict) and "git_commit" not in data:
+                # the analysis export is commit-independent; the site records the commit it was built from
+                head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=Path(__file__).resolve().parent,
+                                      capture_output=True, text=True).stdout.strip()
+                data = {**data, "git_commit": head} if head else data
+            write_data(out_data, key, data, raw_source=None if key == "status" else src)
             present[key] = True
             loaded[key] = data
             print(f"  data: copied {display_path(src)}")
