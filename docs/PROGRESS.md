@@ -2,7 +2,7 @@
 
 Resume point after any context reset. Update at every milestone.
 
-Last updated: 2026-10-21 14:20 Asia/Dubai
+Last updated: 2026-10-21 15:35 Asia/Dubai
 
 ## Hard dates
 
@@ -20,8 +20,8 @@ Last updated: 2026-10-21 14:20 Asia/Dubai
 | Human labels | **None received yet** (`python -m cipher.reference status`) |
 | Model | qwen3.6:35b-a3b via Ollama, digest a7eb95c5. gpt-oss:20b and gemma4 were removed from the machine during the session; do not rely on them |
 | Dev runs | practice: all arms; calibration: B0, B1, B2 (dev1, schema defect found), B2 dev2 (fixed); B1R calibration stopped early (unchanged prompt) |
-| Held-out runs | Freeze 2 committed 946de20 at 14:17. Running sealed since 14:20: B0, B1, B2, B1R, then secondary qwen3.5:9b B1/B2 (`runs/sealed/heldout_v1.log`, counts only) |
-| Paper | Draft compiles (3 pages without results). Results macros pending |
+| Held-out runs | v1 superseded (stopped unopened after the review). Freeze 3 + 3b committed; v2 running since 15:13: B0 done, B1 in progress, then B2, B1R, secondary qwen3.5:9b (`runs/sealed/heldout_v2.log`, progress counts only). Slowed ~6x since 15:19 by the author's own `rabt-ai serve` process sharing the GPU |
+| Paper | Draft compiles (3 pages without results); results prose goes in paper/prose/{abstract,headline,results,conclusion}.tex once labels are final |
 | Site | Built by subagent; renders pending state; `python site/build.py` |
 | GitHub | 4waiz/cipher private; CI and Pages workflows written (Pages needs a public repo or paid plan) |
 
