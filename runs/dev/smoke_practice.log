@@ -16,3 +16,6 @@ P1: ok -> Unresolved conflict calls=2 tok=2391/2891 40.52s
 P2: ok -> Valid override calls=2 tok=2299/2076 65.36s
 P3: ok -> Disjoint applicability calls=2 tok=2311/1936 56.55s
 P4: ok -> Compatible calls=2 tok=2262/2256 64.58s
+P5: ok -> Disjoint applicability calls=2 tok=2325/2541 92.96s
+P6: ok -> Compatible calls=2 tok=2266/3894 84.52s
+done: ok=6 errors=0 -> C:\Users\awaiz\OneDrive\Desktop\CIPHER\cipher\runs\dev\dev1-B1R-practice

@@ -28,3 +28,29 @@ scored only on binary conflict metrics.
 
 **D6 13:15. LaTeX engine: Tectonic 0.17.0 (official GitHub release), kept outside the repository in `.tools/`.** No TeX
 distribution was installed. Tectonic resolves IEEEtran from the TeX Live bundle.
+
+**D7 13:30. Frozen pilot: 27 evaluation originals from 8 repositories (target was 32; four repositories yielded fewer
+than four selectable pairs), one context variant and one order control each.** No case was invented to reach the target.
+
+**D8 13:40. Order controls are not annotated; they inherit the parent's final label after a human check that only the
+presentation order changed.** This keeps the independent annotation load at 54 evaluation items (about two hours) while
+still giving RQ3 a stability test. Variants are annotated independently because their label may change.
+
+**D9 13:40. Annotators A1 = Awaiz Ahmed, A2 = Mohammad Umar; adjudicator = Huda Mueen** (as suggested in the brief;
+subject to the authors' actual participation, which is recorded only when files arrive).
+
+**D10 14:00. Primary model: qwen3.6:35b-a3b (Q4_K_M) via Ollama, thinking on, temperature 0.6, top-p 0.95, top-k 20,
+seed 20261021, num_ctx 16384, num_predict 8192, two retries with seed+1/+2.** gpt-oss:20b and gemma4 disappeared from
+the local Ollama store during the session, so they are not used. Qwen's recommended thinking-mode sampling is used
+instead of greedy decoding to avoid repetition loops; the fixed seed makes runs repeatable on this machine.
+
+**D11 14:10. B2 makes the second (incompatibility) call only when both instructions remain active and binding; B1R is
+added as an equal-call control.** Calls, tokens and latency are reported per arm.
+
+**D12 14:20. Evidence packets for models contain the spans, their enclosing sections, the list of AGENTS.md paths, and
+keyword-scanned scope statements; annotators could also expand the two full files.** The asymmetry is reported;
+annotators can flag missing context.
+
+**D13 14:45. Venue category check: TEXTUAL page lists no anonymity rule; named PDF default, anonymous PDF fallback.
+Repository stays private until the end of the task, then becomes public with Pages, because no stated rule restricts a
+public artifact.**

@@ -1,0 +1,40 @@
+name: ci
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Install pinned environment
+        run: |
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv -e ".[dev]" pypandoc_binary==1.15
+      - name: Engineering fixtures
+        run: .venv/bin/python -m pytest -q
+      - name: Provenance (snapshot hashes, manifest hash, packet hashes)
+        run: .venv/bin/python tools/check_provenance.py
+      - name: Offline analysis replay (no model calls)
+        run: |
+          .venv/bin/python analysis/corpus_stats.py
+          .venv/bin/python analysis/results.py
+      - name: Generated outputs are up to date
+        run: git diff --exit-code -- paper/generated analysis/exports analysis/tables
+      - name: Install Tectonic 0.17.0
+        run: |
+          curl -sSL -o tt.tar.gz https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.17.0/tectonic-0.17.0-x86_64-unknown-linux-musl.tar.gz
+          tar -xzf tt.tar.gz && sudo mv tectonic /usr/local/bin/
+      - name: Paper compiles (named and anonymous)
+        run: .venv/bin/python paper/build.py --tectonic /usr/local/bin/tectonic
+      - name: Site builds and matches the paper
+        run: |
+          git checkout -- paper/build/cipher-paper.pdf paper/build/cipher-paper-anonymous.pdf paper/build/meta.json || true
+          python3 site/build.py
+          .venv/bin/python tools/check_consistency.py

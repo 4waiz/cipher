@@ -21,3 +21,6 @@ K103: ok -> Compatible calls=1 tok=1639/2119 36.34s
 K103v: ok -> Disjoint applicability calls=1 tok=1567/1483 32.12s
 K201: ok -> Valid override calls=1 tok=2594/3067 44.8s
 K201v: ok -> Disjoint applicability calls=1 tok=2586/2661 44.42s
+K202: ok -> Disjoint applicability calls=1 tok=2191/1796 33.16s
+K202v: ok -> Disjoint applicability calls=1 tok=2109/2019 50.59s
+K203: ok -> Disjoint applicability calls=1 tok=3377/1893 36.04s
