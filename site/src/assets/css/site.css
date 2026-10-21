@@ -720,7 +720,9 @@ pre.command {
   background: var(--surface-2);
   border: 1px solid var(--border);
   color: var(--text-muted);
-  white-space: nowrap;
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .badge {
