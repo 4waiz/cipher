@@ -2,7 +2,7 @@
 
 Resume point after any context reset. Update at every milestone.
 
-Last updated: 2026-10-21 (afternoon, Asia/Dubai)
+Last updated: 2026-10-21 14:20 Asia/Dubai
 
 ## Hard dates
 
@@ -19,17 +19,19 @@ Last updated: 2026-10-21 (afternoon, Asia/Dubai)
 | Annotation packets | Issued 21 Oct to Desktop\CIPHER\annotation_packets (A1 Awaiz, A2 Mohammad); adjudicator Huda |
 | Human labels | **None received yet** (`python -m cipher.reference status`) |
 | Model | qwen3.6:35b-a3b via Ollama, digest a7eb95c5. gpt-oss:20b and gemma4 were removed from the machine during the session; do not rely on them |
-| Dev runs | practice: B0/B1/B2/B1R done; calibration: running (`runs/dev/calibration_run.log`) |
-| Held-out runs | Not started. Must be sealed in runs/sealed/ and run one arm at a time |
+| Dev runs | practice: all arms; calibration: B0, B1, B2 (dev1, schema defect found), B2 dev2 (fixed); B1R calibration stopped early (unchanged prompt) |
+| Held-out runs | Freeze 2 committed 946de20 at 14:17. Running sealed since 14:20: B0, B1, B2, B1R, then secondary qwen3.5:9b B1/B2 (`runs/sealed/heldout_v1.log`, counts only) |
 | Paper | Draft compiles (3 pages without results). Results macros pending |
 | Site | Built by subagent; renders pending state; `python site/build.py` |
 | GitHub | 4waiz/cipher private; CI and Pages workflows written (Pages needs a public repo or paid plan) |
 
 ## Next executable actions
 
-1. When calibration runs finish: inspect only for systematic failures (format, profile misreading); freeze methods
-   (Freeze 2 in docs/freeze.md); write `configs/heldout_runs.json`.
-2. Run held-out arms sequentially: `sh runs/run_heldout.sh` (B0, B1, B2, B1R), sealed.
-3. When both evaluation submissions arrive: `python -m cipher.reference adjudication` -> send Huda the adjudication
-   packet and the transformation review sheet; then `finalize`, unlock runs, `python analysis/results.py`, write
-   results prose, `python paper/build.py`, render-check pages, `python site/build.py`.
+1. Wait for the sealed runs (do not open predictions). `configs/heldout_runs.json` is written by runs/run_heldout.sh.
+2. Wait for human files in annotations/submissions/ (calibration_A1/A2, evaluation_A1/A2).
+3. When both evaluation submissions arrive: `python -m cipher.reference adjudication`; send Huda
+   annotations/adjudication/CIPHER_adjudication_Huda.html, then CIPHER_transformation_review.html.
+4. After Huda's two files: `python -m cipher.reference finalize`, `python -m cipher.unlock`, `python analysis/results.py`,
+   write results prose in paper/body.tex (replace \ResultsSection, \AbstractText, \ConclusionText, \AIDisclosure,
+   \ResultsHeadline), `python paper/build.py`, inspect pages, `python site/build.py`, AI review pass, handoff.
+5. Contingency if labels are incomplete by 23 Oct UAE: no accuracy claims; tell the author exactly what is missing.
