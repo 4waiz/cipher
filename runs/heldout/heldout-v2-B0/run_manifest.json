@@ -1,0 +1,51 @@
+{
+ "run_id": "heldout-v2-B0",
+ "method": "B0",
+ "split": "evaluation",
+ "sealed": true,
+ "started_at": "2026-10-21T11:13:42+00:00",
+ "model": null,
+ "model_details": null,
+ "prompts_sha256": {
+  "b1_system.txt": "54bf4ee86bce75b691a91ce620ea82fdf24a55565db7ea1ed8b2d450962d16b3",
+  "b1r_review_system.txt": "364901ada44ed7bfa8197598ea55420091f8e835f2b5be3717f8901119d14aed",
+  "b2_compare_system.txt": "375464c29f2643f391538bb2c2e98ce07fa9ccd72486cefb892840e9b652215b",
+  "b2_extract_system.txt": "fb72bf2106e78cb5a9f2edfd3b3a5e769b64777cf4f5f98f8c4d94aeae83c524",
+  "common_guidance.txt": "24558e679fbe8905b816678511e911505fcc05049a9eabeb9657e11b4b97d3b1"
+ },
+ "code_sha256": {
+  "src/cipher/profile.py": "fa230bde257d3f40560c482446a56782f879557691a607f652a61c337b6b06c0",
+  "src/cipher/methods.py": "b91e0d08c734646c3c219f3d51426e6b605b9f9218afc9b456e5f0d382c48089",
+  "src/cipher/llm.py": "1e1727a5b4ab838d13eccc65c5de53a40cbec8ca7ab6a1776f005c7a420bde1a",
+  "src/cipher/run.py": "a64021902b98223829df705723de1d7226d938d3519e4dff9673b4afb6038408",
+  "src/cipher/practice.py": "441a6f61d0efbf279573c1e1ce24a12c6762a4dd21d7da51765bc99b12ba05ad",
+  "data/cases/manifest.json": "4ff2cc31b10d1f2f2d996468445eca32e9f32b334a98e73aaa57c03ec1e7f177"
+ },
+ "case_manifest_sha256": "4ff2cc31b10d1f2f2d996468445eca32e9f32b334a98e73aaa57c03ec1e7f177",
+ "code": {
+  "commit": "370a330fefc08fc50208f2d77d10b898da9ef59f",
+  "dirty": false
+ },
+ "python": "3.12.10",
+ "platform": "Windows-11-10.0.26200-SP0",
+ "packages": {
+  "requests": "2.34.2",
+  "numpy": "2.4.6",
+  "matplotlib": "3.11.0"
+ },
+ "sessions": [
+  {
+   "started_at": "2026-10-21T11:13:42+00:00",
+   "code": {
+    "commit": "370a330fefc08fc50208f2d77d10b898da9ef59f",
+    "dirty": false
+   },
+   "digest_before": null,
+   "finished_at": "2026-10-21T11:13:42+00:00",
+   "ok": 81,
+   "errors": 0,
+   "digest_after": null
+  }
+ ],
+ "predictions_sha256": "9e1fec7af7c3155150c6a44e0128c77bb3a2d1347aa9a62c9d9ea5dc7f31ab6d"
+}

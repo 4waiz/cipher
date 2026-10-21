@@ -1,0 +1,5 @@
+Method,Profile-determined correct (originals + variants),False conflicts on profile-determined,Called 'Unresolved conflict' (originals + variants),Order controls: same prediction,Target-path variants: prediction changed,Placement variants: prediction changed,Calls per case,Mean output tokens
+B0,,2/26,2/54,,,,0.0,0
+B1,21/21,0/26,0/54,23/27,8/16,5/11,1.0,2177
+B2,21/21,0/26,0/54,23/27,7/16,1/11,1.26,3589
+B1R,21/21,0/26,0/54,23/27,11/16,3/11,2.0,3960

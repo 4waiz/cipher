@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\caption{Held-out results without human labels. PD: profile-determined cases, whose correct label under P1 is \emph{Disjoint applicability} because an instruction file is off the target's chain (B2 computes this in code). Other columns need no reference. Cost: mean calls / mean output tokens per case.}
+\label{tab:results}
+\centering\footnotesize
+\begin{tabular}{lcccccccc}
+\toprule
+ & PD correct & False conflicts & Called conflict & Order controls & \multicolumn{2}{c}{Prediction changed in variants} & Cost \\ \cmidrule(lr){6-7}
+Method & (orig.+var.) & on PD (all) & (orig.+var.) & same prediction & target path & placement & calls / tokens \\
+\midrule
+B0 & -- & 2/26 & 2/54 & -- & -- & -- & 0.0 / 0 \\
+B1 & 21/21 & 0/26 & 0/54 & 23/27 & 8/16 & 5/11 & 1.0 / 2177 \\
+B2 & 21/21 & 0/26 & 0/54 & 23/27 & 7/16 & 1/11 & 1.3 / 3589 \\
+B1R & 21/21 & 0/26 & 0/54 & 23/27 & 11/16 & 3/11 & 2.0 / 3960 \\
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -1,6 +1,30 @@
 <section id="abstract" class="level1 unnumbered">
 <h1 class="unnumbered">Abstract</h1>
-<p><strong>Draft: results pending human reference labels.</strong></p>
+<p>Repository instruction files such as AGENTS.md guide AI coding
+agents, and a nested file may legitimately refine or replace guidance
+from its ancestors, so an apparent disagreement is not necessarily a
+defect. CIPHER defines a task-conditioned classification of instruction
+pairs under a declared directory-precedence profile into five labels:
+unresolved conflict, valid override, disjoint applicability, compatible,
+and insufficient evidence. From a public configuration dataset we built
+a traceable pilot set of 27 real instruction pairs from eight
+repositories at pinned commits, each with a context-changing variant and
+an order control, and a blinded annotation protocol. Human reference
+labels have not yet been collected, so this short paper reports a
+preliminary analysis, frozen by hash before predictions were opened,
+that needs none: accuracy on the 21 originals and variants whose label
+the profile fixes from file paths, and label-free measures elsewhere.
+With one local open-weight model, a direct prompt given the full
+evidence and a structured pipeline that computes applicability and
+precedence explicitly were both correct on all 21 profile-determined
+cases, whereas a keyword heuristic flagged 2 of 26 such cases as
+conflicts. No model judged any original or variant to be an unresolved
+conflict; the methods disagreed mainly on condition-based applicability,
+and swapping only the order of the two instructions changed 4 of 27
+predictions for each model arm. The structured pipeline used more output
+tokens than the direct prompt (3589 versus 2177 per case) without a
+measurable gain. Human labels for the semantic cases are the next
+step.</p>
 <p><strong>Keywords:</strong> AI coding agents, AGENTS.md, instruction
 conflicts, repository mining, scope and precedence</p>
 </section>
@@ -34,17 +58,25 @@ role="doc-biblioref">[3]</a></span> compare files without regard to
 scope. Whether scope or precedence explains such false alarms has not
 been tested.</p>
 <p>CIPHER asks whether making applicability and precedence explicit
-improves the classification of apparent conflicts. We contribute (1) a
-task-conditioned, five-label definition of the problem under a declared
-AGENTS.md loading profile; (2) a pilot of 27 real instruction pairs from
-eight repositories at pinned commits, plus one context-changing variant
-per pair, labeled independently by two authors and adjudicated by a
-third, and one order control per pair; and (3) a comparison of a keyword
-heuristic, a direct model given the full evidence, and a structured
-pipeline using the same local model. Section <a href="#sec:results"
-data-reference-type="ref" data-reference="sec:results">6</a> reports
-results once the human reference labels are final. The protocol, data,
-prompts, raw outputs, and analysis code are released at <a
+improves the classification of apparent conflicts: how reliably humans
+separate the labels (RQ1), whether a structured pipeline beats a direct
+model given the same evidence (RQ2), and whether predictions respond
+correctly to relevant context changes and stay stable under irrelevant
+ones (RQ3). We contribute (1) a task-conditioned, five-label definition
+of the problem under a declared AGENTS.md loading profile; (2) a
+traceable pilot set of 27 real instruction pairs from eight repositories
+at pinned commits, each with one context-changing variant and one order
+control, and a blinded annotation protocol and tool for RQ1; and (3) a
+comparison of a keyword heuristic, a direct model given the full
+evidence, and a structured pipeline using the same local model. Human
+labels have not yet been collected, so Section <a href="#sec:results"
+data-reference-type="ref" data-reference="sec:results">6</a> reports a
+preliminary analysis without human labels: on cases whose label the
+profile fixes from directory structure, a direct model given the full
+evidence was already correct, so the structured pipeline added cost
+without measurable benefit there, while the methods disagreed on
+condition-based applicability. The protocol, data, prompts, raw outputs,
+and analysis code are released at <a
 href="https://github.com/4waiz/cipher"
 class="uri">https://github.com/4waiz/cipher</a>.</p>
 </section>
@@ -85,11 +117,11 @@ role="doc-biblioref">[12]</a></span>, and Arbiter catalogs interference
 in system prompts <span class="citation"
 data-cites="mason2026arbiter"><a href="#ref-mason2026arbiter"
 role="doc-biblioref">[13]</a></span>. Applicability and precedence
-reasoning are therefore not new. Our contribution is narrower: human
-reference labels that separate valid overrides and disjoint
-applicability from unresolved conflict in mined AGENTS.md hierarchies,
-with controlled variants, and a same-evidence comparison of a direct and
-a structured model.</p>
+reasoning are therefore not new. Our contribution is narrower: a task
+and a traceable set of mined AGENTS.md pairs with controlled variants
+for separating valid overrides and disjoint applicability from
+unresolved conflict, and a same-evidence comparison of a direct and a
+structured model; human reference labels are the next step.</p>
 </section>
 <section id="sec:task" class="level1">
 <h1>Task and Instruction Profile</h1>
@@ -162,26 +194,22 @@ documented property: the target path (16 cases, moving the target
 outside the nested file’s directory) or the placement of one instruction
 (11 cases, relocating it to the root or to a nested file on the target’s
 chain). A relocated instruction is appended under a copy of its nearest
-heading, so outer headings of its original file are lost; the human
-transformation check judges whether this changes meaning. Each original
-also has an <em>order control</em> that only swaps the presentation
-order of the two instructions. Variants and controls are constructed
-material and are reported separately from originals.</p>
-<p><strong>Annotation.</strong> Two authors labeled every original and
-variant independently in a standalone offline tool, with separately
-randomized orders and opaque item IDs; predictions, strata,
-transformation notes, and the other annotator’s answers were not shown.
-The tool showed the task, target, profile, the AGENTS.md paths with the
-target’s directory chain marked, both spans with their sections and full
-files, and keyword-scanned scope statements. Blinding was procedural
-rather than technical: ID keys and sealed model outputs were stored on
-the first author’s machine, and annotators were asked not to open them
-before submitting. Handbook v1.0 was frozen before annotation; a 20-item
-calibration round (six authored practice items with feedback) preceded
-the evaluation packet. The third author adjudicated disagreements,
-seeing both judgments without names. Order controls were not annotated;
-each inherits its parent’s final label after a human check that only the
-order changed.</p>
+heading, so outer headings of its original file are lost; no human has
+yet checked whether this changes meaning. Each original also has an
+<em>order control</em> that only swaps the presentation order of the two
+instructions. Variants and controls are constructed material and are
+reported separately from originals.</p>
+<p><strong>Annotation protocol (prepared, not yet carried out).</strong>
+A frozen handbook (v1.0) and a standalone offline tool support two
+independent annotators and an adjudicator: each annotator receives a
+separately randomized packet with opaque item IDs, without predictions,
+strata, or transformation notes, and sees the task, target, profile, the
+AGENTS.md paths with the target’s directory chain marked, both spans
+with their sections and full files, and keyword-scanned scope
+statements. A 20-item calibration packet (six authored practice items
+with feedback) precedes the evaluation packet. These materials are
+released, but no human labels were collected for this submission, so RQ1
+is not answered here and no agreement statistic is reported.</p>
 </section>
 <section id="sec:methods" class="level1">
 <h1>Methods and Setup</h1>
@@ -192,8 +220,8 @@ case; it yields a binary flag and is scored only on conflict detection.
 <strong>B1</strong> is a direct contextual model: one call receives the
 evidence packet (task, target, commit, all AGENTS.md paths, both spans
 with line-numbered sections, and the scope statements), the full
-profile, the label definitions, and the decision sequence. Unlike the
-annotators, the models saw neither the full files nor the chain marking.
+profile, the label definitions, and the decision sequence, but neither
+the full files nor the chain marking that the annotation tool shows.
 <strong>B2</strong>, the CIPHER pipeline, uses the same model and
 packet. One call extracts, for each instruction, its requirement,
 regulated decision, modality, explicit condition, and whether that
@@ -208,9 +236,10 @@ by one self-review call over the same evidence.</p>
 <p>All model arms used the open-weight Qwen3.6-35B-A3B <span
 class="citation" data-cites="qwen36"><a href="#ref-qwen36"
 role="doc-biblioref">[14]</a></span> (35B parameters, 3B active; Q4_K_M
-quantization, Ollama digest a7eb95c5) on one local GPU with thinking
-enabled and the model card’s recommended settings for precise coding
-tasks (temperature 0.6,
+quantization, Ollama digest a7eb95c5; served by Ollama 0.40.6,
+auto-updated to 0.40.7 before the last four B2 cases and the B1R run) on
+one laptop GPU with thinking enabled and the model card’s recommended
+settings for precise coding tasks (temperature 0.6,
 top-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 0.95,
 top-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
@@ -223,37 +252,111 @@ prompt was unchanged). Before any held-out output was inspected, an
 independent code review found that the header of the scope-statement
 block implied all listed files were loaded; it was corrected for every
 arm, all held-out runs were repeated, and the superseded runs were never
-opened. The profile, handbook, case manifest, prompts, schemas, retry
-policy, analysis code, and analysis plan were frozen by hash before the
-held-out runs whose predictions are reported, and those predictions
-stayed sealed until the reference labels were final. The primary outcome
-is five-class macro-F1 on originals (B2 versus B1) over classes present
-in the reference; abstentions and failures count as incorrect.</p>
+opened. The profile, handbook, case manifest, prompts, schemas, and
+retry policy were frozen by hash before the reported held-out runs,
+which stayed sealed until the analysis below was frozen. The planned
+primary outcome, five-class macro-F1 against human labels, could not be
+computed; a plan addendum written before the predictions were opened
+defines the reported analysis.</p>
 </section>
 <section id="sec:results" class="level1">
 <h1>Results</h1>
-<p><strong>Pending.</strong> Human reference labels are not final, so no
-accuracy is reported. Held-out model runs are sealed.</p>
+<p><strong>Reference without human labels.</strong> Human labeling was
+not carried out for this submission, and no model output substitutes for
+it. Accuracy is therefore reported only where P1 alone fixes the label:
+26 cases (5 originals, 16 target-path variants, 5 order controls) in
+which one instruction’s file is not on the target’s directory chain, so
+that instruction is not loaded and the label is <em>Disjoint
+applicability</em>. B2 computes the loaded set in code, so on these
+cases it is correct by construction unless extraction fails; the open
+question is whether B1 and B0 also get them right. All other measures in
+Table <a href="#tab:results" data-reference-type="ref"
+data-reference="tab:results">[tab:results]</a> need no reference. This
+analysis was defined and frozen by hash before the sealed predictions
+were opened.</p>
+<p><strong>Directory scope (RQ2, determined subset).</strong> B1, B2,
+and B1R each labeled all 21 profile-determined originals and variants
+correctly (0 cases favored B2 and 0 favored B1), so the direct model
+inferred directory applicability from the paths and the profile text
+without a deterministic step. B0, which ignores scope, flagged 2 of the
+26 cases as conflicts: one ESM/CommonJS keyword match between two
+unrelated packages, in the original and in its order control. For this
+model, the determined subset does not support the hypothesis that
+explicit structure is needed to handle directory scope.</p>
+<figure id="fig:labels">
+<img src="figures/labels.svg" />
+<figcaption>Predicted labels per model arm on the 27 originals and 27
+variants (counts; not accuracy). No arm predicted <em>Unresolved
+conflict</em>, <em>Valid override</em>, or <em>Insufficient
+evidence</em>.</figcaption>
+</figure>
+<p><strong>Label-free comparison.</strong> No model arm labeled any
+original or variant an unresolved conflict or a valid override; every
+prediction was <em>Compatible</em> or <em>Disjoint</em> (Fig. <a
+href="#fig:labels" data-reference-type="ref"
+data-reference="fig:labels">1</a>), while B0 flagged 2 of the 54. The
+challenge-oriented retrieval thus surfaced lexically similar pairs that
+the models judged non-conflicting. The arms differ on the boundary
+between compatibility and condition-limited applicability: on originals
+B2 chose <em>Disjoint</em> 18 times and B1 15 times; B1 and B2 agreed on
+22 of 27 originals (Cohen’s
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>κ</mi><mo>=</mo><mn>0.62</mn></mrow><annotation encoding="application/x-tex">\kappa = 0.62</annotation></semantics></math>)
+and 23 of 27 variants
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>κ</mi><mo>=</mo><mn>0.53</mn></mrow><annotation encoding="application/x-tex">\kappa = 0.53</annotation></semantics></math>).
+The first non-determined original on which they disagree (by the
+declared selection rule) pairs a root rule “use <code>Protocol</code>
+for decoupling” with a nested rule “avoid <code>TYPE_CHECKING</code>”,
+both Python-specific, for a TypeScript target. B1 treated both rules as
+inactive; B2’s extraction found no explicit condition and returned
+<em>Compatible</em>. Which reading is right is a judgment about implicit
+applicability that P1 does not settle and that human labels must
+resolve.</p>
+<p><strong>Stability and sensitivity (RQ3).</strong> Swapping only the
+order of the two instructions changed the label in four of 27 controls
+for each model arm (23, 23, and 23 unchanged for B1, B2, and B1R),
+although all 5 determined controls stayed correct. All 16 target-path
+variants, which move the target out of the nested file’s directory, were
+labeled <em>Disjoint</em> by every arm; the label differed from the
+original’s in 8 (B1), 7 (B2), and 11 (B1R) cases, because many originals
+were already judged inactive by condition. Placement variants changed
+B2’s label 1 time and B1’s 5 times out of 11; without reference labels
+we cannot say which changes are correct.</p>
+<p><strong>Cost.</strong> No arm had a failure, retry, or malformed
+output. B2 averaged 1.26 calls and 3589 output tokens per case, against
+1.00 and 2177 for B1; the equal-call control B1R (3960 tokens) changed
+its first answer in 1 of 81 cases. Latency is not compared because the
+GPU was shared with another process for part of the runs.</p>
 </section>
 <section id="sec:threats" class="level1">
 <h1>Threats to Validity</h1>
-<p>The sample is small (27 originals from eight repositories) and
-challenge-oriented, so class supports are uneven and some labels are
-rare; interval estimates over eight repository clusters are descriptive.
-Tasks were authored from templates, and variants are constructed, so
-neither represents observed agent sessions. The annotators are authors,
-which risks shared assumptions, and blinding was procedural;
-independence and adjudication reduce but do not remove this. Annotators
-saw more context than the models (full files and the chain marking),
-which favors the reference over every model arm equally. One profile and
-one quantized open-weight model limit generalization, and public
-repositories may appear in its training data. Results concern
-classification under P1, not whether agents follow instructions or
-produce better code.</p>
+<p>Without human labels, accuracy is measured only on the
+profile-determined subset, which B2 solves by construction and which
+proved easy for the direct model; the semantic question of
+condition-based and implicit applicability remains unmeasured, and
+agreement between methods is not accuracy. The sample is small (27
+originals from eight repositories) and challenge-oriented, so it cannot
+estimate how often conflicts occur; the absence of predicted conflicts
+may reflect the retrieval as much as the repositories. Tasks were
+authored from templates, and variants and controls are constructed. One
+profile and one quantized open-weight model, run on a laptop GPU whose
+runtime received a patch update during the runs, limit generalization,
+and public repositories may appear in the model’s training data. Results
+concern classification under P1, not whether agents follow instructions
+or produce better code.</p>
 </section>
 <section id="sec:conclusion" class="level1">
 <h1>Conclusion</h1>
-<p>Pending.</p>
+<p>CIPHER contributes a task definition, a traceable set of real
+AGENTS.md instruction pairs with controlled variants, and a blinded
+annotation protocol. In this preliminary evaluation without human
+labels, a local open-weight model given the full evidence resolved
+directory scope as reliably as a pipeline that computes it explicitly,
+and at lower cost, whereas a scope-blind keyword heuristic raised false
+alarms; none of the mined pairs was judged a genuine conflict. The open
+problem is condition-based and implicit applicability, where the methods
+disagree and an order swap alone alters some predictions. Collecting
+independent human labels for those cases, and testing other models and
+loading profiles, are the next steps.</p>
 </section>
 <section id="acknowledgment" class="level1 unnumbered">
 <h1 class="unnumbered">Acknowledgment</h1>
@@ -265,10 +368,11 @@ build. Anthropic Claude (Opus 5.5, via Claude Code) audited the related
 work against primary sources, wrote the software for sampling, case
 construction, the annotation tool, the model arms, and the analysis, ran
 all experiments, and drafted the text of every section, the tables, and
-the figure of this version under the authors’ direction. Neither system
-produced any reference label: the annotations and the adjudication are
-the authors’ own. Qwen3.6-35B-A3B is the system under evaluation. The
-authors reviewed the manuscript and are responsible for its content.</p>
+the figure of this version under the authors’ direction. No human
+annotation was performed for this version, and no AI output was used as
+a reference label; the only reference is computed from file paths under
+P1. Qwen3.6-35B-A3B is the system under evaluation. The authors reviewed
+the manuscript and are responsible for its content.</p>
 </section>
 <section id="references" class="level1 unnumbered">
 <h1 class="unnumbered">References</h1>

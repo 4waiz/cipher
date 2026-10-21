@@ -1,0 +1,33 @@
+{
+ "unlocked_at": "2026-10-21T17:14:59+00:00",
+ "mode": "label-free: no human reference labels exist (analysis plan addendum A2)",
+ "analysis_code_sha256": {
+  "analysis/labelfree.py": "6ee32682c02918ded8856197a23c8d2a312a1a3b90647ed8e6b92c32ae59328b",
+  "src/cipher/metrics.py": "79890247041e881d8e42b9a852a514a03f75858f1b6942a8a91bd71d95fd5406",
+  "src/cipher/profile.py": "fa230bde257d3f40560c482446a56782f879557691a607f652a61c337b6b06c0",
+  "src/cipher/unlock_labelfree.py": "f71e34dd541bcb8943f3395f6513ba8e122cfcf238763ca4719dbe26f46ab62a",
+  "docs/analysis_plan.md": "3ee733a849370b81ff7bc0fcae190c7c5c10ff3e4143bae6d18d725c7a40ce09"
+ },
+ "runs": {
+  "B0": {
+   "run_id": "heldout-v2-B0",
+   "predictions_sha256": "9e1fec7af7c3155150c6a44e0128c77bb3a2d1347aa9a62c9d9ea5dc7f31ab6d",
+   "records": 81
+  },
+  "B1": {
+   "run_id": "heldout-v2-B1",
+   "predictions_sha256": "13df1cfdcd03b82d895698075202721a8c995bb5e352a19a80682307ff6a03fa",
+   "records": 81
+  },
+  "B2": {
+   "run_id": "heldout-v2-B2",
+   "predictions_sha256": "af1767f9deef6d65e5a896ff14feca63bc844cf62402f319695205a6a564e77c",
+   "records": 81
+  },
+  "B1R": {
+   "run_id": "heldout-v2-B1R",
+   "predictions_sha256": "43889de6f7c38f2d12fee2ed09266ed83aacc6f2dced22d8a2558be50519dc8c",
+   "records": 81
+  }
+ }
+}

@@ -1,0 +1,10 @@
+# Revised abstract for EasyChair Submission 162 (draft for the authors' review; not entered online)
+
+The abstract registered on 18 October 2026 is preserved unchanged in
+`docs/archive/proposal-2026-10-18/CIPHER_Abstract.txt`. It described planned work with human annotators. The
+revised text below matches manuscript version 1.0.0 (248 words). Paste it into EasyChair only if all
+authors agree; the title and keywords are unchanged.
+
+## Revised abstract (plain text)
+
+Repository instruction files such as AGENTS.md guide AI coding agents, and a nested file may legitimately refine or replace guidance from its ancestors, so an apparent disagreement is not necessarily a defect. CIPHER defines a task-conditioned classification of instruction pairs under a declared directory-precedence profile into five labels: unresolved conflict, valid override, disjoint applicability, compatible, and insufficient evidence. From a public configuration dataset we built a traceable pilot set of 27 real instruction pairs from eight repositories at pinned commits, each with a context-changing variant and an order control, and a blinded annotation protocol. Human reference labels have not yet been collected, so this short paper reports a preliminary analysis, frozen by hash before predictions were opened, that needs none: accuracy on the 21 originals and variants whose label the profile fixes from file paths, and label-free measures elsewhere. With one local open-weight model, a direct prompt given the full evidence and a structured pipeline that computes applicability and precedence explicitly were both correct on all 21 profile-determined cases, whereas a keyword heuristic flagged 2 of 26 such cases as conflicts. No model judged any original or variant to be an unresolved conflict; the methods disagreed mainly on condition-based applicability, and swapping only the order of the two instructions changed 4 of 27 predictions for each model arm. The structured pipeline used more output tokens than the direct prompt (3589 versus 2177 per case) without a measurable gain. Human labels for the semantic cases are the next step.

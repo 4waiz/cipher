@@ -1,13 +1,331 @@
 {
- "available": false,
- "reason": "Human reference labels are not final, so no accuracy is reported. Held-out model runs are sealed.",
- "tables": [],
- "figures": [],
+ "available": true,
+ "reason": "",
+ "tables": [
+  {
+   "id": "summary",
+   "title": "Results without human labels",
+   "caption": "Profile-determined (PD) cases have one instruction file off the target's directory chain, so P1 fixes the label (Disjoint applicability); B2 computes this in code. Other columns need no reference label.",
+   "columns": [
+    "Method",
+    "Profile-determined correct (originals + variants)",
+    "False conflicts on profile-determined",
+    "Called 'Unresolved conflict' (originals + variants)",
+    "Order controls: same prediction",
+    "Target-path variants: prediction changed",
+    "Placement variants: prediction changed",
+    "Calls per case",
+    "Mean output tokens"
+   ],
+   "rows": [
+    [
+     "B0",
+     null,
+     "2/26",
+     "2/54",
+     null,
+     null,
+     null,
+     0.0,
+     0
+    ],
+    [
+     "B1",
+     "21/21",
+     "0/26",
+     "0/54",
+     "23/27",
+     "8/16",
+     "5/11",
+     1.0,
+     2177
+    ],
+    [
+     "B2",
+     "21/21",
+     "0/26",
+     "0/54",
+     "23/27",
+     "7/16",
+     "1/11",
+     1.26,
+     3589
+    ],
+    [
+     "B1R",
+     "21/21",
+     "0/26",
+     "0/54",
+     "23/27",
+     "11/16",
+     "3/11",
+     2.0,
+     3960
+    ]
+   ],
+   "notes": "PD cases: 21 originals and variants, 26 including order controls."
+  },
+  {
+   "id": "distribution",
+   "title": "Predicted labels per method and stratum",
+   "caption": "Counts of predicted labels; None = abstention or failure. Not accuracy.",
+   "columns": [
+    "Method",
+    "Stratum",
+    "Conflict",
+    "Override",
+    "Disjoint",
+    "Compatible",
+    "Insufficient",
+    "None"
+   ],
+   "rows": [
+    [
+     "B1",
+     "original",
+     0,
+     0,
+     15,
+     12,
+     0,
+     0
+    ],
+    [
+     "B1",
+     "context_variant",
+     0,
+     0,
+     20,
+     7,
+     0,
+     0
+    ],
+    [
+     "B1",
+     "order_control",
+     0,
+     0,
+     11,
+     16,
+     0,
+     0
+    ],
+    [
+     "B2",
+     "original",
+     0,
+     0,
+     18,
+     9,
+     0,
+     0
+    ],
+    [
+     "B2",
+     "context_variant",
+     0,
+     0,
+     24,
+     3,
+     0,
+     0
+    ],
+    [
+     "B2",
+     "order_control",
+     0,
+     0,
+     18,
+     9,
+     0,
+     0
+    ],
+    [
+     "B1R",
+     "original",
+     0,
+     0,
+     12,
+     15,
+     0,
+     0
+    ],
+    [
+     "B1R",
+     "context_variant",
+     0,
+     0,
+     20,
+     7,
+     0,
+     0
+    ],
+    [
+     "B1R",
+     "order_control",
+     0,
+     1,
+     15,
+     11,
+     0,
+     0
+    ]
+   ],
+   "notes": ""
+  },
+  {
+   "id": "agreement",
+   "title": "Agreement between methods",
+   "caption": "Agreement between systems, not with a reference.",
+   "columns": [
+    "Pair",
+    "Stratum",
+    "n",
+    "Same label",
+    "Cohen's kappa"
+   ],
+   "rows": [
+    [
+     "B1-B2",
+     "original",
+     27,
+     22,
+     0.615
+    ],
+    [
+     "B1-B2",
+     "context_variant",
+     27,
+     23,
+     0.526
+    ],
+    [
+     "B1-B1R",
+     "original",
+     27,
+     24,
+     0.78
+    ],
+    [
+     "B1-B1R",
+     "context_variant",
+     27,
+     23,
+     0.614
+    ],
+    [
+     "B2-B1R",
+     "original",
+     27,
+     19,
+     0.429
+    ],
+    [
+     "B2-B1R",
+     "context_variant",
+     27,
+     23,
+     0.526
+    ]
+   ],
+   "notes": ""
+  },
+  {
+   "id": "execution",
+   "title": "Execution and cost",
+   "caption": "Latency is not comparable across methods (shared GPU and a runtime patch update during the runs).",
+   "columns": [
+    "Method",
+    "Cases",
+    "Missing",
+    "Failures",
+    "Abstentions",
+    "Malformed attempts",
+    "Truncated attempts",
+    "API errors",
+    "Retries",
+    "Calls",
+    "Mean input tokens",
+    "Mean output tokens",
+    "Mean latency (s)"
+   ],
+   "rows": [
+    [
+     "B0",
+     81,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0.0
+    ],
+    [
+     "B1",
+     81,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     81,
+     2422,
+     2177,
+     51.2
+    ],
+    [
+     "B2",
+     81,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     102,
+     2140,
+     3589,
+     51.2
+    ],
+    [
+     "B1R",
+     81,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     162,
+     4965,
+     3960,
+     58.9
+    ]
+   ],
+   "notes": ""
+  }
+ ],
+ "figures": [
+  {
+   "id": "labels",
+   "title": "Predicted labels",
+   "caption": "Predicted-label distribution per method on originals and variants (not accuracy).",
+   "path": "figures/labels.svg"
+  }
+ ],
  "limitations": [
-  "Small, challenge-oriented sample from eight repositories; it cannot estimate how often conflicts occur.",
-  "Tasks are researcher-authored templates; variants and order controls are constructed material.",
-  "Annotators are the paper's authors; one adjudicator.",
-  "One declared loading profile (P1) and one quantized local model.",
-  "Classification under P1 only; no claim about agent behaviour or code quality."
+  "No human reference labels: accuracy is reported only where profile P1 fixes the label (26 cases).",
+  "B2 computes path applicability in code, so its profile-determined accuracy reflects structure, not semantic judgement.",
+  "Small, challenge-oriented sample from eight repositories; tasks are researcher-authored; variants and controls are constructed.",
+  "One declared profile and one quantized local model."
  ]
 }

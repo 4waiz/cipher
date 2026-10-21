@@ -1,0 +1,323 @@
+{
+ "mode": "label-free (analysis plan addendum A2); no human reference labels",
+ "n": {
+  "original": 27,
+  "context_variant": 27,
+  "order_control": 27
+ },
+ "pd": {
+  "all": 26,
+  "main": 21,
+  "by_stratum": {
+   "context_variant": 16,
+   "original": 5,
+   "order_control": 5
+  }
+ },
+ "methods": {
+  "B0": {
+   "pd_false_conflicts": {
+    "k": 2,
+    "n": 26
+   },
+   "called_conflict": {
+    "original": {
+     "k": 1,
+     "n": 27
+    },
+    "context_variant": {
+     "k": 1,
+     "n": 27
+    },
+    "order_control": {
+     "k": 1,
+     "n": 27
+    }
+   },
+   "execution": {
+    "cases": 81,
+    "missing": 0,
+    "calls": 0,
+    "retries": 0,
+    "bad_outputs": 0,
+    "truncated": 0,
+    "api_errors": 0,
+    "mean_in": 0,
+    "mean_out": 0,
+    "mean_latency_s": 0.0
+   }
+  },
+  "B1": {
+   "pd_false_conflicts": {
+    "k": 0,
+    "n": 26
+   },
+   "called_conflict": {
+    "original": {
+     "k": 0,
+     "n": 27
+    },
+    "context_variant": {
+     "k": 0,
+     "n": 27
+    },
+    "order_control": {
+     "k": 0,
+     "n": 27
+    }
+   },
+   "pd_correct_main": {
+    "k": 21,
+    "n": 21
+   },
+   "pd_breakdown": {
+    "Disjoint": 21
+   },
+   "distribution": {
+    "original": {
+     "Compatible": 12,
+     "Disjoint": 15
+    },
+    "context_variant": {
+     "Disjoint": 20,
+     "Compatible": 7
+    },
+    "order_control": {
+     "Compatible": 16,
+     "Disjoint": 11
+    }
+   },
+   "order_stable": {
+    "k": 23,
+    "n": 27
+   },
+   "order_pd_both_correct": {
+    "k": 5,
+    "n": 5
+   },
+   "target_variants": {
+    "correct": 16,
+    "changed": 8,
+    "n": 16
+   },
+   "placement_variants": {
+    "changed": 5,
+    "n": 11
+   },
+   "abstained": 0,
+   "failed": 0,
+   "execution": {
+    "cases": 81,
+    "missing": 0,
+    "calls": 81,
+    "retries": 0,
+    "bad_outputs": 0,
+    "truncated": 0,
+    "api_errors": 0,
+    "mean_in": 2422,
+    "mean_out": 2177,
+    "mean_latency_s": 51.2
+   }
+  },
+  "B2": {
+   "pd_false_conflicts": {
+    "k": 0,
+    "n": 26
+   },
+   "called_conflict": {
+    "original": {
+     "k": 0,
+     "n": 27
+    },
+    "context_variant": {
+     "k": 0,
+     "n": 27
+    },
+    "order_control": {
+     "k": 0,
+     "n": 27
+    }
+   },
+   "pd_correct_main": {
+    "k": 21,
+    "n": 21
+   },
+   "pd_breakdown": {
+    "Disjoint": 21
+   },
+   "distribution": {
+    "original": {
+     "Compatible": 9,
+     "Disjoint": 18
+    },
+    "context_variant": {
+     "Disjoint": 24,
+     "Compatible": 3
+    },
+    "order_control": {
+     "Compatible": 9,
+     "Disjoint": 18
+    }
+   },
+   "order_stable": {
+    "k": 23,
+    "n": 27
+   },
+   "order_pd_both_correct": {
+    "k": 5,
+    "n": 5
+   },
+   "target_variants": {
+    "correct": 16,
+    "changed": 7,
+    "n": 16
+   },
+   "placement_variants": {
+    "changed": 1,
+    "n": 11
+   },
+   "abstained": 0,
+   "failed": 0,
+   "execution": {
+    "cases": 81,
+    "missing": 0,
+    "calls": 102,
+    "retries": 0,
+    "bad_outputs": 0,
+    "truncated": 0,
+    "api_errors": 0,
+    "mean_in": 2140,
+    "mean_out": 3589,
+    "mean_latency_s": 51.2
+   }
+  },
+  "B1R": {
+   "pd_false_conflicts": {
+    "k": 0,
+    "n": 26
+   },
+   "called_conflict": {
+    "original": {
+     "k": 0,
+     "n": 27
+    },
+    "context_variant": {
+     "k": 0,
+     "n": 27
+    },
+    "order_control": {
+     "k": 0,
+     "n": 27
+    }
+   },
+   "pd_correct_main": {
+    "k": 21,
+    "n": 21
+   },
+   "pd_breakdown": {
+    "Disjoint": 21
+   },
+   "distribution": {
+    "original": {
+     "Compatible": 15,
+     "Disjoint": 12
+    },
+    "context_variant": {
+     "Disjoint": 20,
+     "Compatible": 7
+    },
+    "order_control": {
+     "Compatible": 11,
+     "Disjoint": 15,
+     "Override": 1
+    }
+   },
+   "order_stable": {
+    "k": 23,
+    "n": 27
+   },
+   "order_pd_both_correct": {
+    "k": 5,
+    "n": 5
+   },
+   "target_variants": {
+    "correct": 16,
+    "changed": 11,
+    "n": 16
+   },
+   "placement_variants": {
+    "changed": 3,
+    "n": 11
+   },
+   "abstained": 0,
+   "failed": 0,
+   "execution": {
+    "cases": 81,
+    "missing": 0,
+    "calls": 162,
+    "retries": 0,
+    "bad_outputs": 0,
+    "truncated": 0,
+    "api_errors": 0,
+    "mean_in": 4965,
+    "mean_out": 3960,
+    "mean_latency_s": 58.9
+   },
+   "review_changed": {
+    "k": 1,
+    "n": 81
+   }
+  }
+ },
+ "agreement": {
+  "B1-B2:original": {
+   "n": 27,
+   "agree": 22,
+   "kappa": 0.6153846153846153
+  },
+  "B1-B2:context_variant": {
+   "n": 27,
+   "agree": 23,
+   "kappa": 0.5263157894736843
+  },
+  "B1-B1R:original": {
+   "n": 27,
+   "agree": 24,
+   "kappa": 0.7804878048780487
+  },
+  "B1-B1R:context_variant": {
+   "n": 27,
+   "agree": 23,
+   "kappa": 0.6142857142857143
+  },
+  "B2-B1R:original": {
+   "n": 27,
+   "agree": 19,
+   "kappa": 0.4285714285714286
+  },
+  "B2-B1R:context_variant": {
+   "n": 27,
+   "agree": 23,
+   "kappa": 0.5263157894736843
+  }
+ },
+ "primary": {
+  "b2_correct": 21,
+  "b1_correct": 21,
+  "n": 21,
+  "b2_only": 0,
+  "b1_only": 0
+ },
+ "illustrative": {
+  "first PD case B1 gets wrong": null,
+  "first non-PD original where B1 and B2 disagree": {
+   "case_id": "E102",
+   "repo": "marin-community/marin",
+   "relation": "ancestor_descendant",
+   "B1": "Disjoint applicability",
+   "B2": "Compatible",
+   "B1R": "Disjoint applicability",
+   "B0": false
+  }
+ }
+}

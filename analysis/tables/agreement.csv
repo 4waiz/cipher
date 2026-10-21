@@ -1,0 +1,7 @@
+Pair,Stratum,n,Same label,Cohen's kappa
+B1-B2,original,27,22,0.615
+B1-B2,context_variant,27,23,0.526
+B1-B1R,original,27,24,0.78
+B1-B1R,context_variant,27,23,0.614
+B2-B1R,original,27,19,0.429
+B2-B1R,context_variant,27,23,0.526

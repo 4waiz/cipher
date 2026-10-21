@@ -1,0 +1,5 @@
+Method,Cases,Missing,Failures,Abstentions,Malformed attempts,Truncated attempts,API errors,Retries,Calls,Mean input tokens,Mean output tokens,Mean latency (s)
+B0,81,0,0,0,0,0,0,0,0,0,0,0.0
+B1,81,0,0,0,0,0,0,0,81,2422,2177,51.2
+B2,81,0,0,0,0,0,0,0,102,2140,3589,51.2
+B1R,81,0,0,0,0,0,0,0,162,4965,3960,58.9

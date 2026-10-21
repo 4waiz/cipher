@@ -54,7 +54,7 @@ def html_fragment() -> str:
     for inc in re.findall(r"\\input\{([^}]+)\}", body):
         f = HERE / (inc if inc.endswith(".tex") else inc + ".tex")
         body = body.replace(f"\\input{{{inc}}}", f.read_text(encoding="utf-8"))
-    body = body.replace("\\resultstrue", "").replace("\\resultsfalse", "")
+    body = body.replace("\\resultstrue", "").replace("\\resultsfalse", "").replace("build/figures/", "figures/")
     body = re.sub(r"\\ifanon.*?\\else(.*?)\\fi", r"\1", body, flags=re.S)
     body = re.sub(r"\\title\{.*?\}\n", "", body)
     body = re.sub(r"\\author\{.*?\n\}?\n\n", "", body, flags=re.S)
@@ -81,11 +81,15 @@ def render_pages(p: Path, tag: str) -> int:
 
 
 def abstract_text() -> str:
-    gen = (HERE / "generated" / "results.tex").read_text(encoding="utf-8")
-    m = re.search(r"\\newcommand\{\\AbstractText\}\{(.*?)\}\n", gen, flags=re.S)
+    """Plain-text abstract with generated macros expanded (empty while results are pending)."""
     import pypandoc
-    return pypandoc.convert_text(m.group(1) if m else "", "plain", format="latex",
-                                 extra_args=["--wrap=none"]).strip() if m else ""
+    res = (HERE / "generated" / "results.tex").read_text(encoding="utf-8")
+    src = HERE / "prose" / "abstract.tex"
+    if "\\resultstrue" not in res or not src.exists():
+        return ""
+    macros = (HERE / "generated" / "corpus.tex").read_text(encoding="utf-8") + res.replace("\\resultstrue", "")
+    return pypandoc.convert_text(macros + "\n" + src.read_text(encoding="utf-8"), "plain", format="latex",
+                                 extra_args=["--wrap=none"]).strip()
 
 
 def main() -> None:

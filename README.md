@@ -26,9 +26,16 @@ incompatibility check), and B1R (an equal-call self-review control), all with on
 
 ## Status
 
-See `docs/PROGRESS.md` for the current state. Human reference labels come only from the authors' independent
-annotations and adjudication; held-out model predictions stay sealed (`runs/sealed/`, not committed) until the labels
-are final. No accuracy number is reported without final human labels. This is a small pilot; see Limitations.
+Version 1.0.0 (21 October 2026): preliminary results **without human labels**. The human annotation protocol and tool
+are released (`annotations/`), but no human labels were collected for this submission. Accuracy is reported only for
+the 26 profile-determined cases, whose label profile P1 fixes from file paths (Disjoint applicability); everything else
+is label-free (label distributions, agreement between methods, order stability, context sensitivity, cost). See
+`docs/analysis_plan.md` (addendum A2) and `docs/freeze.md`. This is a small pilot; see Limitations.
+
+Main findings: B1, B2 and B1R were correct on all 21 profile-determined originals and variants; B0 flagged 2 of 26 such
+cases as conflicts; no model called any original or variant an unresolved conflict; swapping only the instruction order
+changed 4 of 27 predictions for each model arm; B2 used 1.26 calls and 3,589 output tokens per case against 1 and 2,177
+for B1.
 
 ## Repository layout
 
@@ -61,7 +68,7 @@ uv pip install --python .venv -e ".[dev]" pypandoc_binary==1.15
 
 ```bash
 .venv/bin/python analysis/corpus_stats.py        # corpus macros and corpus.json
-.venv/bin/python analysis/results.py             # metrics, tables, figure, site exports from saved runs and labels
+.venv/bin/python analysis/labelfree.py           # reported analysis: metrics, tables, figure, site exports from saved runs
 .venv/bin/python paper/build.py                  # named and anonymous PDFs, HTML fragment, page renders
 .venv/bin/python site/build.py                   # static site in site/dist/
 ```
@@ -86,7 +93,7 @@ uv pip install --python .venv -e ".[dev]" pypandoc_binary==1.15
 Each run writes `predictions.jsonl` and `run_manifest.json` (model digest before and after, decoding settings,
 prompt hashes, code commit, package versions, token counts, latency, retries, failures).
 
-### Reference labels
+### Reference labels (for future human annotation; not used in version 1.0.0)
 
 ```bash
 .venv/bin/python -m cipher.reference status        # submissions received
@@ -103,7 +110,7 @@ stored as inert JSON and are never executed or followed.
 
 ## Limitations
 
-Small, challenge-oriented sample (8 evaluation repositories) that cannot estimate how often conflicts occur;
+No human reference labels yet. Small, challenge-oriented sample (8 evaluation repositories) that cannot estimate how often conflicts occur;
 researcher-authored tasks; constructed variants; annotators are the authors; one declared profile and one quantized
 model; classification only, no claim about agent behaviour or code quality.
 
@@ -111,7 +118,7 @@ model; classification only, no claim about agent behaviour or code quality.
 
 ChatGPT (OpenAI) helped draft the October 2026 proposal. Claude (Anthropic, Claude Code) implemented the pipeline,
 collected the corpus, built the annotation tools, ran the models, computed the analysis, and drafted the manuscript and
-website under the authors' direction. Neither system produced any human reference label. Details:
+website under the authors' direction. No human annotation was performed for v1.0.0 and no AI output is used as a reference label. Details:
 `docs/ai_assistance.md`.
 
 ## Citation

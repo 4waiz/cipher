@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Recorded cases &middot; CIPHER</title>
-<meta name="description" content="Replay of recorded CIPHER cases: source spans at pinned commits, the human reference label and saved method outputs.">
+<meta name="description" content="Replay of recorded CIPHER cases: source spans at pinned commits, the profile-determined reference label where the profile fixes it, and saved method outputs.">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,8 +35,8 @@
     <h1>Recorded cases</h1>
     <p class="notice">Recorded outputs from saved runs; nothing here calls a model.</p>
     <p class="provenance">
-      Rendered from <code class="code-inline">data/replay.json</code>. Each case shows the evidence an annotator
-      saw, the human reference label (solid badge) and the saved B0, B1 and B2 outputs (outlined badges).
+      Rendered from <code class="code-inline">data/replay.json</code>. Each case shows the task, target and source spans,
+      the reference label (solid badge) where profile P1 fixes it from file paths (no human labels have been collected), and the saved B0, B1 and B2 outputs (outlined badges).
       Source text comes from public repositories at a pinned commit and is shown as plain text.
     </p>
   </div>

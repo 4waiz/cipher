@@ -213,7 +213,8 @@
           <ul class="labels-list">
             <li><strong>B0 &middot; keyword heuristic</strong>A Ruleherd-style lexical check that outputs a binary conflict flag.</li>
             <li><strong>B1 &middot; direct contextual LLM</strong>A local model given the case evidence and asked for a label directly.</li>
-            <li><strong>B2 &middot; structured pipeline</strong>The same local model, run as a fixed sequence of structured steps instead of a single prompt.</li>
+            <li><strong>B2 &middot; structured pipeline</strong>The same model extracts each instruction's requirement, decision, modality and condition; code computes the loaded set and depth precedence; a second call checks incompatibility only when both rules stay active.</li>
+            <li><strong>B1R &middot; equal-call control</strong>B1 followed by one self-review call over the same evidence.</li>
           </ul>
         </div>
       </div>
@@ -236,7 +237,7 @@
         </article>
         <article class="panel output-card">
           <h3>Recorded cases</h3>
-          <p>Replay of saved cases: source spans at pinned commits, the human reference label and recorded B0/B1/B2 outputs.</p>
+          <p>Replay of saved cases: source spans at pinned commits, profile-determined reference labels where available, and recorded B0/B1/B2 outputs.</p>
           <p class="availability" id="avail-replay">Checking data/replay.json&hellip;</p>
           <a class="card-link" href="cases/index.html">Open recorded cases</a>
         </article>

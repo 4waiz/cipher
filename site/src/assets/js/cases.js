@@ -94,7 +94,7 @@
     ));
     labelSel = el("select", { id: "f-label" }, [option("all", "All reference labels (" + state.cases.length + ")", true)].concat(
       LABELS.map(function (l) { return option(l, l + " (" + countBy(function (c) { return refLabel(c) === l; }) + ")"); }),
-      [option(PENDING, "No reference label yet (" + countBy(function (c) { return refLabel(c) === null; }) + ")")]
+      [option(PENDING, "No reference label (" + countBy(function (c) { return refLabel(c) === null; }) + ")")]
     ));
     stratumSel.addEventListener("change", function () { state.stratum = stratumSel.value; renderList(); });
     labelSel.addEventListener("change", function () { state.label = labelSel.value; renderList(); });
@@ -127,7 +127,7 @@
         el("span", { class: "ctarget", text: str(c.target_path) }),
         el("span", { class: "crow" }, [
           el("span", { class: "chip", text: stratumName(c.stratum) }),
-          el("span", { class: "badge badge-ref badge-sm" + (ref ? "" : " is-pending"), text: ref ? "Ref: " + ref : "Ref: pending" }),
+          el("span", { class: "badge badge-ref badge-sm" + (ref ? "" : " is-pending"), text: ref ? "Ref: " + ref : "Ref: none" }),
           ref && diff.length ? el("span", { class: "cmp is-mismatch", text: diff.join(", ") + " differ" }) : null
         ])
       ])));
@@ -191,8 +191,8 @@
 
     return el("div", { class: "judgement reference" }, [
       el("div", { class: "jhead" }, [
-        el("span", { class: "badge badge-ref" + (label ? "" : " is-pending"), text: label || "Pending" }),
-        el("span", { class: "chip", text: "Human reference" + (ref.status ? " · " + str(ref.status) : "") })
+        el("span", { class: "badge badge-ref" + (label ? "" : " is-pending"), text: label || "None" }),
+        el("span", { class: "chip", text: "Reference" + (ref.status ? " · " + str(ref.status) : "") })
       ]),
       body.childNodes.length ? body : null
     ]);
@@ -279,13 +279,13 @@
     ]));
 
     detailEl.appendChild(el("section", { "aria-labelledby": "d-ref" }, [
-      el("h3", { id: "d-ref", text: "Human reference label" }),
+      el("h3", { id: "d-ref", text: "Reference label" }),
       referenceBlock(c)
     ]));
 
     detailEl.appendChild(el("section", { "aria-labelledby": "d-pred" }, [
       el("h3", { id: "d-pred", text: "Recorded method outputs" }),
-      ref ? null : el("p", { class: "note small", text: "No reference label yet, so outputs are not compared." }),
+      ref ? null : el("p", { class: "note small", text: "No reference label: profile P1 does not fix this case and no human labels exist, so outputs are not compared." }),
       el("div", { class: "judgements" }, METHODS.map(function (m) { return predictionBlock(m, preds[m] || null, ref); }))
     ]));
 

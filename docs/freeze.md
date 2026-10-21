@@ -81,3 +81,11 @@ No human labels will exist for this submission (author's decision, about 21:05).
 | `src/cipher/metrics.py` | 79890247041e881d8e42b9a852a514a03f75858f1b6942a8a91bd71d95fd5406 |
 | `src/cipher/profile.py` | fa230bde257d3f40560c482446a56782f879557691a607f652a61c337b6b06c0 |
 | `docs/analysis_plan.md` | 3ee733a849370b81ff7bc0fcae190c7c5c10ff3e4143bae6d18d725c7a40ce09 |
+
+## Freeze 4a: presentation-only change after unsealing (recorded 2026-10-21 21:18 Asia/Dubai)
+
+Figure 1 legend was clipped. `analysis/labelfree.py` changed only in `figure()` (legend placement; legend lists only labels that occur). `analysis/exports/metrics.json` is byte-identical before and after (verified with cmp).
+
+| File | SHA-256 |
+|---|---|
+| `analysis/labelfree.py` | 46eff913ccac61c7fe416e8c734b7c3e84ff3d71d4d2a68c5ccd2f330d6f84d1 |

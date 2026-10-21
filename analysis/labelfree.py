@@ -163,8 +163,10 @@ def figure(P, strata, cases) -> None:
     ax.set_xlabel("Cases (27 originals, 27 variants)")
     ax.set_xlim(0, 27)
     from matplotlib.patches import Patch
-    ax.legend(handles=[Patch(facecolor=c, edgecolor="black", linewidth=0.4, label=l) for l, c in zip(cats, shades)],
-              ncol=3, fontsize=5.5, loc="upper center", bbox_to_anchor=(0.5, 1.42), frameon=False)
+    used = {SHORT[(P[m].get(c) or {}).get("label")] for m, s in rows for c in strata[s]}
+    fig.legend(handles=[Patch(facecolor=c, edgecolor="black", linewidth=0.4, label=l)
+                        for l, c in zip(cats, shades) if l in used],
+               ncol=len(used), fontsize=6, loc="outside upper center", frameon=False)
     FIGS.mkdir(parents=True, exist_ok=True)
     fig.savefig(FIGS / "labels.pdf")
     fig.savefig(FIGS / "labels.svg")

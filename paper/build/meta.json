@@ -17,15 +17,15 @@
    "email": "Hudamueen2407@gmail.com"
   }
  ],
- "abstract": "",
- "version": "0.9.0",
+ "abstract": "Repository instruction files such as AGENTS.md guide AI coding agents, and a nested file may legitimately refine or replace guidance from its ancestors, so an apparent disagreement is not necessarily a defect. CIPHER defines a task-conditioned classification of instruction pairs under a declared directory-precedence profile into five labels: unresolved conflict, valid override, disjoint applicability, compatible, and insufficient evidence. From a public configuration dataset we built a traceable pilot set of 27 real instruction pairs from eight repositories at pinned commits, each with a context-changing variant and an order control, and a blinded annotation protocol. Human reference labels have not yet been collected, so this short paper reports a preliminary analysis, frozen by hash before predictions were opened, that needs none: accuracy on the 21 originals and variants whose label the profile fixes from file paths, and label-free measures elsewhere. With one local open-weight model, a direct prompt given the full evidence and a structured pipeline that computes applicability and precedence explicitly were both correct on all 21 profile-determined cases, whereas a keyword heuristic flagged 2 of 26 such cases as conflicts. No model judged any original or variant to be an unresolved conflict; the methods disagreed mainly on condition-based applicability, and swapping only the order of the two instructions changed 4 of 27 predictions for each model arm. The structured pipeline used more output tokens than the direct prompt (3589 versus 2177 per case) without a measurable gain. Human labels for the semantic cases are the next step.",
+ "version": "1.0.0",
  "date": "2026-10-21",
- "status": "Pilot study in progress: human reference labels pending",
+ "status": "Preliminary results without human labels (profile-determined subset and label-free measures)",
  "citation_bibtex": "@misc{ahmed2026cipher,\n  author = {Ahmed, Awaiz and Umar, Mohammad and Mueen, Huda},\n  title = {{CIPHER: Contextual Instruction Precedence and Hierarchy Evaluation for Repositories}},\n  year = {2026},\n  note = {Manuscript submitted to TEXTUAL 2027 (SANER 2027 workshop); under review},\n  url = {https://github.com/4waiz/cipher}\n}",
- "pdf_sha256": "475cf7ee5d6971fbd4ce0d488d392d561c924a816e45710434749e4edf59f1f3",
- "anonymous_pdf_sha256": "88e2c908e3a038ac9856ac376c6fefdb52e28d4147a9640e8cb77b0ea14f363d",
+ "pdf_sha256": "da2478d1a518f05f9aadfa1b401235f5a1446119232b39050e4faa708e2049fb",
+ "anonymous_pdf_sha256": "6662066ae10631517b4bebdfd76f675f65a38f6ad3c923a97f924e4df6d54adf",
  "pages": {
-  "named": 3,
-  "anonymous": 3
+  "named": 4,
+  "anonymous": 4
  }
 }

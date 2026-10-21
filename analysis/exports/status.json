@@ -1,6 +1,6 @@
 {
- "version": "0.9.0",
+ "version": "1.0.0",
  "date": "2026-10-21",
- "status_label": "Pilot study in progress: human reference labels pending",
- "results_available": false
+ "results_available": true,
+ "status_label": "Preliminary results without human labels (profile-determined subset and label-free measures)"
 }
