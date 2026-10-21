@@ -58,3 +58,10 @@ public artifact.**
 **D14 14:05. B2 extraction schema change before any held-out run: boolean `evidence_sufficient` replaced by enum
 `evidence_status` with the handbook's step-1 wording.** Calibration traces showed the boolean contradicting the model's
 own explanation in 5 of 14 cases. This corrects an interface defect; it was not fitted to reference labels (none existed).
+
+**D15 15:20. Freeze 3 and v2 re-run of all held-out arms.** The review's finding 1 (misleading scope-statement header in
+the model input) affects B1/B1R on 13 of 54 annotated cases, mostly target-path variants. Because no held-out
+prediction had been inspected, the input is corrected and every arm is re-run (v2) as the primary analysis; the v1 runs
+are preserved unopened as superseded and are not analysed. The annotators' packets, already issued, keep the old header;
+they also show the target's directory chain explicitly, so the effect on human judgments is expected to be small and is
+disclosed.

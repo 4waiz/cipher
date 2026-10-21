@@ -27,7 +27,20 @@ METHODS = {"B0": b0, "B1": b1, "B1R": b1r, "B2": b2}
 def git_state() -> dict:
     def g(*a: str) -> str:
         return subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-    return {"commit": g("rev-parse", "HEAD"), "dirty": bool(g("status", "--porcelain", "--", "src", "configs"))}
+    return {"commit": g("rev-parse", "HEAD"),
+            "dirty": bool(g("status", "--porcelain", "--", "src", "configs", "data", "docs/analysis_plan.md"))}
+
+
+CODE_FILES = ["src/cipher/profile.py", "src/cipher/methods.py", "src/cipher/llm.py", "src/cipher/run.py",
+              "src/cipher/practice.py", "data/cases/manifest.json"]
+
+
+def model_details(model: str) -> dict:
+    """Quantization and family as reported by the Ollama server (recorded, not trusted for identity: the digest is)."""
+    import requests
+    from .llm import OLLAMA
+    d = requests.post(f"{OLLAMA}/api/show", json={"model": model}, timeout=30).json().get("details", {})
+    return {k: d.get(k) for k in ("family", "parameter_size", "quantization_level", "format")}
 
 
 def sha(path) -> str:
@@ -69,7 +82,9 @@ def main() -> None:
         "run_id": args.run_id, "method": args.method, "split": args.split, "sealed": sealed,
         "started_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "model": None if args.method == "B0" else cfg.__dict__,
+        "model_details": None if args.method == "B0" else model_details(cfg.model),
         "prompts_sha256": {p.name: sha(p) for p in sorted(PROMPTS.glob("*.txt"))},
+        "code_sha256": {f: sha(ROOT / f) for f in CODE_FILES},
         "case_manifest_sha256": sha(ROOT / "data" / "cases" / "manifest.json"),
         "code": git_state(), "python": sys.version.split()[0], "platform": platform.platform(),
         "packages": {p: metadata.version(p) for p in ("requests", "numpy", "matplotlib")},
@@ -90,11 +105,13 @@ def main() -> None:
                 n_err += 1
             else:
                 n_ok += 1
-            status = "error" if res.get("error") else "ok"
-            shown = "" if sealed else f" -> {res.get('label', res.get('conflict_flag'))}"
-            print(f"{c['case_id']}: {status}{shown} calls={res.get('calls', 0)} "
-                  f"tok={res.get('input_tokens', 0)}/{res.get('output_tokens', 0)} {res.get('latency_s', 0)}s",
-                  flush=True)
+            if sealed:  # progress only: per-case calls or tokens could reveal B2's short-circuit outcomes
+                print(f"{n_ok + n_err + len(done)}/{len(cases)} done", flush=True)
+            else:
+                status = "error" if res.get("error") else "ok"
+                print(f"{c['case_id']}: {status} -> {res.get('label', res.get('conflict_flag'))} "
+                      f"calls={res.get('calls', 0)} tok={res.get('input_tokens', 0)}/{res.get('output_tokens', 0)} "
+                      f"{res.get('latency_s', 0)}s", flush=True)
     session.update(finished_at=datetime.now(timezone.utc).isoformat(timespec="seconds"), ok=n_ok, errors=n_err,
                    digest_after=None if args.method == "B0" else installed_digest(cfg.model))
     if session["digest_before"] != session["digest_after"]:

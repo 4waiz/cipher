@@ -45,11 +45,15 @@ def render_packet(case: dict) -> str:
                      f"Quoted instruction:\n{numbered(r['text'], r['start_line'])}\n"
                      f"Surrounding section ({r['path']} lines {r['section_first_line']}-{r['section_last_line']}):\n"
                      f"{numbered(r['section_text'], r['section_first_line'])}")
+    # The keyword scan covers the AGENTS.md files on the target's directory chain and the two instructions' own files,
+    # whether or not those are on the chain; the header must not claim that every listed file is loaded (Freeze 3).
+    head = ("Possible scope or precedence statements found by a keyword scan of the AGENTS.md files in the target's "
+            "directory or its ancestor directories and of the two files that contain the instructions (a file listed "
+            "here is not necessarily in force for the target)")
     if pk["scope_statements"]:
-        parts.append("Scope and precedence statements found in the loaded files:\n" +
-                     "\n".join(f"  {s['path']}:{s['line']} | {s['text']}" for s in pk["scope_statements"]))
+        parts.append(head + ":\n" + "\n".join(f"  {s['path']}:{s['line']} | {s['text']}" for s in pk["scope_statements"]))
     else:
-        parts.append("Scope and precedence statements found in the loaded files: none")
+        parts.append(head + ": none")
     return "\n\n".join(parts)
 
 

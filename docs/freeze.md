@@ -38,3 +38,22 @@ Freeze 2 recorded 2026-10-21 14:17 Asia/Dubai, before any held-out run:
 | `docs/analysis_plan.md` | d17d40d52e293240d3913416751dd46c89bbdeb511c772af871a6e3e4e1c1436 |
 | `docs/annotation_handbook.md` | 4ac46bf2c8ceb3f93fcf79ee2db2186e768b8602485e6a6fdfc5b39b3755f2e2 |
 | `data/cases/manifest.json` | 4ff2cc31b10d1f2f2d996468445eca32e9f32b334a98e73aaa57c03ec1e7f177 |
+
+## Freeze 3: corrected model input (recorded 2026-10-21 15:13 Asia/Dubai, before any held-out prediction was inspected)
+
+An independent AI review found that the evidence header claimed every scope statement came from "the loaded files", although the keyword scan also covers the two instructions' own files, which may be off the target's chain (13 of 54 annotated evaluation cases). The header was corrected in `render_packet`; sealed runs no longer print per-case call or token counts; run manifests now record code hashes and model quantization. The v1 held-out runs (B0 and B1 complete, B2 partial) were stopped, were never inspected, and are kept unopened in `runs/sealed/heldout-v1-*` as superseded. All arms are re-run as v2.
+
+| File | SHA-256 |
+|---|---|
+| `src/cipher/profile.py` | fa230bde257d3f40560c482446a56782f879557691a607f652a61c337b6b06c0 |
+| `src/cipher/methods.py` | b91e0d08c734646c3c219f3d51426e6b605b9f9218afc9b456e5f0d382c48089 |
+| `src/cipher/llm.py` | 1e1727a5b4ab838d13eccc65c5de53a40cbec8ca7ab6a1776f005c7a420bde1a |
+| `src/cipher/run.py` | a64021902b98223829df705723de1d7226d938d3519e4dff9673b4afb6038408 |
+| `src/cipher/metrics.py` | 79890247041e881d8e42b9a852a514a03f75858f1b6942a8a91bd71d95fd5406 |
+| `configs/prompts/common_guidance.txt` | 24558e679fbe8905b816678511e911505fcc05049a9eabeb9657e11b4b97d3b1 |
+| `configs/prompts/b1_system.txt` | 54bf4ee86bce75b691a91ce620ea82fdf24a55565db7ea1ed8b2d450962d16b3 |
+| `configs/prompts/b1r_review_system.txt` | 364901ada44ed7bfa8197598ea55420091f8e835f2b5be3717f8901119d14aed |
+| `configs/prompts/b2_extract_system.txt` | fb72bf2106e78cb5a9f2edfd3b3a5e769b64777cf4f5f98f8c4d94aeae83c524 |
+| `configs/prompts/b2_compare_system.txt` | 375464c29f2643f391538bb2c2e98ce07fa9ccd72486cefb892840e9b652215b |
+| `docs/annotation_handbook.md` | 4ac46bf2c8ceb3f93fcf79ee2db2186e768b8602485e6a6fdfc5b39b3755f2e2 |
+| `data/cases/manifest.json` | 4ff2cc31b10d1f2f2d996468445eca32e9f32b334a98e73aaa57c03ec1e7f177 |
