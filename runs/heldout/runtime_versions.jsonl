@@ -1,0 +1,4 @@
+{"run_id": "heldout-v2-B0/B1/B2(first 77 cases)", "segment_start": "2026-10-21T11:13:00Z", "ollama": {"version":"0.40.6"}, "note": "recorded at 13:05 and 13:35 local; auto-update to 0.40.7 happened after the 17:29 sleep"}
+{"run_id": "heldout-v2-B2", "segment_start": "2026-10-21T15:22:23Z", "ollama": {"version":"0.40.7"}}
+{"run_id": "heldout-v2-B1R", "segment_start": "2026-10-21T15:26:22Z", "ollama": {"version":"0.40.7"}}
+{"run_id": "secondary-v2-qwen35-9b-B1", "segment_start": "2026-10-21T16:46:07Z", "ollama": {"version":"0.40.7"}}
