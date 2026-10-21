@@ -131,9 +131,10 @@ deterministically. A second call, made only when both instructions remain active
 constrain the same decision incompatibly; fixed rules map the results to a label. Because B2 may use two calls,
 \textbf{B1R} adds an equal-call control: B1 followed by one self-review call over the same evidence.
 
-All model arms used Qwen3.6-35B-A3B~\cite{qwen36} (Q4\_K\_M, Ollama digest a7eb95c5) locally with thinking enabled,
-temperature 0.6, top-$p$ 0.95, top-$k$ 20, a fixed seed, JSON-schema-constrained output, and at most two retries with a
-changed seed. Each request contained only the method prompt and the evidence; no case identifier, stratum, or label. The
+All model arms used the open-weight Qwen3.6-35B-A3B~\cite{qwen36} (35B parameters, 3B active; Q4\_K\_M quantization,
+Ollama digest a7eb95c5) on one local GPU with thinking enabled and the model card's recommended settings for precise
+coding tasks (temperature 0.6, top-$p$ 0.95, top-$k$ 20), a fixed seed, JSON-schema-constrained output, and at most two
+retries with a changed seed. Each request contained only the method prompt and the evidence; no case identifier, stratum, or label. The
 profile, handbook, case manifest, prompts, schemas, retry policy, and analysis plan were frozen by hash before held-out
 runs, and held-out predictions stayed sealed until the reference labels were final. The primary outcome is five-class
 macro-F1 on originals (B2 versus B1) over classes present in the reference; abstentions and failures count as incorrect.

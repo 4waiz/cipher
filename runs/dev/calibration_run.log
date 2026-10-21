@@ -25,3 +25,10 @@ K202: ok -> Disjoint applicability calls=1 tok=2191/1796 33.16s
 K202v: ok -> Disjoint applicability calls=1 tok=2109/2019 50.59s
 K203: ok -> Disjoint applicability calls=1 tok=3377/1893 36.04s
 K203v: ok -> Disjoint applicability calls=1 tok=2515/2741 32.19s
+K204: ok -> Disjoint applicability calls=1 tok=2700/2669 31.54s
+K204v: ok -> Compatible calls=1 tok=2027/2229 26.66s
+done: ok=14 errors=0 -> C:\Users\awaiz\OneDrive\Desktop\CIPHER\cipher\runs\dev\dev1-B1-calibration
+K101: ok -> Disjoint applicability calls=1 tok=1119/3252 35.75s
+K101v: ok -> Disjoint applicability calls=1 tok=1059/3171 35.47s
+K102: ok -> Insufficient evidence calls=1 tok=995/3858 46.23s
+K102v: ok -> Insufficient evidence calls=1 tok=919/2934 35.33s
