@@ -2,7 +2,7 @@
 
 Resume point after any context reset. Update at every milestone.
 
-Last updated: 2026-10-21 15:35 Asia/Dubai
+Last updated: 2026-10-21 21:00 Asia/Dubai
 
 ## Hard dates
 
@@ -20,14 +20,14 @@ Last updated: 2026-10-21 15:35 Asia/Dubai
 | Human labels | **None received yet** (`python -m cipher.reference status`) |
 | Model | qwen3.6:35b-a3b via Ollama, digest a7eb95c5. gpt-oss:20b and gemma4 were removed from the machine during the session; do not rely on them |
 | Dev runs | practice: all arms; calibration: B0, B1, B2 (dev1, schema defect found), B2 dev2 (fixed); B1R calibration stopped early (unchanged prompt) |
-| Held-out runs | v1 superseded (stopped unopened after the review). Freeze 3 + 3b committed; v2 running since 15:13: B0 done, B1 in progress, then B2, B1R, secondary qwen3.5:9b (`runs/sealed/heldout_v2.log`, progress counts only). Slowed ~6x since 15:19 by the author's own `rabt-ai serve` process sharing the GPU |
+| Held-out runs | Primary v2 complete and sealed (B0, B1, B2, B1R: 81/81 each, 0 errors); `configs/heldout_runs.json` written. Secondary qwen3.5:9b B1/B2 running (optional; resumable with `sh runs/run_resume_v2.sh`). Sleep 17:29-19:19 and Ollama 0.40.6->0.40.7 auto-update logged in research_log.md |
 | Paper | Draft compiles (3 pages without results); results prose goes in paper/prose/{abstract,headline,results,conclusion}.tex once labels are final |
 | Site | Built by subagent; renders pending state; `python site/build.py` |
 | GitHub | 4waiz/cipher private; CI and Pages workflows written (Pages needs a public repo or paid plan) |
 
 ## Next executable actions
 
-1. Wait for the sealed runs (do not open predictions). `configs/heldout_runs.json` is written by runs/run_heldout.sh.
+1. Primary runs done. Do not open runs/sealed. Secondary runs optional.
 2. Wait for human files in annotations/submissions/ (calibration_A1/A2, evaluation_A1/A2).
 3. When both evaluation submissions arrive: `python -m cipher.reference adjudication`; send Huda
    annotations/adjudication/CIPHER_adjudication_Huda.html, then CIPHER_transformation_review.html.
