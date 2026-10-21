@@ -20,7 +20,7 @@ Status: peer-reviewed, accepted. The venue appears in the arXiv journal referenc
 Status: preprint. v2 (26 Jul 2026) is the latest. Discrepancy: none. v1 was titled "Diagnosing Live Within-Policy Instruction Conflicts in LLM Agents with Witnessed Resolution Profiles".
 
 **[5]** R. K. Sharma, "ContextCov: Bridging the Gap Between Developer Intent and Autonomous Agent Execution," arXiv:2603.00822v2, May 2026. [Online]. Available: https://arxiv.org/abs/2603.00822v2
-Status: preprint. v2 (4 May 2026) is the latest.
+Status: preprint. v2 (4 May 2026) is the latest. The manuscript bibliography uses the arXiv listing title ("ContextCov: Deriving and Enforcing Executable Constraints from Agent Instruction Files"), which both versions share.
 Discrepancy: the arXiv *listing* title for both versions is "ContextCov: Deriving and Enforcing Executable Constraints from Agent Instruction Files". The prior citation's title is the one printed on the v2 manuscript; v1 printed the "Deriving…" title. Write "R. K. Sharma" with a period.
 
 **[6]** D. Ding, S. Liu, E. Yang, J. Lin, Z. Chen, S. Dou, H. Guo, W. Cheng, P. Zhao, C. Xiao, Q. Zeng, Q. Zhang, X. Huang, Q. Xu, and T. Gui, "OctoBench: Benchmarking Scaffold-Aware Instruction Following in Repository-Grounded Agentic Coding," in *Proc. 64th Annu. Meeting Assoc. Comput. Linguistics (Vol. 1: Long Papers)*, San Diego, CA, USA, Jul. 2026, pp. 5958–5978, doi: 10.18653/v1/2026.acl-long.269.

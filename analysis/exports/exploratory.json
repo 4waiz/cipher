@@ -1,0 +1,23 @@
+{
+ "note": "exploratory, post-hoc (analysis plan addendum A3)",
+ "repeat": {
+  "identical_requests": 81,
+  "n": 81,
+  "label_differs": {
+   "order_control": 6,
+   "original": 3,
+   "context_variant": 4
+  },
+  "label_differs_total": 13,
+  "strata_n": {
+   "original": 27,
+   "order_control": 27,
+   "context_variant": 27
+  },
+  "runtime": "B1 on Ollama 0.40.6, B1R first call on 0.40.7"
+ },
+ "b1_pd_cites_offchain_file": {
+  "k": 21,
+  "n": 21
+ }
+}

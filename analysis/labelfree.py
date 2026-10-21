@@ -142,7 +142,8 @@ def figure(P, strata, cases) -> None:
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    plt.rcParams.update({"font.family": "serif", "font.size": 7, "svg.fonttype": "none"})
+    plt.rcParams.update({"font.family": "serif", "font.serif": ["Times New Roman", "Nimbus Roman", "Times", "DejaVu Serif"],
+                         "font.size": 7, "svg.fonttype": "none", "pdf.fonttype": 42})
     cats = ["Conflict", "Override", "Disjoint", "Compatible", "Insufficient", "None"]
     shades = ["#1b1b1b", "#555555", "#8c8c8c", "#c4c4c4", "#e6e6e6", "#ffffff"]
     rows = [(m, s) for s in ("original", "context_variant") for m in MODELS]
@@ -312,14 +313,16 @@ def latex(res) -> None:
                         f"{d[m]['target_variants']['changed']}/{d[m]['target_variants']['n']} & "
                         f"{d[m]['placement_variants']['changed']}/{d[m]['placement_variants']['n']}"
                         if m != "B0" else " & -- & -- & --") +
-                     f" & {d[m]['execution']['calls'] / d[m]['execution']['cases']:.1f} / "
+                     f" & {d[m]['execution']['calls'] / d[m]['execution']['cases']:.2f} / "
                      f"{d[m]['execution']['mean_out']}" + r" \\")
     w(GEN / "tab_results.tex", "\n".join([
         r"\begin{table*}[t]",
-        r"\caption{Held-out results without human labels. PD: profile-determined cases, whose correct label under P1 is "
+        r"\caption{Held-out results without human labels. PD: profile-determined cases (5 mined originals and 16 "
+        r"constructed target-path variants; 26 with the 5 order controls), whose correct label under P1 is "
         r"\emph{Disjoint applicability} because an instruction file is off the target's chain (B2 computes this in "
-        r"code). Other columns need no reference. Cost: mean calls / mean output tokens per case.}",
-        r"\label{tab:results}", r"\centering\footnotesize", r"\begin{tabular}{lcccccccc}", r"\toprule",
+        r"code). Other columns need no reference. B0 outputs only a conflict flag. Single run per arm; repeat "
+        r"variation is discussed in the text. Cost: mean calls / mean output tokens per case.}",
+        r"\label{tab:results}", r"\centering\footnotesize", r"\begin{tabular}{lccccccc}", r"\toprule",
         r" & PD correct & False conflicts & Called conflict & Order controls & \multicolumn{2}{c}{Prediction changed "
         r"in variants} & Cost \\ \cmidrule(lr){6-7}",
         r"Method & (orig.+var.) & on PD (all) & (orig.+var.) & same prediction & target path & placement & "

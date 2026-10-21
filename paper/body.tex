@@ -1,8 +1,10 @@
 % CIPHER manuscript body. Shared by the named and anonymous builds. Every corpus and result number is a macro from
-% generated/*.tex (written by analysis/corpus_stats.py and analysis/results.py); design constants are stated in text.
+% generated/*.tex (written by analysis/corpus_stats.py, analysis/labelfree.py and analysis/exploratory.py); design
+% constants are stated in text.
 \newif\ifresults
 \input{generated/corpus.tex}
 \input{generated/results.tex}
+\IfFileExists{generated/exploratory.tex}{\input{generated/exploratory.tex}}{}
 
 \title{CIPHER: Contextual Instruction Precedence and Hierarchy Evaluation for Repositories}
 
@@ -29,45 +31,43 @@ AI coding agents, AGENTS.md, instruction conflicts, repository mining, scope and
 \section{Introduction}\label{sec:intro}
 AI coding agents read project guidance from natural-language files in the repository. The AGENTS.md convention allows
 one file per package and states that ``the closest AGENTS.md to the edited file wins''~\cite{agentsmd}. Apparent
-disagreement between such files is therefore not always a defect. Suppose the root file says ``use exactly four spaces
-per indentation level'' and a file in \texttt{web/} says ``use exactly two''. For a new line in the root package the
-two rules may genuinely conflict; for \texttt{web/src/button.ts} the nested rule is a documented local override; and
-if the second rule lived in \texttt{api/}, it would not apply to that target at all. The wording is identical in all
-three situations; only the task's location and the files' placement differ.
+disagreement between such instructions is therefore not always a defect. Take two rules, ``use exactly four spaces per
+indentation level'' and ``use exactly two''. If both sit in the root file, they genuinely conflict for any new line; if
+the second sits in \texttt{web/AGENTS.md}, it is a documented local override for \texttt{web/src/button.ts}; and if it
+sits in \texttt{api/AGENTS.md}, it does not apply to that target at all. The wording is identical in all three
+situations; only the files' placement relative to the task's target differs.
 
 A conflict detector can fail in both directions: it can miss incompatible obligations, or it can report a legitimate
-local exception as a defect and suggest deleting useful guidance. Existing detectors flag contradictions from text
-alone. In a study of 100 repositories, a model-based smell detector reported 28 conflicting-instruction cases, of which
-manual analysis by that study's first author confirmed 16~\cite{santos2026smells}; the keyword heuristics of
-Ruleherd~\cite{ruleherd} compare files without regard to scope. Whether scope or precedence explains such false alarms
-has not been tested.
+local exception as a defect and suggest deleting useful guidance. The two AGENTS.md detectors we examined flag
+contradictions from text alone. In a study of 100 repositories, a model-based smell detector, which reads one file at a
+time, reported 28 conflicting-instruction cases, of which manual analysis by that study's first author confirmed
+16~\cite{santos2026smells}; the keyword heuristics of Ruleherd~\cite{ruleherd} compare files without regard to scope. We
+found no study that tests whether explicit scope and precedence reduce such false alarms.
 
 CIPHER asks whether making applicability and precedence explicit improves the classification of apparent conflicts:
 how reliably humans separate the labels (RQ1), whether a structured pipeline beats a direct model given the same
 evidence (RQ2), and whether predictions respond correctly to relevant context changes and stay stable under irrelevant
 ones (RQ3). We contribute (1)~a task-conditioned, five-label definition of the problem under a declared AGENTS.md
 loading profile; (2)~a traceable pilot set of \NOriginals{} real instruction pairs from \NEvalReposWord{} repositories at
-pinned commits, each with one context-changing variant and one order control, and a blinded annotation protocol and
-tool for RQ1; and (3)~a comparison of a keyword heuristic, a direct model given the full evidence, and a structured
-pipeline using the same local model. Human labels have not yet been collected, so Section~\ref{sec:results} reports
+pinned commits, each with one context-changing variant and one order control, and an annotation protocol and tool
+designed for blinded labeling (not yet used) for RQ1; and (3)~a comparison of a keyword heuristic, a direct model given
+an evidence packet, and a structured pipeline given the same packet and model. Human labels have not yet been collected, so Section~\ref{sec:results} reports
 \ifresults\input{prose/headline}\else results once the human reference labels are final.\fi{} The protocol, data,
 prompts, raw outputs, and analysis code are released\ifanon{} (anonymized artifact link withheld)\else{} at
 \url{https://github.com/4waiz/cipher}\fi.
 
 \section{Related Work}\label{sec:related}
-Agent context files have been characterized at scale~\cite{chatlatanagulchai2026agentreadmes,galster2026dataset}, and
-their effect on task success is contested~\cite{gloaguen2026evaluating}. Configuration Smells~\cite{santos2026smells}
-treats conflicting instructions as a smell detected within one file; Context Rot~\cite{treude2026contextrot} studies
-staleness against code. WIRE~\cite{yan2026wire} grounds rules in spans and models activation conditions and decision
-surfaces, but reports no matched compatible-pair or priority-insertion controls. ContextCov~\cite{sharma2026contextcov}
-extracts scoped constraints and enforces them, and OctoBench~\cite{ding2026octobench} measures which source an agent
-follows under explicit conflicts. Guidefold~\cite{guidefold} already resolves guidance with a most-specific-scope
-lattice and structural replays, while noting that human-labeled conflicts were still missing. A factorial study found
-no detectable effect of injected cross-file contradictions on adherence~\cite{mcmillan2026adherence}, and Arbiter
-catalogs interference in system prompts~\cite{mason2026arbiter}. Applicability and precedence reasoning are therefore
-not new. Our contribution is narrower: a task and a traceable set of mined AGENTS.md pairs with controlled variants
-for separating valid overrides and disjoint applicability from unresolved conflict, and a same-evidence comparison of a
-direct and a structured model; human reference labels are the next step.
+Context files have been characterized at scale~\cite{chatlatanagulchai2026agentreadmes,galster2026dataset}, and their
+effect on task success is contested~\cite{gloaguen2026evaluating}. Configuration Smells~\cite{santos2026smells} treats
+conflicting instructions within one file as a smell; Context Rot~\cite{treude2026contextrot} studies staleness.
+WIRE~\cite{yan2026wire} grounds rules in spans and models activation conditions, without matched compatible-pair or
+priority controls. ContextCov~\cite{sharma2026contextcov} extracts and enforces scoped constraints;
+OctoBench~\cite{ding2026octobench} measures which source an agent follows under explicit conflicts.
+Guidefold~\cite{guidefold} already resolves guidance with a most-specific-scope lattice, noting that human-labeled
+conflicts were still missing. Injected cross-file contradictions had no detectable effect on adherence
+in~\cite{mcmillan2026adherence}, and Arbiter catalogs interference in system prompts~\cite{mason2026arbiter}.
+Applicability and precedence reasoning are therefore not new; our contribution is a task, a traceable set of mined
+AGENTS.md pairs with controlled variants, and a same-evidence comparison of a direct and a structured model.
 
 \section{Task and Instruction Profile}\label{sec:task}
 A \emph{case} is one pair of verbatim instruction spans (with file path, line numbers, heading, and enclosing section),
@@ -90,27 +90,25 @@ requirement); (4)~otherwise \emph{Valid override} if P1 or an explicit statement
 \emph{Unresolved conflict}. Modality is preserved: ``prefer X'' does not forbid Y, and descriptions or examples are not
 rules unless worded as requirements.
 
-\section{Corpus and Annotation}\label{sec:corpus}
-\textbf{Sampling.} The discovery frame was the \texttt{context\_files.csv} table of a public configuration
-dataset~\cite{galster2026dataset} (Zenodo record 20090356): \NFrame{} repositories whose rows show a root and at least
-one nested AGENTS.md. In a seeded random order we retrieved the first \NRetrieved{} through the GitHub API at their
-default-branch commit on 21~October~2026, storing every AGENTS.md as inert JSON with its SHA-256. Repositories had to
-carry an open-source license, not be forks or archived, have no symlinked AGENTS.md, and have a root and a nested file
-with at least five non-empty lines (\NSnapshotEligible{} of \NRetrieved{}). Nested files under template, example,
-vendored, or hidden directories were excluded as separate project roots.
+\section{Corpus and Annotation Protocol}\label{sec:corpus}
+\textbf{Sampling.} The frame was the \texttt{context\_files.csv} table of a public configuration
+dataset~\cite{galster2026dataset} (Zenodo 20090356): \NFrame{} repositories with a root and a nested AGENTS.md. In a
+seeded random order we retrieved the first \NRetrieved{} through the GitHub API at their default-branch commit on
+21~October~2026, storing every AGENTS.md as inert JSON with its SHA-256. Repositories needed an open-source license, no
+fork or archive status, an untruncated Git tree, no symlinked AGENTS.md, and a root and a nested file with five or more
+non-empty lines (\NSnapshotEligible{} of \NRetrieved{}). Files under template, example, vendored, or hidden directories
+were excluded as separate project roots.
 
-\textbf{Candidate pairs.} Retrieval is separate from classification and deliberately challenge-oriented: instruction
-units (list items and paragraphs outside code fences that contain a directive verb or modal) are paired when they share
-a specific term (a tool, command, or convention word) or name different values from one family (for example
-\texttt{npm} and \texttt{pnpm}); the score favors different values, opposite polarity, conditions, and precedence
-words. Verbatim duplicates are excluded. Repositories needed at least four candidate pairs, two of them across files
-(\NPairEligible{} qualified); the first \NCalReposWord{} in frame order formed the calibration split and the next
-\NEvalReposWord{} the evaluation split, so no repository crosses splits. Up to four pairs per repository were selected
-by score with a quota for ancestor--descendant and unrelated-branch pairs, yielding \NOriginals{} evaluation originals
-(\NRelAncestor{} ancestor--descendant, \NRelUnrelated{} unrelated-branch, \NRelSameFile{} same-file) and
-\NCalOriginals{} calibration originals. Tasks are researcher-authored from fixed templates (for example ``make a small
-fix in \texttt{<target>} and complete the checks this change requires before committing''), and targets are real files
-under the relevant directory. This selected sample cannot estimate how often conflicts occur.
+\textbf{Candidate pairs.} Retrieval is separate from classification and challenge-oriented: directive units (list items
+and paragraphs outside code fences) are paired when they share a specific tool, command, or convention term or name
+different values from one family (e.g., \texttt{npm} and \texttt{pnpm}); the score favors different values, opposite
+polarity, conditions, and precedence words, and verbatim duplicates are excluded. Of the repositories with at least four
+pairs, two across files (\NPairEligible{}), the first \NCalReposWord{} in frame order formed the calibration split and
+the next \NEvalReposWord{} the evaluation split. Up to four pairs per repository were selected by score with relation
+quotas, yielding \NOriginals{} evaluation originals (\NRelAncestor{} ancestor--descendant, \NRelUnrelated{}
+unrelated-branch, \NRelSameFile{} same-file) and \NCalOriginals{} calibration originals. Tasks come from fixed templates
+written with AI assistance (e.g., ``make a small fix in \texttt{<target>} and complete the checks this change requires
+before committing''); targets are real files. The sample cannot estimate how often conflicts occur.
 
 \textbf{Strata.} Each original has a \emph{context-changing variant} that keeps both instructions' wording and changes
 one documented property: the target path (\NVarTarget{} cases, moving the target outside the nested file's directory)
@@ -118,41 +116,33 @@ or the placement of one instruction (\NVarPlacement{} cases, relocating it to th
 target's chain). A relocated instruction is appended under a copy of its nearest heading, so outer headings of its
 original file are lost; no human has yet checked whether this changes meaning. Each original also has an
 \emph{order control} that only swaps the presentation order of the two instructions. Variants and controls are
-constructed material and are reported separately from originals.
+constructed material; every result states how many cases come from each stratum.
 
-\textbf{Annotation protocol (prepared, not yet carried out).} A frozen handbook (v1.0) and a standalone offline tool
-support two independent annotators and an adjudicator: each annotator receives a separately randomized packet with
-opaque item IDs, without predictions, strata, or transformation notes, and sees the task, target, profile, the AGENTS.md
-paths with the target's directory chain marked, both spans with their sections and full files, and keyword-scanned
-scope statements. A \NCalItems-item calibration packet (\NPracticeWord{} authored practice items with feedback) precedes
-the evaluation packet. These materials are released, but no human labels were collected for this submission, so RQ1 is
-not answered here and no agreement statistic is reported.
+\textbf{Annotation protocol (prepared, not yet used).} A frozen handbook and an offline tool support two independent
+annotators and an adjudicator, with separately randomized packets, opaque item IDs, no predictions or strata, the
+target's directory chain marked, full files, and a \NCalItems-item calibration packet (\NPracticeWord{} invented
+practice items). No human labels were collected for this submission, so RQ1 is not answered here.
 
 \section{Methods and Setup}\label{sec:methods}
-\textbf{B0} applies Ruleherd's contradiction rules (v0.1.3, commit 94559fc6; keyword pairs such as npm/pnpm and
-tabs/spaces, and never/always polarity across different files) to the two spans of a case; it yields a binary flag and is
-scored only on conflict detection. \textbf{B1} is a direct contextual model: one call receives the evidence packet (task,
-target, commit, all AGENTS.md paths, both spans with line-numbered sections, and the scope statements), the full profile,
-the label definitions, and the decision sequence, but neither the full files nor the chain marking that the annotation
-tool shows. \textbf{B2}, the CIPHER pipeline, uses the same model and packet. One call extracts, for each
-instruction, its requirement, regulated decision, modality, explicit condition, and whether that condition covers the
-task, plus any explicit priority statement. Code then computes the loaded set and depth precedence deterministically; an
-unclear condition is treated as covering the task, and B2 cannot abstain. A second call, made only when both
-instructions remain active and binding, judges whether they constrain the same decision incompatibly; fixed rules map the
-results to a label. Because B2 may use two calls, \textbf{B1R} adds an equal-call control: B1 followed by one
-self-review call over the same evidence.
+\textbf{B0} applies Ruleherd's contradiction rules (v0.1.3, commit 94559fc6: keyword pairs such as npm/pnpm and
+never/always polarity across different files) to the two spans and yields a binary flag. \textbf{B1} is one call that
+receives the evidence packet (task, target, commit, all AGENTS.md paths, both spans with line-numbered sections, scope
+statements), the profile, the label definitions, and the decision sequence, but not the full files or the chain
+marking. \textbf{B2}, the CIPHER pipeline, uses the same model and packet: one call extracts each instruction's
+requirement, decision, modality, explicit condition, and whether that condition covers the task, plus any explicit
+priority statement; code computes the loaded set and depth precedence (an unclear condition counts as covering the
+task; B2 cannot abstain); a second call, made only when both instructions stay active and neither is merely
+descriptive, judges incompatibility; fixed rules map the results to a label. \textbf{B1R}, an equal-call control, is
+B1 followed by one self-review call.
 
-All model arms used the open-weight Qwen3.6-35B-A3B~\cite{qwen36} (35B parameters, 3B active; Q4\_K\_M quantization,
-Ollama digest a7eb95c5; served by Ollama 0.40.6, auto-updated to 0.40.7 before the last four B2 cases and the B1R run)
-on one laptop GPU with thinking enabled and the model card's recommended settings for precise
-coding tasks (temperature 0.6, top-$p$ 0.95, top-$k$ 20), a fixed seed, JSON-schema-constrained output, and at most two
-retries with a changed seed. Each request contained only the method prompt and the evidence, with no case identifier,
-stratum, or label. Calibration runs led to one change before any held-out run: B2's evidence-sufficiency field became
-an explicit two-value enum (B1's prompt was unchanged). Before any held-out output was inspected, an independent code
-review found that the header of the scope-statement block implied all listed files were loaded; it was corrected for
-every arm, all held-out runs were repeated, and the superseded runs were never opened. The profile, handbook, case
-manifest, prompts, schemas, and retry policy were frozen by hash before the reported held-out runs, which stayed sealed
-until the analysis below was frozen. The planned primary outcome, five-class macro-F1 against human labels, could not
+All arms used the open-weight Qwen3.6-35B-A3B~\cite{qwen36} (3B active parameters; Q4\_K\_M; Ollama digest a7eb95c5,
+served by Ollama 0.40.6, auto-updated to 0.40.7 before the last four B2 cases and B1R) on one laptop GPU with thinking
+enabled, the model card's settings for precise coding (temperature 0.6, top-$p$ 0.95, top-$k$ 20), a fixed seed,
+JSON-schema output, and up to two retries. Requests contained only the method prompt and the evidence. Before any
+held-out run, calibration led to one change (B2's sufficiency field became a two-value enum); before any held-out output
+was opened, an independent AI code review found that the scope-statement header implied all listed files were loaded,
+so it was corrected and all runs repeated. Inputs, prompts, and schemas were frozen by hash before the reported runs,
+which stayed sealed until the analysis was frozen. The planned primary outcome, macro-F1 against human labels, could not
 be computed; a plan addendum written before the predictions were opened defines the reported analysis.
 
 \section{Results}\label{sec:results}
@@ -163,10 +153,11 @@ Without human labels, accuracy is measured only on the profile-determined subset
 which proved easy for the direct model; the semantic question of condition-based and implicit applicability remains
 unmeasured, and agreement between methods is not accuracy. The sample is small (\NOriginals{} originals from
 \NEvalReposWord{} repositories) and challenge-oriented, so it cannot estimate how often conflicts occur; the absence of
-predicted conflicts may reflect the retrieval as much as the repositories. Tasks were authored from templates, and
-variants and controls are constructed. One profile and one quantized open-weight model, run on a laptop GPU whose
-runtime received a patch update during the runs, limit generalization, and public repositories may appear in the
-model's training data. Results concern classification under P1, not whether agents follow instructions or produce
+predicted conflicts may reflect the retrieval as much as the repositories. Tasks come from templates, and variants and
+controls are constructed. Each arm ran once; despite a fixed seed, an exact repeat of B1's requests (B1R's first calls,
+on the updated runtime) changed \RepeatDiffTotal{} of 81 labels, so differences of a few cases between arms or between
+an original and its control are within run-to-run variation. One profile and one quantized open-weight model limit
+generalization, and public repositories may appear in the model's training data. Results concern classification under P1, not whether agents follow instructions or produce
 better code.
 
 \section{Conclusion}\label{sec:conclusion}
@@ -175,9 +166,10 @@ better code.
 \section*{Acknowledgment}
 Following IEEE policy~\cite{ieeeai}, we disclose AI assistance. OpenAI ChatGPT assisted with concept exploration,
 literature synthesis, and drafting of the earlier proposal on which Sections~I--III build. Anthropic Claude (Opus 5.5,
-via Claude Code) audited the related work against primary sources, wrote the software for sampling, case construction,
-the annotation tool, the model arms, and the analysis, ran all experiments, and drafted the text of every section, the
-tables, and the figure of this version under the authors' direction. No human annotation was performed for this
+via Claude Code) audited the related work against primary sources; wrote the software for sampling, case construction,
+the annotation tool, the model arms, and the analysis; wrote the task templates, the annotation handbook, and the
+practice items with their answers; performed the code and manuscript reviews; ran all experiments; and drafted the text
+of every section, the tables, and the figure of this version under the authors' direction. No human annotation was performed for this
 version, and no AI output was used as a reference label; the only reference is computed from file paths under P1.
 Qwen3.6-35B-A3B is the system under evaluation. The authors reviewed the manuscript and are responsible for its content.
 

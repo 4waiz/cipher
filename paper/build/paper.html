@@ -9,22 +9,22 @@ unresolved conflict, valid override, disjoint applicability, compatible,
 and insufficient evidence. From a public configuration dataset we built
 a traceable pilot set of 27 real instruction pairs from eight
 repositories at pinned commits, each with a context-changing variant and
-an order control, and a blinded annotation protocol. Human reference
-labels have not yet been collected, so this short paper reports a
-preliminary analysis, frozen by hash before predictions were opened,
-that needs none: accuracy on the 21 originals and variants whose label
-the profile fixes from file paths, and label-free measures elsewhere.
-With one local open-weight model, a direct prompt given the full
-evidence and a structured pipeline that computes applicability and
-precedence explicitly were both correct on all 21 profile-determined
-cases, whereas a keyword heuristic flagged 2 of 26 such cases as
-conflicts. No model judged any original or variant to be an unresolved
-conflict; the methods disagreed mainly on condition-based applicability,
-and swapping only the order of the two instructions changed 4 of 27
-predictions for each model arm. The structured pipeline used more output
+an order control, and an annotation protocol for blinded labeling. Human
+reference labels have not yet been collected, so this short paper
+reports a preliminary analysis, frozen by hash before predictions were
+opened, that needs none: accuracy on the 26 cases whose label the
+profile fixes from file paths (5 mined originals, 16 constructed
+variants, 5 controls), and label-free measures elsewhere. With one local
+open-weight model, a direct prompt and a structured pipeline that
+computes applicability and precedence explicitly, both given the same
+evidence packet, were correct on all 26 profile-determined cases,
+whereas a keyword heuristic flagged 2 of them as conflicts. No model arm
+judged any original or variant to be an unresolved conflict. The arms
+disagreed mainly on condition-based applicability, but an exact repeat
+of the direct prompt changed of 81 labels, so such small differences are
+within run-to-run variation. The structured pipeline used more output
 tokens than the direct prompt (3589 versus 2177 per case) without a
-measurable gain. Human labels for the semantic cases are the next
-step.</p>
+measurable gain.</p>
 <p><strong>Keywords:</strong> AI coding agents, AGENTS.md, instruction
 conflicts, repository mining, scope and precedence</p>
 </section>
@@ -35,28 +35,28 @@ the repository. The AGENTS.md convention allows one file per package and
 states that “the closest AGENTS.md to the edited file wins” <span
 class="citation" data-cites="agentsmd"><a href="#ref-agentsmd"
 role="doc-biblioref">[1]</a></span>. Apparent disagreement between such
-files is therefore not always a defect. Suppose the root file says “use
-exactly four spaces per indentation level” and a file in
-<code>web/</code> says “use exactly two”. For a new line in the root
-package the two rules may genuinely conflict; for
-<code>web/src/button.ts</code> the nested rule is a documented local
-override; and if the second rule lived in <code>api/</code>, it would
-not apply to that target at all. The wording is identical in all three
-situations; only the task’s location and the files’ placement
-differ.</p>
+instructions is therefore not always a defect. Take two rules, “use
+exactly four spaces per indentation level” and “use exactly two”. If
+both sit in the root file, they genuinely conflict for any new line; if
+the second sits in <code>web/AGENTS.md</code>, it is a documented local
+override for <code>web/src/button.ts</code>; and if it sits in
+<code>api/AGENTS.md</code>, it does not apply to that target at all. The
+wording is identical in all three situations; only the files’ placement
+relative to the task’s target differs.</p>
 <p>A conflict detector can fail in both directions: it can miss
 incompatible obligations, or it can report a legitimate local exception
-as a defect and suggest deleting useful guidance. Existing detectors
-flag contradictions from text alone. In a study of 100 repositories, a
-model-based smell detector reported 28 conflicting-instruction cases, of
-which manual analysis by that study’s first author confirmed 16 <span
+as a defect and suggest deleting useful guidance. The two AGENTS.md
+detectors we examined flag contradictions from text alone. In a study of
+100 repositories, a model-based smell detector, which reads one file at
+a time, reported 28 conflicting-instruction cases, of which manual
+analysis by that study’s first author confirmed 16 <span
 class="citation" data-cites="santos2026smells"><a
 href="#ref-santos2026smells" role="doc-biblioref">[2]</a></span>; the
 keyword heuristics of Ruleherd <span class="citation"
 data-cites="ruleherd"><a href="#ref-ruleherd"
 role="doc-biblioref">[3]</a></span> compare files without regard to
-scope. Whether scope or precedence explains such false alarms has not
-been tested.</p>
+scope. We found no study that tests whether explicit scope and
+precedence reduce such false alarms.</p>
 <p>CIPHER asks whether making applicability and precedence explicit
 improves the classification of apparent conflicts: how reliably humans
 separate the labels (RQ1), whether a structured pipeline beats a direct
@@ -66,24 +66,23 @@ ones (RQ3). We contribute (1) a task-conditioned, five-label definition
 of the problem under a declared AGENTS.md loading profile; (2) a
 traceable pilot set of 27 real instruction pairs from eight repositories
 at pinned commits, each with one context-changing variant and one order
-control, and a blinded annotation protocol and tool for RQ1; and (3) a
-comparison of a keyword heuristic, a direct model given the full
-evidence, and a structured pipeline using the same local model. Human
-labels have not yet been collected, so Section <a href="#sec:results"
-data-reference-type="ref" data-reference="sec:results">6</a> reports a
-preliminary analysis without human labels: on cases whose label the
-profile fixes from directory structure, a direct model given the full
-evidence was already correct, so the structured pipeline added cost
-without measurable benefit there, while the methods disagreed on
-condition-based applicability. The protocol, data, prompts, raw outputs,
-and analysis code are released at <a
-href="https://github.com/4waiz/cipher"
+control, and an annotation protocol and tool designed for blinded
+labeling (not yet used) for RQ1; and (3) a comparison of a keyword
+heuristic, a direct model given an evidence packet, and a structured
+pipeline given the same packet and model. Human labels have not yet been
+collected, so Section <a href="#sec:results" data-reference-type="ref"
+data-reference="sec:results">6</a> reports a preliminary analysis
+without human labels: on cases whose label the profile fixes from
+directory structure, the direct model was already correct, so the
+structured pipeline added cost without measurable benefit there, while
+the arms differed on condition-based applicability by margins comparable
+to run-to-run variation. The protocol, data, prompts, raw outputs, and
+analysis code are released at <a href="https://github.com/4waiz/cipher"
 class="uri">https://github.com/4waiz/cipher</a>.</p>
 </section>
 <section id="sec:related" class="level1">
 <h1>Related Work</h1>
-<p>Agent context files have been characterized at scale <span
-class="citation"
+<p>Context files have been characterized at scale <span class="citation"
 data-cites="chatlatanagulchai2026agentreadmes galster2026dataset"><a
 href="#ref-chatlatanagulchai2026agentreadmes"
 role="doc-biblioref">[4]</a>, <a href="#ref-galster2026dataset"
@@ -92,36 +91,33 @@ contested <span class="citation" data-cites="gloaguen2026evaluating"><a
 href="#ref-gloaguen2026evaluating" role="doc-biblioref">[6]</a></span>.
 Configuration Smells <span class="citation"
 data-cites="santos2026smells"><a href="#ref-santos2026smells"
-role="doc-biblioref">[2]</a></span> treats conflicting instructions as a
-smell detected within one file; Context Rot <span class="citation"
+role="doc-biblioref">[2]</a></span> treats conflicting instructions
+within one file as a smell; Context Rot <span class="citation"
 data-cites="treude2026contextrot"><a href="#ref-treude2026contextrot"
-role="doc-biblioref">[7]</a></span> studies staleness against code.
-WIRE <span class="citation" data-cites="yan2026wire"><a
-href="#ref-yan2026wire" role="doc-biblioref">[8]</a></span> grounds
-rules in spans and models activation conditions and decision surfaces,
-but reports no matched compatible-pair or priority-insertion controls.
-ContextCov <span class="citation" data-cites="sharma2026contextcov"><a
-href="#ref-sharma2026contextcov" role="doc-biblioref">[9]</a></span>
-extracts scoped constraints and enforces them, and OctoBench <span
-class="citation" data-cites="ding2026octobench"><a
-href="#ref-ding2026octobench" role="doc-biblioref">[10]</a></span>
-measures which source an agent follows under explicit conflicts.
-Guidefold <span class="citation" data-cites="guidefold"><a
-href="#ref-guidefold" role="doc-biblioref">[11]</a></span> already
-resolves guidance with a most-specific-scope lattice and structural
-replays, while noting that human-labeled conflicts were still missing. A
-factorial study found no detectable effect of injected cross-file
-contradictions on adherence <span class="citation"
+role="doc-biblioref">[7]</a></span> studies staleness. WIRE <span
+class="citation" data-cites="yan2026wire"><a href="#ref-yan2026wire"
+role="doc-biblioref">[8]</a></span> grounds rules in spans and models
+activation conditions, without matched compatible-pair or priority
+controls. ContextCov <span class="citation"
+data-cites="sharma2026contextcov"><a href="#ref-sharma2026contextcov"
+role="doc-biblioref">[9]</a></span> extracts and enforces scoped
+constraints; OctoBench <span class="citation"
+data-cites="ding2026octobench"><a href="#ref-ding2026octobench"
+role="doc-biblioref">[10]</a></span> measures which source an agent
+follows under explicit conflicts. Guidefold <span class="citation"
+data-cites="guidefold"><a href="#ref-guidefold"
+role="doc-biblioref">[11]</a></span> already resolves guidance with a
+most-specific-scope lattice, noting that human-labeled conflicts were
+still missing. Injected cross-file contradictions had no detectable
+effect on adherence in <span class="citation"
 data-cites="mcmillan2026adherence"><a href="#ref-mcmillan2026adherence"
 role="doc-biblioref">[12]</a></span>, and Arbiter catalogs interference
 in system prompts <span class="citation"
 data-cites="mason2026arbiter"><a href="#ref-mason2026arbiter"
 role="doc-biblioref">[13]</a></span>. Applicability and precedence
-reasoning are therefore not new. Our contribution is narrower: a task
-and a traceable set of mined AGENTS.md pairs with controlled variants
-for separating valid overrides and disjoint applicability from
-unresolved conflict, and a same-evidence comparison of a direct and a
-structured model; human reference labels are the next step.</p>
+reasoning are therefore not new; our contribution is a task, a traceable
+set of mined AGENTS.md pairs with controlled variants, and a
+same-evidence comparison of a direct and a structured model.</p>
 </section>
 <section id="sec:task" class="level1">
 <h1>Task and Instruction Profile</h1>
@@ -155,38 +151,34 @@ preserved: “prefer X” does not forbid Y, and descriptions or examples
 are not rules unless worded as requirements.</p>
 </section>
 <section id="sec:corpus" class="level1">
-<h1>Corpus and Annotation</h1>
-<p><strong>Sampling.</strong> The discovery frame was the
+<h1>Corpus and Annotation Protocol</h1>
+<p><strong>Sampling.</strong> The frame was the
 <code>context_files.csv</code> table of a public configuration
 dataset <span class="citation" data-cites="galster2026dataset"><a
 href="#ref-galster2026dataset" role="doc-biblioref">[5]</a></span>
-(Zenodo record 20090356): 237 repositories whose rows show a root and at
-least one nested AGENTS.md. In a seeded random order we retrieved the
-first 30 through the GitHub API at their default-branch commit on
-21 October 2026, storing every AGENTS.md as inert JSON with its SHA-256.
-Repositories had to carry an open-source license, not be forks or
-archived, have no symlinked AGENTS.md, and have a root and a nested file
-with at least five non-empty lines (24 of 30). Nested files under
-template, example, vendored, or hidden directories were excluded as
-separate project roots.</p>
+(Zenodo 20090356): 237 repositories with a root and a nested AGENTS.md.
+In a seeded random order we retrieved the first 30 through the GitHub
+API at their default-branch commit on 21 October 2026, storing every
+AGENTS.md as inert JSON with its SHA-256. Repositories needed an
+open-source license, no fork or archive status, an untruncated Git tree,
+no symlinked AGENTS.md, and a root and a nested file with five or more
+non-empty lines (24 of 30). Files under template, example, vendored, or
+hidden directories were excluded as separate project roots.</p>
 <p><strong>Candidate pairs.</strong> Retrieval is separate from
-classification and deliberately challenge-oriented: instruction units
-(list items and paragraphs outside code fences that contain a directive
-verb or modal) are paired when they share a specific term (a tool,
-command, or convention word) or name different values from one family
-(for example <code>npm</code> and <code>pnpm</code>); the score favors
-different values, opposite polarity, conditions, and precedence words.
-Verbatim duplicates are excluded. Repositories needed at least four
-candidate pairs, two of them across files (12 qualified); the first two
-in frame order formed the calibration split and the next eight the
-evaluation split, so no repository crosses splits. Up to four pairs per
-repository were selected by score with a quota for ancestor–descendant
-and unrelated-branch pairs, yielding 27 evaluation originals (16
-ancestor–descendant, 5 unrelated-branch, 6 same-file) and 7 calibration
-originals. Tasks are researcher-authored from fixed templates (for
-example “make a small fix in <code>&lt;target&gt;</code> and complete
-the checks this change requires before committing”), and targets are
-real files under the relevant directory. This selected sample cannot
+classification and challenge-oriented: directive units (list items and
+paragraphs outside code fences) are paired when they share a specific
+tool, command, or convention term or name different values from one
+family (e.g., <code>npm</code> and <code>pnpm</code>); the score favors
+different values, opposite polarity, conditions, and precedence words,
+and verbatim duplicates are excluded. Of the repositories with at least
+four pairs, two across files (12), the first two in frame order formed
+the calibration split and the next eight the evaluation split. Up to
+four pairs per repository were selected by score with relation quotas,
+yielding 27 evaluation originals (16 ancestor–descendant, 5
+unrelated-branch, 6 same-file) and 7 calibration originals. Tasks come
+from fixed templates written with AI assistance (e.g., “make a small fix
+in <code>&lt;target&gt;</code> and complete the checks this change
+requires before committing”); targets are real files. The sample cannot
 estimate how often conflicts occur.</p>
 <p><strong>Strata.</strong> Each original has a <em>context-changing
 variant</em> that keeps both instructions’ wording and changes one
@@ -197,135 +189,137 @@ chain). A relocated instruction is appended under a copy of its nearest
 heading, so outer headings of its original file are lost; no human has
 yet checked whether this changes meaning. Each original also has an
 <em>order control</em> that only swaps the presentation order of the two
-instructions. Variants and controls are constructed material and are
-reported separately from originals.</p>
-<p><strong>Annotation protocol (prepared, not yet carried out).</strong>
-A frozen handbook (v1.0) and a standalone offline tool support two
-independent annotators and an adjudicator: each annotator receives a
-separately randomized packet with opaque item IDs, without predictions,
-strata, or transformation notes, and sees the task, target, profile, the
-AGENTS.md paths with the target’s directory chain marked, both spans
-with their sections and full files, and keyword-scanned scope
-statements. A 20-item calibration packet (six authored practice items
-with feedback) precedes the evaluation packet. These materials are
-released, but no human labels were collected for this submission, so RQ1
-is not answered here and no agreement statistic is reported.</p>
+instructions. Variants and controls are constructed material; every
+result states how many cases come from each stratum.</p>
+<p><strong>Annotation protocol (prepared, not yet used).</strong> A
+frozen handbook and an offline tool support two independent annotators
+and an adjudicator, with separately randomized packets, opaque item IDs,
+no predictions or strata, the target’s directory chain marked, full
+files, and a 20-item calibration packet (six invented practice items).
+No human labels were collected for this submission, so RQ1 is not
+answered here.</p>
 </section>
 <section id="sec:methods" class="level1">
 <h1>Methods and Setup</h1>
 <p><strong>B0</strong> applies Ruleherd’s contradiction rules (v0.1.3,
-commit 94559fc6; keyword pairs such as npm/pnpm and tabs/spaces, and
-never/always polarity across different files) to the two spans of a
-case; it yields a binary flag and is scored only on conflict detection.
-<strong>B1</strong> is a direct contextual model: one call receives the
-evidence packet (task, target, commit, all AGENTS.md paths, both spans
-with line-numbered sections, and the scope statements), the full
-profile, the label definitions, and the decision sequence, but neither
-the full files nor the chain marking that the annotation tool shows.
-<strong>B2</strong>, the CIPHER pipeline, uses the same model and
-packet. One call extracts, for each instruction, its requirement,
-regulated decision, modality, explicit condition, and whether that
-condition covers the task, plus any explicit priority statement. Code
-then computes the loaded set and depth precedence deterministically; an
-unclear condition is treated as covering the task, and B2 cannot
-abstain. A second call, made only when both instructions remain active
-and binding, judges whether they constrain the same decision
-incompatibly; fixed rules map the results to a label. Because B2 may use
-two calls, <strong>B1R</strong> adds an equal-call control: B1 followed
-by one self-review call over the same evidence.</p>
-<p>All model arms used the open-weight Qwen3.6-35B-A3B <span
-class="citation" data-cites="qwen36"><a href="#ref-qwen36"
-role="doc-biblioref">[14]</a></span> (35B parameters, 3B active; Q4_K_M
-quantization, Ollama digest a7eb95c5; served by Ollama 0.40.6,
-auto-updated to 0.40.7 before the last four B2 cases and the B1R run) on
-one laptop GPU with thinking enabled and the model card’s recommended
-settings for precise coding tasks (temperature 0.6,
+commit 94559fc6: keyword pairs such as npm/pnpm and never/always
+polarity across different files) to the two spans and yields a binary
+flag. <strong>B1</strong> is one call that receives the evidence packet
+(task, target, commit, all AGENTS.md paths, both spans with
+line-numbered sections, scope statements), the profile, the label
+definitions, and the decision sequence, but not the full files or the
+chain marking. <strong>B2</strong>, the CIPHER pipeline, uses the same
+model and packet: one call extracts each instruction’s requirement,
+decision, modality, explicit condition, and whether that condition
+covers the task, plus any explicit priority statement; code computes the
+loaded set and depth precedence (an unclear condition counts as covering
+the task; B2 cannot abstain); a second call, made only when both
+instructions stay active and neither is merely descriptive, judges
+incompatibility; fixed rules map the results to a label.
+<strong>B1R</strong>, an equal-call control, is B1 followed by one
+self-review call.</p>
+<p>All arms used the open-weight Qwen3.6-35B-A3B <span class="citation"
+data-cites="qwen36"><a href="#ref-qwen36"
+role="doc-biblioref">[14]</a></span> (3B active parameters; Q4_K_M;
+Ollama digest a7eb95c5, served by Ollama 0.40.6, auto-updated to 0.40.7
+before the last four B2 cases and B1R) on one laptop GPU with thinking
+enabled, the model card’s settings for precise coding (temperature 0.6,
 top-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 0.95,
 top-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
-20), a fixed seed, JSON-schema-constrained output, and at most two
-retries with a changed seed. Each request contained only the method
-prompt and the evidence, with no case identifier, stratum, or label.
-Calibration runs led to one change before any held-out run: B2’s
-evidence-sufficiency field became an explicit two-value enum (B1’s
-prompt was unchanged). Before any held-out output was inspected, an
-independent code review found that the header of the scope-statement
-block implied all listed files were loaded; it was corrected for every
-arm, all held-out runs were repeated, and the superseded runs were never
-opened. The profile, handbook, case manifest, prompts, schemas, and
-retry policy were frozen by hash before the reported held-out runs,
-which stayed sealed until the analysis below was frozen. The planned
-primary outcome, five-class macro-F1 against human labels, could not be
-computed; a plan addendum written before the predictions were opened
-defines the reported analysis.</p>
+20), a fixed seed, JSON-schema output, and up to two retries. Requests
+contained only the method prompt and the evidence. Before any held-out
+run, calibration led to one change (B2’s sufficiency field became a
+two-value enum); before any held-out output was opened, an independent
+AI code review found that the scope-statement header implied all listed
+files were loaded, so it was corrected and all runs repeated. Inputs,
+prompts, and schemas were frozen by hash before the reported runs, which
+stayed sealed until the analysis was frozen. The planned primary
+outcome, macro-F1 against human labels, could not be computed; a plan
+addendum written before the predictions were opened defines the reported
+analysis.</p>
 </section>
 <section id="sec:results" class="level1">
 <h1>Results</h1>
 <p><strong>Reference without human labels.</strong> Human labeling was
 not carried out for this submission, and no model output substitutes for
 it. Accuracy is therefore reported only where P1 alone fixes the label:
-26 cases (5 originals, 16 target-path variants, 5 order controls) in
-which one instruction’s file is not on the target’s directory chain, so
-that instruction is not loaded and the label is <em>Disjoint
-applicability</em>. B2 computes the loaded set in code, so on these
-cases it is correct by construction unless extraction fails; the open
-question is whether B1 and B0 also get them right. All other measures in
-Table <a href="#tab:results" data-reference-type="ref"
-data-reference="tab:results">[tab:results]</a> need no reference. This
-analysis was defined and frozen by hash before the sealed predictions
-were opened.</p>
+26 cases in which one instruction’s file is not on the target’s
+directory chain, so that instruction is not loaded and the label is
+<em>Disjoint applicability</em>. They are 5 mined originals (all
+unrelated-branch pairs), 16 constructed target-path variants, and 5
+order controls. B2 computes the loaded set in code, so on these cases it
+is correct by construction unless its extraction reports insufficient
+evidence or fails; the open question is whether B1 and B0 also get them
+right. All other measures in Table <a href="#tab:results"
+data-reference-type="ref" data-reference="tab:results">[tab:results]</a>
+need no reference. This analysis was defined and frozen by hash before
+the sealed predictions were opened; the repeat comparison below was
+added afterwards and is exploratory.</p>
 <p><strong>Directory scope (RQ2, determined subset).</strong> B1, B2,
-and B1R each labeled all 21 profile-determined originals and variants
-correctly (0 cases favored B2 and 0 favored B1), so the direct model
-inferred directory applicability from the paths and the profile text
-without a deterministic step. B0, which ignores scope, flagged 2 of the
-26 cases as conflicts: one ESM/CommonJS keyword match between two
-unrelated packages, in the original and in its order control. For this
-model, the determined subset does not support the hypothesis that
-explicit structure is needed to handle directory scope.</p>
+and B1R labeled all 26 profile-determined cases correctly, the 21
+originals and variants as well as the 5 controls (0 cases favored B2 and
+0 favored B1). B1’s explanation or cited evidence named the off-chain
+file in of the 21 cases, so the direct model handled directory
+applicability from the paths and the profile text without a
+deterministic step. B0, which ignores scope, flagged 2 of the 26 cases
+as conflicts: one ESM/CommonJS keyword match between two unrelated
+packages, in the original and in its order control. For this model, the
+determined subset does not support the hypothesis that explicit
+structure is needed to handle directory scope.</p>
 <figure id="fig:labels">
 <img src="figures/labels.svg" />
 <figcaption>Predicted labels per model arm on the 27 originals and 27
-variants (counts; not accuracy). No arm predicted <em>Unresolved
-conflict</em>, <em>Valid override</em>, or <em>Insufficient
-evidence</em>.</figcaption>
+variants (counts from a single run; not accuracy). No arm predicted
+<em>Unresolved conflict</em>, <em>Valid override</em>, or
+<em>Insufficient evidence</em> on these cases.</figcaption>
 </figure>
 <p><strong>Label-free comparison.</strong> No model arm labeled any
 original or variant an unresolved conflict or a valid override; every
-prediction was <em>Compatible</em> or <em>Disjoint</em> (Fig. <a
+such prediction was <em>Compatible</em> or <em>Disjoint</em> (Fig. <a
 href="#fig:labels" data-reference-type="ref"
-data-reference="fig:labels">1</a>), while B0 flagged 2 of the 54. The
-challenge-oriented retrieval thus surfaced lexically similar pairs that
-the models judged non-conflicting. The arms differ on the boundary
-between compatibility and condition-limited applicability: on originals
-B2 chose <em>Disjoint</em> 18 times and B1 15 times; B1 and B2 agreed on
-22 of 27 originals (Cohen’s
+data-reference="fig:labels">1</a>), while B0 flagged 2 of the 54. (The
+only <em>Valid override</em> in the study is B1R’s single self-review
+change, on an order control.) The challenge-oriented retrieval thus
+surfaced lexically similar pairs that the models judged non-conflicting.
+The arms differ on the boundary between compatibility and
+condition-limited applicability: on originals B2 chose <em>Disjoint</em>
+18 times and B1 15 times, and B1 and B2 agreed on 22 of 27 originals
+(Cohen’s
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>κ</mi><mo>=</mo><mn>0.62</mn></mrow><annotation encoding="application/x-tex">\kappa = 0.62</annotation></semantics></math>)
 and 23 of 27 variants
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>κ</mi><mo>=</mo><mn>0.53</mn></mrow><annotation encoding="application/x-tex">\kappa = 0.53</annotation></semantics></math>).
 The first non-determined original on which they disagree (by the
 declared selection rule) pairs a root rule “use <code>Protocol</code>
 for decoupling” with a nested rule “avoid <code>TYPE_CHECKING</code>”,
-both Python-specific, for a TypeScript target. B1 treated both rules as
-inactive; B2’s extraction found no explicit condition and returned
-<em>Compatible</em>. Which reading is right is a judgment about implicit
-applicability that P1 does not settle and that human labels must
-resolve.</p>
-<p><strong>Stability and sensitivity (RQ3).</strong> Swapping only the
-order of the two instructions changed the label in four of 27 controls
-for each model arm (23, 23, and 23 unchanged for B1, B2, and B1R),
-although all 5 determined controls stayed correct. All 16 target-path
-variants, which move the target out of the nested file’s directory, were
-labeled <em>Disjoint</em> by every arm; the label differed from the
-original’s in 8 (B1), 7 (B2), and 11 (B1R) cases, because many originals
-were already judged inactive by condition. Placement variants changed
-B2’s label 1 time and B1’s 5 times out of 11; without reference labels
+both naming Python constructs, for a TypeScript target. B1 treated both
+rules as inactive, whereas B2’s extraction found no explicit condition
+and returned <em>Compatible</em>; on the order control of the same case
+the two arms swapped answers. Whether the rules apply is a judgment
+about implicit applicability that P1 does not settle and that human
+labels must resolve.</p>
+<p><strong>Stability and sensitivity (RQ3).</strong> Swapping the order
+of the two instructions changed the label in four of 27 controls for
+each model arm (23, 23, and 23 unchanged for B1, B2, and B1R), although
+all 5 determined controls stayed correct. These changes must be read
+against run-to-run variation: B1R’s first call repeats B1’s request
+exactly (same prompt, evidence, and seed, but on the updated runtime),
+yet its label differed from B1’s in of 81 cases ( originals, variants,
+controls), a margin as large as the order effects and the B1–B2
+disagreements. All 16 target-path variants, which move the target out of
+the nested file’s directory, were labeled <em>Disjoint</em> by every
+arm; the label differed from the original’s in 8 (B1), 7 (B2), and 11
+(B1R) cases, because many originals were already judged inactive by
+condition. Placement variants changed B2’s label once and B1’s 5 times
+out of 11; without reference labels, and given the run-to-run variation,
 we cannot say which changes are correct.</p>
 <p><strong>Cost.</strong> No arm had a failure, retry, or malformed
 output. B2 averaged 1.26 calls and 3589 output tokens per case, against
 1.00 and 2177 for B1; the equal-call control B1R (3960 tokens) changed
-its first answer in 1 of 81 cases. Latency is not compared because the
-GPU was shared with another process for part of the runs.</p>
+its first answer in 1 of 81 cases, so its differences from B1 come
+mainly from resampling rather than review. Latency is not compared
+because the GPU was shared with another process for part of the
+runs.</p>
 </section>
 <section id="sec:threats" class="level1">
 <h1>Threats to Validity</h1>
@@ -336,27 +330,31 @@ condition-based and implicit applicability remains unmeasured, and
 agreement between methods is not accuracy. The sample is small (27
 originals from eight repositories) and challenge-oriented, so it cannot
 estimate how often conflicts occur; the absence of predicted conflicts
-may reflect the retrieval as much as the repositories. Tasks were
-authored from templates, and variants and controls are constructed. One
-profile and one quantized open-weight model, run on a laptop GPU whose
-runtime received a patch update during the runs, limit generalization,
-and public repositories may appear in the model’s training data. Results
-concern classification under P1, not whether agents follow instructions
-or produce better code.</p>
+may reflect the retrieval as much as the repositories. Tasks come from
+templates, and variants and controls are constructed. Each arm ran once;
+despite a fixed seed, an exact repeat of B1’s requests (B1R’s first
+calls, on the updated runtime) changed of 81 labels, so differences of a
+few cases between arms or between an original and its control are within
+run-to-run variation. One profile and one quantized open-weight model
+limit generalization, and public repositories may appear in the model’s
+training data. Results concern classification under P1, not whether
+agents follow instructions or produce better code.</p>
 </section>
 <section id="sec:conclusion" class="level1">
 <h1>Conclusion</h1>
 <p>CIPHER contributes a task definition, a traceable set of real
-AGENTS.md instruction pairs with controlled variants, and a blinded
-annotation protocol. In this preliminary evaluation without human
-labels, a local open-weight model given the full evidence resolved
-directory scope as reliably as a pipeline that computes it explicitly,
-and at lower cost, whereas a scope-blind keyword heuristic raised false
-alarms; none of the mined pairs was judged a genuine conflict. The open
-problem is condition-based and implicit applicability, where the methods
-disagree and an order swap alone alters some predictions. Collecting
-independent human labels for those cases, and testing other models and
-loading profiles, are the next steps.</p>
+AGENTS.md instruction pairs with controlled variants, and an annotation
+protocol for blinded labeling. In this preliminary evaluation without
+human labels, a local open-weight model given the evidence packet
+resolved directory scope as reliably as a pipeline that computes it
+explicitly, and at lower cost, whereas a scope-blind keyword heuristic
+flagged one out-of-scope pair (and its order control) as a conflict; no
+model arm judged any mined pair a genuine conflict. The open problem is
+condition-based and implicit applicability, where the arms disagree, and
+repeated runs show that single-run differences of a few cases are not
+reliable evidence. Collecting independent human labels for those cases,
+repeating runs, and testing other models and loading profiles are the
+next steps.</p>
 </section>
 <section id="acknowledgment" class="level1 unnumbered">
 <h1 class="unnumbered">Acknowledgment</h1>
@@ -365,9 +363,11 @@ href="#ref-ieeeai" role="doc-biblioref">[15]</a></span>, we disclose AI
 assistance. OpenAI ChatGPT assisted with concept exploration, literature
 synthesis, and drafting of the earlier proposal on which Sections I–III
 build. Anthropic Claude (Opus 5.5, via Claude Code) audited the related
-work against primary sources, wrote the software for sampling, case
-construction, the annotation tool, the model arms, and the analysis, ran
-all experiments, and drafted the text of every section, the tables, and
+work against primary sources; wrote the software for sampling, case
+construction, the annotation tool, the model arms, and the analysis;
+wrote the task templates, the annotation handbook, and the practice
+items with their answers; performed the code and manuscript reviews; ran
+all experiments; and drafted the text of every section, the tables, and
 the figure of this version under the authors’ direction. No human
 annotation was performed for this version, and no AI output was used as
 a reference label; the only reference is computed from file paths under
@@ -382,7 +382,7 @@ role="list">
 <div class="csl-left-margin">[1] </div><div
 class="csl-right-inline"><span>“<span
 class="nocase">AGENTS.md</span>.”</span> <a href="https://agents.md/"
-class="uri">https://agents.md/</a>, 2026.</div>
+class="uri">https://agents.md/</a>.</div>
 </div>
 <div id="ref-santos2026smells" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[2] </div><div class="csl-right-inline">H.
@@ -390,8 +390,7 @@ V. F. dos Santos, V. Costa, J. E. Montandon, L. L. Silva, and M. T.
 Valente, <span>“Configuration smells in <span
 class="nocase">AGENTS.md</span> files: Common mistakes in configuring
 coding agents,”</span> in <em>Proc. 26th IEEE int. Conf. Source code
-analysis and manipulation (SCAM)</em>, 2026. Available: <a
-href="https://arxiv.org/abs/2606.15828v5">https://arxiv.org/abs/2606.15828v5</a></div>
+analysis and manipulation (SCAM)</em>, 2026.</div>
 </div>
 <div id="ref-ruleherd" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[3] </div><div
@@ -403,73 +402,61 @@ href="https://github.com/princejain756/ruleherd">https://github.com/princejain75
 role="listitem">
 <div class="csl-left-margin">[4] </div><div class="csl-right-inline">W.
 Chatlatanagulchai <em>et al.</em>, <span>“Agent <span>READMEs</span>: An
-empirical study of context files for agentic coding.”</span> 2026.
-Available: <a
-href="https://arxiv.org/abs/2511.12884v2">https://arxiv.org/abs/2511.12884v2</a></div>
+empirical study of context files for agentic coding.”</span> 2026.</div>
 </div>
 <div id="ref-galster2026dataset" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[5] </div><div class="csl-right-inline">M.
 Galster <em>et al.</em>, <span>“A dataset of agentic <span>AI</span>
 coding tool configurations,”</span> in <em>Proc. 3rd ACM int. Conf.
-AI-powered software (AIware ’26)</em>, 2026, pp. 314–322. doi: <a
-href="https://doi.org/10.1145/3805760.3814922">10.1145/3805760.3814922</a>.</div>
+AI-powered software (AIware ’26)</em>, 2026, pp. 314–322.</div>
 </div>
 <div id="ref-gloaguen2026evaluating" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[6] </div><div class="csl-right-inline">T.
 Gloaguen, N. Mündler-Sasahara, M. N. Müller, V. Raychev, and M. Vechev,
 <span>“Evaluating <span class="nocase">AGENTS.md</span>: Are
-repository-level context files helpful for coding agents?”</span> 2026.
-Available: <a
-href="https://arxiv.org/abs/2602.11988v3">https://arxiv.org/abs/2602.11988v3</a></div>
+repository-level context files helpful for coding agents?”</span>
+2026.</div>
 </div>
 <div id="ref-treude2026contextrot" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[7] </div><div class="csl-right-inline">C.
 Treude and S. Baltes, <span>“Context rot in <span>AI</span>-assisted
 software development: Repurposing documentation consistency for
-<span>AI</span> configuration artifacts.”</span> 2026. Available: <a
-href="https://arxiv.org/abs/2606.09090v1">https://arxiv.org/abs/2606.09090v1</a></div>
+<span>AI</span> configuration artifacts.”</span> 2026.</div>
 </div>
 <div id="ref-yan2026wire" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[8] </div><div class="csl-right-inline">L.
 Yan, X. Chen, and X. Zhang, <span>“<span>WIRE</span>: Profiling
 witnessed within-policy instruction collisions in <span>LLM</span>
-agents.”</span> 2026. Available: <a
-href="https://arxiv.org/abs/2605.27784v2">https://arxiv.org/abs/2605.27784v2</a></div>
+agents.”</span> 2026.</div>
 </div>
 <div id="ref-sharma2026contextcov" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[9] </div><div class="csl-right-inline">R.
 K. Sharma, <span>“<span>ContextCov</span>: Deriving and enforcing
-executable constraints from agent instruction files.”</span> 2026.
-Available: <a
-href="https://arxiv.org/abs/2603.00822v2">https://arxiv.org/abs/2603.00822v2</a></div>
+executable constraints from agent instruction files.”</span> 2026.</div>
 </div>
 <div id="ref-ding2026octobench" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[10] </div><div class="csl-right-inline">D.
 Ding <em>et al.</em>, <span>“<span>OctoBench</span>: Benchmarking
 scaffold-aware instruction following in repository-grounded agentic
 coding,”</span> in <em>Proc. 64th annu. Meeting assoc. Comput.
-Linguistics (vol. 1: Long papers)</em>, 2026, pp. 5958–5978. doi: <a
-href="https://doi.org/10.18653/v1/2026.acl-long.269">10.18653/v1/2026.acl-long.269</a>.</div>
+Linguistics (vol. 1: Long papers)</em>, 2026, pp. 5958–5978.</div>
 </div>
 <div id="ref-guidefold" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[11] </div><div
 class="csl-right-inline">wiatrM, <span>“Guidefold: Docs/<span
-class="nocase">RESEARCH.md</span>.”</span> GitHub, commit 1c98b24f,
-2026. Available: <a
-href="https://github.com/wiatrM/guidefold/blob/1c98b24f8b6fc28a3a7253ab6dd9c3cc626f885e/docs/RESEARCH.md">https://github.com/wiatrM/guidefold/blob/1c98b24f8b6fc28a3a7253ab6dd9c3cc626f885e/docs/RESEARCH.md</a></div>
+class="nocase">RESEARCH.md</span>.”</span> GitHub repository
+wiatrM/guidefold, commit 1c98b24f, 2026.</div>
 </div>
 <div id="ref-mcmillan2026adherence" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[12] </div><div class="csl-right-inline">D.
 McMillan, <span>“Instruction adherence in coding agent configuration
-files: A factorial study of four file-structure variables.”</span> 2026.
-Available: <a
-href="https://arxiv.org/abs/2605.10039v1">https://arxiv.org/abs/2605.10039v1</a></div>
+files: A factorial study of four file-structure variables.”</span>
+2026.</div>
 </div>
 <div id="ref-mason2026arbiter" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[13] </div><div class="csl-right-inline">T.
 Mason, <span>“Arbiter: Detecting interference in <span>LLM</span> agent
-system prompts.”</span> 2026. Available: <a
-href="https://arxiv.org/abs/2603.08993v2">https://arxiv.org/abs/2603.08993v2</a></div>
+system prompts.”</span> 2026.</div>
 </div>
 <div id="ref-qwen36" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[14] </div><div

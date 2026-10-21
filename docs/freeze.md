@@ -89,3 +89,13 @@ Figure 1 legend was clipped. `analysis/labelfree.py` changed only in `figure()` 
 | File | SHA-256 |
 |---|---|
 | `analysis/labelfree.py` | 46eff913ccac61c7fe416e8c734b7c3e84ff3d71d4d2a68c5ccd2f330d6f84d1 |
+
+## Freeze 4b: presentation-only changes after unsealing (recorded 2026-10-21 21:35 Asia/Dubai)
+
+Prompted by the final AI manuscript review: Table I shows calls per case with two decimals, the column specification matches the eight columns, the caption states the PD composition and the single-run design, and Figure 1 embeds TrueType Times instead of a Type 3 font. `analysis/exports/metrics.json` is byte-identical before and after (cmp). Exploratory checks (addendum A3) live in a separate file, `analysis/exploratory.py`.
+
+| File | SHA-256 |
+|---|---|
+| `analysis/labelfree.py` | 5fb755dd77809088df923d82df84cae29a242bcd4c919f46e715561d7dc2ffb2 |
+| `analysis/exploratory.py` | 17bfc8a40a6c84094809298f0cbf860abc31c8e757b4a28f52896dcaf476f5ff |
+| `docs/analysis_plan.md` | bb8b90af8f7bbd2bee45cc14a3834ae2729f51aa06cb5dde9231361e9dd6bcf0 |

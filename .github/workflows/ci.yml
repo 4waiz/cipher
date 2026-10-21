@@ -25,6 +25,7 @@ jobs:
         run: |
           .venv/bin/python analysis/corpus_stats.py
           .venv/bin/python analysis/labelfree.py
+          .venv/bin/python analysis/exploratory.py
       - name: Generated outputs are up to date
         run: git diff --exit-code -- paper/generated analysis/exports analysis/tables
       - name: Install Tectonic 0.17.0

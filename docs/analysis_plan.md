@@ -118,3 +118,11 @@ B1, with discordant pairs (B2 right and B1 wrong; B1 right and B2 wrong). Absten
 
 Not reported: accuracy or macro-F1 on non-PD cases, human agreement (RQ1), anything requiring human labels. The secondary
 qwen3.5:9b analysis was stopped incomplete (16/81 B1 cases) and is not reported.
+
+## Addendum A3 (2026-10-21 21:40, after unsealing): exploratory checks
+
+Added after the predictions were opened, prompted by the final AI review of the manuscript; labelled exploratory
+wherever reported (`analysis/exploratory.py`).
+1. Repeat variability: B1R's first call repeats B1's request exactly (same prompt, evidence and seed) on Ollama
+   0.40.7 instead of 0.40.6; label differences between them estimate run-to-run variation.
+2. Share of B1 explanations on profile-determined originals and variants that name the off-chain instruction file.

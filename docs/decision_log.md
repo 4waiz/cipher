@@ -84,3 +84,12 @@ not used as a substitute for human labels. Accuracy is reported only for the 26 
 paths alone (Disjoint applicability); everything else is reported without accuracy (label distributions, agreement
 between methods, order stability, context sensitivity, cost). Defined in analysis-plan addendum A2 and frozen (Freeze 4)
 before any held-out prediction was opened. The secondary qwen3.5:9b run was stopped at 16/81 and is not reported.
+
+**D19 21:55. Final AI manuscript review applied (no change to any frozen number).** Fixed: introduction example now
+consistent with P1; scoped claims about prior detectors; consistent denominators (26 PD cases); PD composition stated
+(5 mined originals, 16 constructed variants, 5 controls); "evidence packet" instead of "full evidence"; neutral E102
+description including the order-control reversal; AI authorship of task templates, handbook, practice items and reviews
+disclosed; "protocol for blinded labeling (not yet used)"; B2 call condition stated exactly; untruncated-tree
+eligibility; bibliography details. Added the exploratory repeat-variability check (addendum A3): an exact repeat of B1's
+requests changed 13 of 81 labels, so order-control and B1-B2 differences of a few cases are reported as within
+run-to-run variation. Presentation-only table and figure fixes recorded as Freeze 4b.
