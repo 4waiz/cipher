@@ -24,7 +24,7 @@ jobs:
       - name: Offline analysis replay (no model calls)
         run: |
           .venv/bin/python analysis/corpus_stats.py
-          .venv/bin/python analysis/results.py
+          .venv/bin/python analysis/labelfree.py
       - name: Generated outputs are up to date
         run: git diff --exit-code -- paper/generated analysis/exports analysis/tables
       - name: Install Tectonic 0.17.0

@@ -77,3 +77,10 @@ changes meaning.
 model weights are pinned by digest and unchanged, and reinstalling an older runtime would itself be an uncontrolled
 change to the author's machine. The split (B2: 77 cases on 0.40.6, 4 on 0.40.7; B1R and secondary runs on 0.40.7) is
 recorded and disclosed. This session now stays active during runs so the machine does not idle-sleep.
+
+**D18 21:15. No human annotation for this submission; report a label-free and profile-determined analysis.** The
+corresponding author stated that the annotators are not available and asked for the paper to be completed. AI output is
+not used as a substitute for human labels. Accuracy is reported only for the 26 cases whose label P1 fixes from file
+paths alone (Disjoint applicability); everything else is reported without accuracy (label distributions, agreement
+between methods, order stability, context sensitivity, cost). Defined in analysis-plan addendum A2 and frozen (Freeze 4)
+before any held-out prediction was opened. The secondary qwen3.5:9b run was stopped at 16/81 and is not reported.

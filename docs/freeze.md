@@ -69,3 +69,15 @@ Applies addendum A1 of the analysis plan (review findings 6-13): pending mode re
 | `src/cipher/reference.py` | b71b8131d1f4ab40e4ee88c54d065bda9c5ae714df45d89a56e6c03a9a1baeda |
 | `src/cipher/unlock.py` | d5bd0701b1240bf008c13b2f8bfdd7e688a52ca7e17453e8f9d2a1b2bf209ab5 |
 | `docs/analysis_plan.md` | d93e335a7713ae1e6edd860bb451d79bf3aa17cfffb69c50949869e8995dcb1d |
+
+## Freeze 4: label-free analysis (recorded 2026-10-21 21:14 Asia/Dubai, before any held-out prediction was inspected)
+
+No human labels will exist for this submission (author's decision, about 21:05). Analysis plan addendum A2 and the code below define the reported analysis. `analysis/results.py` (human-label analysis) is kept unchanged for future use.
+
+| File | SHA-256 |
+|---|---|
+| `analysis/labelfree.py` | 6ee32682c02918ded8856197a23c8d2a312a1a3b90647ed8e6b92c32ae59328b |
+| `src/cipher/unlock_labelfree.py` | f71e34dd541bcb8943f3395f6513ba8e122cfcf238763ca4719dbe26f46ab62a |
+| `src/cipher/metrics.py` | 79890247041e881d8e42b9a852a514a03f75858f1b6942a8a91bd71d95fd5406 |
+| `src/cipher/profile.py` | fa230bde257d3f40560c482446a56782f879557691a607f652a61c337b6b06c0 |
+| `docs/analysis_plan.md` | 3ee733a849370b81ff7bc0fcae190c7c5c10ff3e4143bae6d18d725c7a40ce09 |

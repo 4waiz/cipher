@@ -81,3 +81,40 @@ smaller model. Reported in the artifact; in the paper at most as one sentence, l
 6. The primary held-out runs are the v2 runs (Freeze 3). The v1 runs were stopped before inspection and are not analysed.
 7. The secondary qwen3.5:9b runs are analysed on originals only (correct count and macro-F1), labelled secondary.
 8. Analysis code hashes are recorded in `docs/freeze.md` (Freeze 3b) and in `runs/heldout/UNLOCK.json`.
+
+## Addendum A2 (2026-10-21 21:15, before any held-out prediction was inspected): analysis without human labels
+
+On 21 October at about 21:05 the corresponding author reported that the human annotation will not be carried out for
+this submission. No AI output may stand in for human labels, so the primary analysis above (which needs human reference
+labels) cannot be run. The following label-free and profile-determined analysis replaces it for this submission; the
+human-labelled evaluation remains future work. No outcome below was chosen after seeing predictions.
+
+**Profile-determined reference (PD).** A case is profile-determined when the AGENTS.md file of at least one of its two
+instructions is not on the target's directory chain (`cipher.profile.loaded_set`). Under P1 that instruction is not
+loaded, so the decision sequence ends at step 2 and the label is *Disjoint applicability*. PD is computed from file
+paths only. It covers 26 evaluation cases (5 originals, 16 target-path variants, 5 order controls). B2 computes the
+loaded set in code, so its PD accuracy measures what explicit structure guarantees, not semantic reasoning; this is
+stated wherever PD results appear.
+
+**Primary outcome (A2).** Correct-label count on the 21 PD originals and variants (order controls excluded), B2 versus
+B1, with discordant pairs (B2 right and B1 wrong; B1 right and B2 wrong). Abstentions and failures are incorrect.
+
+**Secondary outcomes (A2).**
+1. PD cases, every method: predicted-label breakdown; B0 and model false-conflict count (predictions of "Unresolved
+   conflict" or B0 flags on PD cases, all of which are reference Disjoint).
+2. All 81 cases, label-free: predicted-label distribution per method and stratum; share of cases each method calls an
+   unresolved conflict; B0 flag count.
+3. Agreement between methods (B1, B2, B1R): exact agreement and Cohen's kappa on originals and on variants. This is
+   agreement between systems, not accuracy.
+4. Order-control stability: identical prediction for original and control (27 pairs per method); on the 5 PD pairs,
+   both correct.
+5. Context sensitivity: for the 16 target-path variants, variant correct (PD) and prediction changed from its original;
+   for the 11 placement variants, prediction changed (label-free).
+6. B1R: how often self-review changed B1-style first answers.
+7. Execution: calls, tokens, failures, retries, abstentions; latency reported but not compared (GPU shared with another
+   process 15:19-16:20 and an Ollama patch update during the runs).
+8. Illustrative cases by rule: the first PD case (by ID) that B1 gets wrong, and the first non-PD original (by ID)
+   where B1 and B2 disagree, shown without asserting which is right.
+
+Not reported: accuracy or macro-F1 on non-PD cases, human agreement (RQ1), anything requiring human labels. The secondary
+qwen3.5:9b analysis was stopped incomplete (16/81 B1 cases) and is not reported.
