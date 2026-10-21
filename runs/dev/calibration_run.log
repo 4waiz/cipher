@@ -24,3 +24,4 @@ K201v: ok -> Disjoint applicability calls=1 tok=2586/2661 44.42s
 K202: ok -> Disjoint applicability calls=1 tok=2191/1796 33.16s
 K202v: ok -> Disjoint applicability calls=1 tok=2109/2019 50.59s
 K203: ok -> Disjoint applicability calls=1 tok=3377/1893 36.04s
+K203v: ok -> Disjoint applicability calls=1 tok=2515/2741 32.19s

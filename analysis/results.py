@@ -29,6 +29,7 @@ TABLES = ROOT / "analysis" / "tables"
 GEN = ROOT / "paper" / "generated"
 FIGS = ROOT / "paper" / "build" / "figures"
 VERSION = "0.9.0"
+VERSION_DATE = "2026-10-21"  # date of the results revision shown on the site
 SHORT = {"Unresolved conflict": "Conflict", "Valid override": "Override", "Disjoint applicability": "Disjoint",
          "Compatible": "Compatible", "Insufficient evidence": "Insufficient"}
 METHODS = ["B1", "B2", "B1R"]
@@ -99,7 +100,7 @@ def anchor_validity(case: dict, evidence: list[str]) -> tuple[int, int]:
 def pending(reason: str, preds: dict, cases: dict) -> None:
     ids = [c for c, x in cases.items() if x["split"] == "evaluation"]
     ex = execution_table(preds, ids)
-    status = {"version": VERSION, "date": date.today().isoformat(), "git_commit": git_commit(),
+    status = {"version": VERSION, "date": VERSION_DATE,
               "status_label": "Pilot study in progress: human reference labels pending", "results_available": False}
     cols = ["Method", "Cases run", "Failures", "Abstentions", "Retries", "Calls", "Mean input tokens",
             "Mean output tokens", "Mean latency (s)"]
@@ -342,8 +343,7 @@ def export_tables(res, preds, cases, final, ref, strata) -> None:
                        "predictions": {m: pr(m) for m in ("B0", "B1", "B2")}})
     w(EXPORTS / "replay.json", json.dumps({"available": True, "reason": "", "cases": replay}, indent=1,
                                           ensure_ascii=False))
-    w(EXPORTS / "status.json", json.dumps({"version": VERSION, "date": date.today().isoformat(),
-                                           "git_commit": git_commit(), "results_available": True,
+    w(EXPORTS / "status.json", json.dumps({"version": VERSION, "date": VERSION_DATE, "results_available": True,
                                            "status_label": "Pilot results: small human-labelled sample "
                                                            f"({res['strata_n']['original']} originals)"}, indent=1))
 

@@ -39,18 +39,18 @@ still giving RQ3 a stability test. Variants are annotated independently because 
 **D9 13:40. Annotators A1 = Awaiz Ahmed, A2 = Mohammad Umar; adjudicator = Huda Mueen** (as suggested in the brief;
 subject to the authors' actual participation, which is recorded only when files arrive).
 
-**D10 14:00. Primary model: qwen3.6:35b-a3b (Q4_K_M) via Ollama, thinking on, temperature 0.6, top-p 0.95, top-k 20,
+**D10 13:40. Primary model: qwen3.6:35b-a3b (Q4_K_M) via Ollama, thinking on, temperature 0.6, top-p 0.95, top-k 20,
 seed 20261021, num_ctx 16384, num_predict 8192, two retries with seed+1/+2.** gpt-oss:20b and gemma4 disappeared from
 the local Ollama store during the session, so they are not used. Qwen's recommended thinking-mode sampling is used
 instead of greedy decoding to avoid repetition loops; the fixed seed makes runs repeatable on this machine.
 
-**D11 14:10. B2 makes the second (incompatibility) call only when both instructions remain active and binding; B1R is
+**D11 13:42. B2 makes the second (incompatibility) call only when both instructions remain active and binding; B1R is
 added as an equal-call control.** Calls, tokens and latency are reported per arm.
 
-**D12 14:20. Evidence packets for models contain the spans, their enclosing sections, the list of AGENTS.md paths, and
+**D12 13:45. Evidence packets for models contain the spans, their enclosing sections, the list of AGENTS.md paths, and
 keyword-scanned scope statements; annotators could also expand the two full files.** The asymmetry is reported;
 annotators can flag missing context.
 
-**D13 14:45. Venue category check: TEXTUAL page lists no anonymity rule; named PDF default, anonymous PDF fallback.
+**D13 13:50. Venue category check: TEXTUAL page lists no anonymity rule; named PDF default, anonymous PDF fallback.
 Repository stays private until the end of the task, then becomes public with Pages, because no stated rule restricts a
 public artifact.**
