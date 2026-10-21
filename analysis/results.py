@@ -65,61 +65,92 @@ def load_predictions(run_dirs: dict[str, str]) -> dict[str, dict[str, dict]]:
     return out
 
 
-def execution_table(preds: dict, ids: list[str]) -> list[list]:
+EXEC_COLS = ["Method", "Cases", "Labelled", "Failures", "Abstentions", "Malformed or schema-violating attempts",
+             "Truncated attempts", "API errors", "Retries", "Calls", "Mean input tokens", "Mean output tokens",
+             "Mean latency (s)"]
+
+
+def execution_table(preds: dict, ids: list[str]) -> list[dict]:
+    """Execution facts per method over the given cases. Missing predictions count as cases without a label."""
     rows = []
     for m in ["B0"] + METHODS:
         p = preds.get(m)
         if not p:
             continue
         rs = [p[c] for c in ids if c in p]
-        rows.append([m, len(rs), sum(1 for r in rs if r.get("error")), sum(1 for r in rs if r.get("abstained")),
-                     sum(r.get("retries", 0) for r in rs), sum(r.get("calls", 0) for r in rs),
-                     round(sum(r.get("input_tokens", 0) for r in rs) / max(len(rs), 1)),
-                     round(sum(r.get("output_tokens", 0) for r in rs) / max(len(rs), 1)),
-                     round(sum(r.get("latency_s", 0) for r in rs) / max(len(rs), 1), 1)])
+        att = [a for r in rs for a in r.get("attempts", [])]
+        n = len(ids)
+        rows.append({"method": m, "cases": n,
+                     "labelled": sum(1 for r in rs if (r.get("label") is not None or "conflict_flag" in r)),
+                     "failures": sum(1 for r in rs if r.get("error")) + (n - len(rs)),
+                     "abstentions": sum(1 for r in rs if r.get("abstained")),
+                     "bad_outputs": sum(1 for a in att if a.get("status") in ("malformed", "schema_violation")),
+                     "truncated": sum(1 for a in att if a.get("status") == "truncated"),
+                     "api_errors": sum(1 for a in att if a.get("status") == "api_error"),
+                     "retries": sum(r.get("retries", 0) for r in rs), "calls": sum(r.get("calls", 0) for r in rs),
+                     "mean_in": round(sum(r.get("input_tokens", 0) for r in rs) / max(len(rs), 1)),
+                     "mean_out": round(sum(r.get("output_tokens", 0) for r in rs) / max(len(rs), 1)),
+                     "mean_latency": round(sum(r.get("latency_s", 0) for r in rs) / max(len(rs), 1), 1)})
     return rows
 
 
+def exec_rows(rows: list[dict]) -> list[list]:
+    keys = ["method", "cases", "labelled", "failures", "abstentions", "bad_outputs", "truncated", "api_errors",
+            "retries", "calls", "mean_in", "mean_out", "mean_latency"]
+    return [[r[k] for k in keys] for r in rows]
+
+
 def anchor_validity(case: dict, evidence: list[str]) -> tuple[int, int]:
+    """An anchor 'path:a' or 'path:a-b' is valid if the whole range lies inside a section or scope line shown to the
+    model. Same-file pairs share a path, so each rule's shown section is checked."""
     pk = case["packet"]
-    rules = [pk["rule_1"], pk["rule_2"]]  # same-file pairs share a path, so check each rule's shown section
+    rules = [pk["rule_1"], pk["rule_2"]]
     scope = {(s["path"], s["line"]) for s in pk["scope_statements"]}
     ok = 0
     for e in evidence:
         path, _, rng = e.strip().rpartition(":")
         try:
-            lo = int(rng.split("-")[0])
+            parts = [int(x) for x in rng.split("-")]
         except ValueError:
             continue
-        if any(r["path"] == path and r["section_first_line"] <= lo <= r["section_last_line"] for r in rules) \
-                or (path, lo) in scope:
+        lo, hi = parts[0], parts[-1]
+        if any(r["path"] == path and r["section_first_line"] <= lo <= hi <= r["section_last_line"] for r in rules) \
+                or (lo == hi and (path, lo) in scope):
             ok += 1
     return ok, len(evidence)
 
 
-def pending(reason: str, preds: dict, cases: dict) -> None:
-    ids = [c for c, x in cases.items() if x["split"] == "evaluation"]
-    ex = execution_table(preds, ids)
+def model_anchors(method: str, pred: dict) -> list[str]:
+    """Anchors produced by the model. B2's first two anchors are written by code (the two spans), so only its
+    optional explicit-priority anchor is model output."""
+    ev = pred.get("evidence") or []
+    return ev[2:] if method == "B2" else ev
+
+
+def illustrative(cases: dict, final: dict, lab, ids: list[str]) -> dict:
+    """Pre-declared rule (analysis_plan.md): first case by ID among originals in each group."""
+    groups = {"B2 correct, B1 wrong": lambda c: lab("B2", c) == final[c] != lab("B1", c),
+              "B1 correct, B2 wrong": lambda c: lab("B1", c) == final[c] != lab("B2", c),
+              "both wrong": lambda c: lab("B1", c) != final[c] and lab("B2", c) != final[c]}
+    out = {}
+    for g, f in groups.items():
+        hit = next((c for c in sorted(ids) if f(c)), None)
+        out[g] = None if hit is None else {"case_id": hit, "repo": cases[hit]["repo"], "reference": final[hit],
+                                           "B1": lab("B1", hit), "B2": lab("B2", hit)}
+    return out
+
+
+def pending(reason: str) -> None:
+    """Pending mode reads no model output at all (sealed runs stay unopened), so exports are identical everywhere."""
     status = {"version": VERSION, "date": VERSION_DATE,
               "status_label": "Pilot study in progress: human reference labels pending", "results_available": False}
-    cols = ["Method", "Cases run", "Failures", "Abstentions", "Retries", "Calls", "Mean input tokens",
-            "Mean output tokens", "Mean latency (s)"]
-    results = {"available": False, "reason": reason,
-               "tables": ([{"id": "execution", "title": "Execution record (no accuracy)",
-                            "caption": "Completion facts for sealed held-out runs. No label or accuracy is shown "
-                                       "before the human reference labels are final.",
-                            "columns": cols, "rows": ex, "notes": ""}] if ex else []),
-               "figures": [], "limitations": []}
+    results = {"available": False, "reason": reason, "tables": [], "figures": [], "limitations": LIMITATIONS}
     EXPORTS.mkdir(parents=True, exist_ok=True)
     w(EXPORTS / "status.json", json.dumps(status, indent=1))
     w(EXPORTS / "results.json", json.dumps(results, indent=1))
     w(EXPORTS / "replay.json", json.dumps({"available": False, "reason": reason, "cases": []}, indent=1))
-    w(GEN / "results.tex", "% Generated by analysis/results.py. Results pending.\n"
-      "\\newcommand{\\ResultsHeadline}{results once the human reference labels are final.}\n"
-      "\\newcommand{\\ResultsSection}{\\textbf{Pending.} " + reason + "}\n"
-      "\\newcommand{\\AbstractText}{\\textbf{Draft: results pending human reference labels.}}\n"
-      "\\newcommand{\\ConclusionText}{Pending.}\n"
-      "\\newcommand{\\AIDisclosure}{Pending.}\n")
+    w(GEN / "results.tex", "% Generated by analysis/results.py. Results pending.\n\\resultsfalse\n"
+      "\\newcommand{\\PendingReason}{" + reason + "}\n")
     print("pending:", reason)
 
 
@@ -155,23 +186,22 @@ def main() -> None:
     cfg = load_json(ROOT / "configs" / "heldout_runs.json", {})
     unlocked = (ROOT / "runs" / "heldout" / "UNLOCK.json").exists()
     preds = load_predictions({m: f"runs/heldout/{rid}" for m, rid in cfg.items()}) if unlocked else {}
-    sealed = load_predictions({m: f"runs/sealed/{rid}" for m, rid in cfg.items()}) if not unlocked else {}
     ref_list = load_json(ROOT / "annotations" / "reference_labels.json", [])
     ref = {r["case_id"]: r for r in ref_list}
     final = {c: r["label"] for c, r in ref.items() if r.get("label") in LABELS}
     need = [c for c, x in cases.items() if x["split"] == "evaluation" and x["stratum"] != "order_control"]
-    if not unlocked or any(c not in ref or ref[c]["status"] == "pending" for c in need):
-        pending("Human reference labels are not final, so no accuracy is reported. Held-out model runs are sealed.",
-                sealed or preds, cases)
+    if not unlocked or any(c not in ref or ref[c]["status"].startswith("pending") for c in need):
+        pending("Human reference labels are not final, so no accuracy is reported. Held-out model runs are sealed.")
         return
 
     strata = {s: sorted(c for c, x in cases.items() if x["split"] == "evaluation" and x["stratum"] == s and c in final)
               for s in ("original", "context_variant", "order_control")}
     excluded = {s: sum(1 for c, x in cases.items() if x["split"] == "evaluation" and x["stratum"] == s
                        and c not in final) for s in strata}
-    lab = lambda m, c: (preds[m][c].get("label") if c in preds.get(m, {}) else None)  # noqa: E731
-    flag = lambda m, c: (preds["B0"][c]["conflict_flag"] if m == "B0" else  # noqa: E731
+    lab = lambda m, c: (preds.get(m, {}).get(c) or {}).get("label")  # noqa: E731  missing prediction -> None
+    flag = lambda m, c: ((preds.get("B0", {}).get(c) or {}).get("conflict_flag") if m == "B0" else  # noqa: E731
                          (None if lab(m, c) is None else lab(m, c) == CONFLICT))
+    pget = lambda m, c: preds.get(m, {}).get(c) or {}  # noqa: E731
     res: dict = {"strata_n": {s: len(v) for s, v in strata.items()}, "excluded_unlabelled": excluded,
                  "agreement": load_json(ROOT / "annotations" / "agreement.json", {}), "methods": {}}
     for s, ids in strata.items():
@@ -192,13 +222,15 @@ def main() -> None:
             r.update(accuracy=M.accuracy(gold, pr), correct=sum(1 for g, p in zip(gold, pr) if g == p), n=len(ids),
                      macro_f1=mf, absent_classes=absent, per_class=M.per_class(gold, pr),
                      confusion=M.confusion(gold, pr),
-                     abstained=sum(1 for c in ids if preds[m][c].get("abstained")),
-                     failed=sum(1 for c in ids if preds[m][c].get("error")))
+                     abstained=sum(1 for c in ids if pget(m, c).get("abstained")),
+                     failed=sum(1 for c in ids if pget(m, c).get("error") or not pget(m, c)))
             ok = tot = 0
             for c in ids:
-                a, t = anchor_validity(cases[c], preds[m][c].get("evidence") or [])
+                a, t = anchor_validity(cases[c], model_anchors(m, pget(m, c)))
                 ok, tot = ok + a, tot + t
-            r["anchors"] = {"valid": ok, "cited": tot, "rate": M.safe_div(ok, tot)}
+            r["anchors"] = {"valid": ok, "cited": tot, "rate": M.safe_div(ok, tot),
+                            "note": "model-produced anchors only" + ("; B2 span anchors are written by code"
+                                                                     if m == "B2" else "")}
     # paired comparisons (RQ3)
     for m in METHODS:
         if m not in preds:
@@ -230,6 +262,18 @@ def main() -> None:
                                                             for k in {r["repo"] for r in rows}}).items())}}
     all_ids = [c for s in strata.values() for c in s]
     res["execution"] = execution_table(preds, all_ids)
+    res["illustrative"] = illustrative(cases, final, lab, strata["original"])
+    res["semantic_support_audit"] = "not performed by a human; not reported"
+    sec_cfg = load_json(ROOT / "configs" / "secondary_runs.json", {})
+    sec = load_predictions({m: f"runs/heldout/{rid}" for m, rid in sec_cfg.items()})
+    if sec:
+        res["secondary"] = {"model": "qwen3.5:9b", "runs": sec_cfg}
+        for m, p in sec.items():
+            ids = strata["original"]
+            gold, pr = [final[c] for c in ids], [(p.get(c) or {}).get("label") for c in ids]
+            res["secondary"][m] = {"n": len(ids), "correct": sum(1 for g, x in zip(gold, pr) if g == x),
+                                   "macro_f1": M.macro_f1(gold, pr)[0],
+                                   "failed": sum(1 for c in ids if (p.get(c) or {}).get("error") or c not in p)}
     EXPORTS.mkdir(parents=True, exist_ok=True)
     w(EXPORTS / "metrics.json", json.dumps(res, indent=1))
     present = [lb for lb in LABELS if res["support"]["original"][lb] > 0]
@@ -251,7 +295,7 @@ def frac(k, n) -> str:
 
 def write_latex(res: dict) -> None:
     """Numeric macros and two tables for the manuscript; prose is written by the authors around these macros."""
-    L = ["% Generated by analysis/results.py from analysis/exports/metrics.json. Do not edit."]
+    L = ["% Generated by analysis/results.py from analysis/exports/metrics.json. Do not edit.", r"\resultstrue"]
     def mac(name, val):
         L.append(f"\\newcommand{{\\{name}}}{{{val}}}")
     for s, n in res["strata_n"].items():
@@ -298,14 +342,21 @@ def write_latex(res: dict) -> None:
     mac("DiffMacroFHi", fmt(p["macro_f1_diff_ci"]["hi"]))
     mac("BTwoOnlyCorrect", p["b2_only_correct"])
     mac("BOneOnlyCorrect", p["b1_only_correct"])
-    ex = {r[0]: r for r in res["execution"]}
+    ex = {r["method"]: r for r in res["execution"]}
     for m, r in ex.items():
-        mac(f"{MNAME[m]}Calls", r[5])
-        mac(f"{MNAME[m]}MeanIn", r[6])
-        mac(f"{MNAME[m]}MeanOut", r[7])
-        mac(f"{MNAME[m]}MeanLat", r[8])
-        mac(f"{MNAME[m]}Failures", r[2])
-        mac(f"{MNAME[m]}Retries", r[4])
+        mac(f"{MNAME[m]}Calls", r["calls"])
+        mac(f"{MNAME[m]}CallsPerCase", f"{r['calls'] / max(r['cases'], 1):.2f}")
+        mac(f"{MNAME[m]}MeanIn", r["mean_in"])
+        mac(f"{MNAME[m]}MeanOut", r["mean_out"])
+        mac(f"{MNAME[m]}MeanLat", r["mean_latency"])
+        mac(f"{MNAME[m]}Failures", r["failures"])
+        mac(f"{MNAME[m]}Retries", r["retries"])
+        mac(f"{MNAME[m]}BadOutputs", r["bad_outputs"])
+        mac(f"{MNAME[m]}Abstentions", r["abstentions"])
+    for m, d in res.get("secondary", {}).items():
+        if m in ("B1", "B2"):
+            mac(f"Sec{MNAME[m]}Correct", frac(d["correct"], d["n"]))
+            mac(f"Sec{MNAME[m]}MacroF", fmt(d["macro_f1"]))
     absent = res["methods"].get("B1", {}).get("original", {}).get("absent_classes", [])
     mac("AbsentOrig", ", ".join(absent) if absent else "none")
     w(GEN / "results.tex", "\n".join(L) + "\n")
@@ -338,7 +389,7 @@ def write_latex(res: dict) -> None:
                     f"{d['variant_pairs']['all']['both_correct']}/{d['variant_pairs']['all']['n']}",
                     f"{d['control_pairs']['all']['both_correct']}/{d['control_pairs']['all']['n']}"]
         e = ex.get(m)
-        cost = f"{e[5] / max(e[1], 1):.1f} / {e[7]}" if e and m != "B0" else "0 / 0"
+        cost = f"{e['calls'] / max(e['cases'], 1):.1f} / {e['mean_out']}" if e and m != "B0" else "0 / 0"
         mrows.append(f"{m} & " + " & ".join(five) + f" & {b['tp']}/{b['flagged']} & {fcs} & {cost}" + r" \\")
     w(GEN / "tab_methods.tex", "\n".join([
         r"\begin{table*}[t]", r"\caption{Results on held-out cases. Correct/total; macro-F1 over classes present in the "
@@ -406,8 +457,9 @@ def export_tables(res, preds, cases, final, ref, strata) -> None:
                    "notes": ""})
     tables.append({"id": "execution", "title": "Execution and cost", "caption": "Per-method totals over all scored "
                    "evaluation cases; means per case.",
-                   "columns": ["Method", "Cases", "Failures", "Abstentions", "Retries", "Calls", "Mean input tokens",
-                               "Mean output tokens", "Mean latency (s)"], "rows": res["execution"], "notes": ""})
+                   "columns": EXEC_COLS, "rows": exec_rows(res["execution"]),
+                   "notes": "Malformed, truncated and API-error counts are per attempt; failures are cases without a "
+                            "valid output after retries."})
     ag = res["agreement"].get("evaluation", {})
     if ag:
         tables.append({"id": "agreement", "title": "Agreement before adjudication",

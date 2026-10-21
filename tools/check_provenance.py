@@ -17,6 +17,14 @@ freeze = (ROOT / "docs" / "freeze.md").read_text(encoding="utf-8")
 man = hashlib.sha256((ROOT / "data" / "cases" / "manifest.json").read_bytes()).hexdigest()
 if man not in freeze:
     errors.append(f"manifest hash {man} not recorded in docs/freeze.md")
+import re  # noqa: E402
+
+latest = {}
+for path, digest in re.findall(r"\| `([^`]+)` \| ([0-9a-f]{64}) \|", freeze):
+    latest[path] = digest  # later freezes supersede earlier ones
+for path, digest in latest.items():
+    if hashlib.sha256((ROOT / path).read_bytes()).hexdigest() != digest:
+        errors.append(f"{path} changed after its latest freeze in docs/freeze.md")
 cases = {c["case_id"]: c for c in json.loads((ROOT / "data" / "cases" / "manifest.json").read_text(encoding="utf-8"))}
 for k in sorted((ROOT / "annotations" / "keys").glob("CIPHER-*_A*.json")):
     key = json.loads(k.read_text(encoding="utf-8"))

@@ -20,6 +20,7 @@ def main() -> None:
     import sys
     sys.path.insert(0, str(ROOT / "src"))
     from cipher.acquire import build_frame
+    from cipher.practice import practice_items
 
     cases = json.loads((ROOT / "data" / "cases" / "manifest.json").read_text(encoding="utf-8"))
     sel = json.loads((ROOT / "data" / "cases" / "selection_log.json").read_text(encoding="utf-8"))
@@ -69,6 +70,8 @@ def main() -> None:
         macro("NRelSameFile", rel.get("same_file", 0)),
         macro("NVarTarget", chg.get("target_path", 0)), macro("NVarPlacement", chg.get("source_placement", 0)),
         macro("NEvalAgentsFiles", sum(agents_files[r]["files"] for r in eval_repos)),
+        macro("NPractice", len(practice_items())), macro("NPracticeWord", words.get(len(practice_items()))),
+        macro("NCalItems", len(practice_items()) + len(cal)),
     ]
     gen = ROOT / "paper" / "generated"
     gen.mkdir(parents=True, exist_ok=True)

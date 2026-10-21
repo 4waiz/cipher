@@ -129,7 +129,7 @@ def review() -> None:
         p, ch = m[c["parent_case_id"]]["packet"], c["packet"]
         def r(pk, n):
             x = pk[f"rule_{n}"]
-            return f"{x['path']}:{x['start_line']}-{x['end_line']} | {x['text']}"
+            return f"{x['path']}:{x['start_line']}-{x['end_line']} [heading: {x['heading'] or 'none'}] | {x['text']}"
         rows.append(f"""<tr><td class=mono>{c['case_id']}</td><td>{html.escape(c['transformation'])}</td>
 <td class=mono>{html.escape(m[c['parent_case_id']]['target_path'])}<br>1: {html.escape(r(p, 1))}<br>2: {html.escape(r(p, 2))}</td>
 <td class=mono>{html.escape(c['target_path'])}<br>1: {html.escape(r(ch, 1))}<br>2: {html.escape(r(ch, 2))}</td>
@@ -139,7 +139,9 @@ def review() -> None:
 .mono{{font-family:Consolas,monospace;font-size:12px}}</style>
 <h1>Transformation validity review</h1><p>Tick "valid" when the child differs from its parent only in the declared
 property (target path, placement of one instruction, or order of the two instructions) and every instruction's wording
-is unchanged. Do this after adjudication. Then click Export.</p><button onclick="exp()">Export JSON</button>
+is unchanged. A relocated instruction keeps only its nearest heading; leave "valid" unticked and add a note if losing an
+outer heading changes what the instruction means or where it applies. Do this after adjudication. Then click Export
+and save the file as annotations/submissions/transformation_review.json.</p><button onclick="exp()">Export JSON</button>
 <table><tr><th>Case</th><th>Declared change</th><th>Parent</th><th>Child</th><th>Check</th></tr>{''.join(rows)}</table>
 <script>function exp(){{const r={{reviewer:"Huda Mueen",exported_at:new Date().toISOString(),items:{{}}}};
 document.querySelectorAll('input[data-id]').forEach(e=>{{r.items[e.dataset.id]={{valid:e.checked,note:document.querySelector(`input[data-note="${{e.dataset.id}}"]`).value}}}});
@@ -175,8 +177,10 @@ def finalize() -> None:
             rec.update(label=r1["label"], status="agreed")
         elif cid in adj:
             rec.update(label=adj[cid]["label"], status="adjudicated", adjudication_reason=adj[cid]["reason"])
-        if c["stratum"] == "context_variant" and rv and not rv.get(cid, {}).get("valid"):
-            rec.update(status="excluded_transformation_not_verified", label=None)
+        if c["stratum"] == "context_variant" and rec["label"] and not rv.get(cid, {}).get("valid"):
+            # declared in docs/analysis_plan.md (addendum A1): a variant is scored only after a human confirmed it
+            rec.update(status="pending_transformation_review" if not rv else "excluded_transformation_not_verified",
+                       label=None)
         out[cid] = rec
     for cid, c in sorted(m.items()):
         if c["split"] == "evaluation" and c["stratum"] == "order_control":

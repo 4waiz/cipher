@@ -65,3 +65,10 @@ prediction had been inspected, the input is corrected and every arm is re-run (v
 are preserved unopened as superseded and are not analysed. The annotators' packets, already issued, keep the old header;
 they also show the target's directory chain explicitly, so the effect on human judgments is expected to be small and is
 disclosed.
+
+**D16 15:40. Review findings 2-15 addressed without touching the model input again.** Disclosed in the manuscript:
+evidence asymmetry between annotators and models, procedural blinding (keys and sealed outputs on the first author's
+machine), handbook frozen before calibration, heading loss in placement variants, B2's handling of unclear conditions
+and inability to abstain, and the two pre-inspection method changes. Analysis code fixed and frozen (Freeze 3b,
+analysis-plan addendum A1). The transformation-review sheet now shows headings and asks whether a lost outer heading
+changes meaning.

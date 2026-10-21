@@ -57,3 +57,15 @@ An independent AI review found that the evidence header claimed every scope stat
 | `configs/prompts/b2_compare_system.txt` | 375464c29f2643f391538bb2c2e98ce07fa9ccd72486cefb892840e9b652215b |
 | `docs/annotation_handbook.md` | 4ac46bf2c8ceb3f93fcf79ee2db2186e768b8602485e6a6fdfc5b39b3755f2e2 |
 | `data/cases/manifest.json` | 4ff2cc31b10d1f2f2d996468445eca32e9f32b334a98e73aaa57c03ec1e7f177 |
+
+## Freeze 3b: analysis code (recorded 2026-10-21 15:18 Asia/Dubai, before any held-out prediction was inspected)
+
+Applies addendum A1 of the analysis plan (review findings 6-13): pending mode reads no model output; variants require the human transformation check; model-produced anchors only, whole-range check; execution breakdown; illustrative-case rule; secondary-model path; unlock records analysis-code hashes.
+
+| File | SHA-256 |
+|---|---|
+| `analysis/results.py` | f414763a3df9a5f8042c13ce72fbe86b6aba5191a480f994e16d4a5ea5c0ea67 |
+| `src/cipher/metrics.py` | 79890247041e881d8e42b9a852a514a03f75858f1b6942a8a91bd71d95fd5406 |
+| `src/cipher/reference.py` | b71b8131d1f4ab40e4ee88c54d065bda9c5ae714df45d89a56e6c03a9a1baeda |
+| `src/cipher/unlock.py` | d5bd0701b1240bf008c13b2f8bfdd7e688a52ca7e17453e8f9d2a1b2bf209ab5 |
+| `docs/analysis_plan.md` | d93e335a7713ae1e6edd860bb451d79bf3aa17cfffb69c50949869e8995dcb1d |

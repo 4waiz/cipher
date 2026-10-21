@@ -3,5 +3,11 @@
  "reason": "Human reference labels are not final, so no accuracy is reported. Held-out model runs are sealed.",
  "tables": [],
  "figures": [],
- "limitations": []
+ "limitations": [
+  "Small, challenge-oriented sample from eight repositories; it cannot estimate how often conflicts occur.",
+  "Tasks are researcher-authored templates; variants and order controls are constructed material.",
+  "Annotators are the paper's authors; one adjudicator.",
+  "One declared loading profile (P1) and one quantized local model.",
+  "Classification under P1 only; no claim about agent behaviour or code quality."
+ ]
 }

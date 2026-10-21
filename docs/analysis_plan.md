@@ -64,3 +64,20 @@ control for B2). One run per arm with fixed decoding settings and seed; no repet
 B1 and B2 repeated with the smaller local model `qwen3.5:9b` (Ollama digest recorded in its run manifest), same
 prompts, schemas, decoding settings and evidence. Purpose: whether the structured pipeline's effect differs for a
 smaller model. Reported in the artifact; in the paper at most as one sentence, labelled secondary.
+
+## Addendum A1 (2026-10-21, before any held-out prediction was inspected; prompted by an independent code review)
+
+1. Context variants are scored only after the human transformation check marks them valid; without the check they stay
+   pending (previously the rule applied only when a review file existed). Order controls are unchanged (they also
+   require the check).
+2. Evidence-anchor validity counts only model-produced anchors: B1 and B1R anchors, and B2's optional explicit-priority
+   anchor (B2's two span anchors are written by code). A range `path:a-b` is valid only if the whole range lies inside
+   a section shown to the model, or `a = b` is a listed scope line.
+3. The execution table reports, per method: cases, labelled cases (coverage), failures (including missing
+   predictions), abstentions, malformed or schema-violating attempts, truncated attempts, API errors, retries, calls,
+   mean input and output tokens, mean latency.
+4. Illustrative cases follow the declared rule and are exported in `metrics.json` (`illustrative`).
+5. No human semantic-support audit of explanations was performed; this is stated rather than reported.
+6. The primary held-out runs are the v2 runs (Freeze 3). The v1 runs were stopped before inspection and are not analysed.
+7. The secondary qwen3.5:9b runs are analysed on originals only (correct count and macro-F1), labelled secondary.
+8. Analysis code hashes are recorded in `docs/freeze.md` (Freeze 3b) and in `runs/heldout/UNLOCK.json`.
