@@ -2,7 +2,7 @@
 
 Resume point after any context reset. Update at every milestone.
 
-Last updated: 2026-10-21 21:40 Asia/Dubai
+Last updated: 2026-10-21 22:00 Asia/Dubai
 
 ## Hard dates
 
@@ -21,12 +21,11 @@ Last updated: 2026-10-21 21:40 Asia/Dubai
 | Model | qwen3.6:35b-a3b via Ollama, digest a7eb95c5. gpt-oss:20b and gemma4 were removed from the machine during the session; do not rely on them |
 | Dev runs | practice: all arms; calibration: B0, B1, B2 (dev1, schema defect found), B2 dev2 (fixed); B1R calibration stopped early (unchanged prompt) |
 | Held-out runs | Primary v2 complete and sealed (B0, B1, B2, B1R: 81/81 each, 0 errors); `configs/heldout_runs.json` written. Secondary qwen3.5:9b B1/B2 running (optional; resumable with `sh runs/run_resume_v2.sh`). Sleep 17:29-19:19 and Ollama 0.40.6->0.40.7 auto-update logged in research_log.md |
-| Paper | v1.0.0 compiles to 4 pages (named and anonymous), results from analysis/labelfree.py; final AI review pending |
-| Site | Built by subagent; renders pending state; `python site/build.py` |
-| GitHub | 4waiz/cipher private; CI and Pages workflows written (Pages needs a public repo or paid plan) |
+| Paper | v1.0.0 final: 4 pages (named and anonymous), final AI review applied; Desktop\CIPHER\submission\CIPHER_Submission_162.pdf (sha 5527745e) |
+| Site | Live at https://4waiz.github.io/cipher/ (home, /paper/, /results/, /cases/, PDF), verified |
+| GitHub | 4waiz/cipher public; CI green; Pages deployed by Actions |
 
 ## Next executable actions
 
-1. Final independent AI review of paper vs evidence; fix concrete issues.
-2. Make 4waiz/cipher public, enable Pages, verify live URLs.
-3. Copy PDFs to Desktop\CIPHER\submission\, finish docs/HANDOFF.md.
+Nothing automated remains. Human actions are listed in docs/HANDOFF.md (author approval, optional abstract update,
+upload through EasyChair "Update a File" for Submission 162).
